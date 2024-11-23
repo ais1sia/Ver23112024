@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+/* Global Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Root Styles */
+:root {
+    --background-color: #1e1e2f;
+    --primary-color: #6c63ff;
+    --secondary-color: #f4a261;
+    --text-color: #ffffff;
+    --muted-text-color: #c8c8d3;
+    --font-family: 'Share Tech Mono', monospace;
+    --font-size-large: 2rem;
+    --font-size-medium: 1.5rem;
+    --font-size-small: 1rem;
+}
+
+/* HTML & Body */
+html {
+    font-family: var(--font-family);
+    font-size: var(--font-size-large);
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    padding: 1.5rem;
+}
+
+/* Button Styles */
+button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    font-size: var(--font-size-medium);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+    background-color: var(--secondary-color);
+    transform: scale(1.05);
+}
+
+/* Input Fields */
+input, textarea {
+    width: 100%;
+    max-width: 400px;
+    padding: 0.75rem;
+    border: 2px solid var(--muted-text-color);
+    border-radius: 5px;
+    font-size: var(--font-size-medium);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+input:focus, textarea:focus {
+    border-color: var(--primary-color);
+}
+
+/* Cards */
+.card {
+    background-color: #2a2a40;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    color: var(--text-color);
+    text-align: center;
+    max-width: 400px;
+}
+
+.card h2 {
+    font-size: var(--font-size-large);
+    margin-bottom: 0.5rem;
+}
+
+.card p {
+    font-size: var(--font-size-medium);
+    color: var(--muted-text-color);
+}
+
+/* Links */
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: var(--secondary-color);
+}
+
+/* Utility Classes */
+.text-center {
+    text-align: center;
+}
+
+.mt-2 {
+    margin-top: 2rem;
+}
+
+.mb-2 {
+    margin-bottom: 2rem;
+}

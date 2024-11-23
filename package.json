@@ -1,0 +1,19 @@
+{
+  "name": "ver23112024",
+  "version": "1.0.0",
+  "description": "Application supporting language learning with recommendation algorithms",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server",
+    "dev": "nodemon server"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}
