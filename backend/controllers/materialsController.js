@@ -30,7 +30,7 @@ const createNewMaterial = asyncHandler(async (req, res) => {
     });
 
     if (material) {
-        res.status(201).json({ message: 'Material created successfully', material })
+        res.status(201).json({ message: 'Material created successfully'})
     } else {
         res.status(400).json({ message: 'Invalid material data' });
     }
