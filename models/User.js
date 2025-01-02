@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "User"
     }],
-    goal: [{
+    goals: [{
         type: String,
         default: "general"
     }],
@@ -49,10 +49,6 @@ const userSchema = new mongoose.Schema({
             max: 5
         }
     }],
-    active: {
-        type: Boolean,
-        default: true
-    }
 });
 
 module.exports = mongoose.model('User', userSchema);

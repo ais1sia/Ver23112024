@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt');
 // @access Private
 const getAllUsers = asyncHandler(async (req, res) => {
     const users = await User.find().select('-password').lean();
-    if (!users) {
+    if (!users?.length) {
         return res.status(400).json({ message: 'No users found' });
     }
     res.json(users);
@@ -18,25 +18,33 @@ const getAllUsers = asyncHandler(async (req, res) => {
 // @route POST /users
 // @access Private
 const createNewUser = asyncHandler(async (req, res) => {
-    const { username, email, firstname, lastname, password, level, roles, goal } = req.body;
+    const { username, email, firstname, lastname, password, level, roles, goals } = req.body;
 
     if (!username || !email || !firstname || !lastname || !password) {
         return res.status(400).json({ message: 'All fields are required' });
     }
-
-    const duplicate = await User.findOne({ email }).lean().exec();
+    // !Array.isArray(roles) || !Array.isArray(level) || !Array.isArray(goals)
+    //409: conflict
+    const duplicate = await User.findOne({
+        $or: [{ email }, { username }]
+    }).lean().exec();
+    
     if (duplicate) {
-        return res.status(409).json({ message: 'Email already in use' });
+        return res.status(409).json({ message: 'Email or username already in use' });
     }
+    
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPwd = await bcrypt.hash(password, 10);
 
     const userObject = {
         username,
         email,
         firstname,
         lastname,
-        password: hashedPassword,
+        password: hashedPwd,
+        roles: roles && roles.length ? roles : ['User'],
+        goals: goals && goals.length ? goals : ['general'],
+        level: level || 'beginner'
     };
 
     const user = await User.create(userObject);
@@ -52,9 +60,9 @@ const createNewUser = asyncHandler(async (req, res) => {
 // @route PATCH /users
 // @access Private
 const updateUser = asyncHandler(async (req, res) => {
-    const { id, username, email, firstname, lastname, level, roles, goal, active, password } = req.body;
+    const { id, username, email, firstname, lastname, level, roles, goals, active, password } = req.body;
 
-    if (!id || !username || !email || !firstname || !lastname || !level) {
+    if (!id || !username || !email || !firstname || !lastname) {
         return res.status(400).json({ message: 'All fields except password are required' });
     }
 
@@ -68,10 +76,9 @@ const updateUser = asyncHandler(async (req, res) => {
     user.email = email;
     user.firstname = firstname;
     user.lastname = lastname;
-    user.level = level;
+    user.level = level || user.level;
     user.roles = roles || user.roles;
-    user.goal = goal || user.goal;
-    user.active = active !== undefined ? active : user.active;
+    user.goals = goals || user.goals;
 
     if (password) {
         user.password = await bcrypt.hash(password, 10);
@@ -89,7 +96,7 @@ const deleteUser = asyncHandler(async (req, res) => {
     const { id } = req.body;
 
     if (!id) {
-        return res.status(400).json({ message: 'User ID is required' });
+        return res.status(400).json({ message: 'User ID Required' });
     }
 
     const user = await User.findById(id).exec();
@@ -100,7 +107,10 @@ const deleteUser = asyncHandler(async (req, res) => {
 
     const result = await user.deleteOne();
 
-    res.json({ message: `User ${result.username} deleted successfully` });
+    const reply = `Username ${result.username} with ID ${result._id} deleted`
+
+    res.json(reply)
+    
 });
 
 module.exports = {
