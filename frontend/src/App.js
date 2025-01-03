@@ -12,18 +12,18 @@ function App() {
     <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Public />} />
-          <Route path="login" element={<Login />} />
+          <Route path="login" element={<Login />} /> {/* localhost:3000/login*/}
 
-          <Route path="dash" element={<DashLayout />}>
+          <Route path="dash" element={<DashLayout />}> {/* localhost:3000/dash*/}
 
             <Route index element={<Welcome />} />
 
             <Route path="materials">
-              <Route index element={<MaterialsList />} />
+              <Route index element={<MaterialsList />} /> {/* localhost:3000/dash/materials*/}
             </Route>
 
             <Route path="users">
-              <Route index element={<UsersList />} />
+              <Route index element={<UsersList />} /> {/* localhost:3000/dash/users*/}
             </Route>
 
           </Route> {/* End dash */}
