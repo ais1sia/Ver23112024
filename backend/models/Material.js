@@ -5,7 +5,7 @@ const materialSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    content: {
+    language: {
         type: String,
         required: true
     },

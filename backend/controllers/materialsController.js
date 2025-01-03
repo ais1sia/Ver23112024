@@ -16,15 +16,15 @@ const getAllMaterials = asyncHandler(async (req, res) => {
 // @route POST /materials
 // @access Private
 const createNewMaterial = asyncHandler(async (req, res) => {
-    const { title, content, level, tags } = req.body;
+    const { title, language, level, tags } = req.body;
 
-    if (!title || !content || !level) {
-        return res.status(400).json({ message: 'Title, content, and level are required' })
+    if (!title || !language || !level) {
+        return res.status(400).json({ message: 'Title, language, and level are required' })
     }
 
     const material = await Material.create({
         title,
-        content,
+        language,
         level,
         tags
     });
@@ -41,7 +41,7 @@ const createNewMaterial = asyncHandler(async (req, res) => {
 // @access Private
 const updateMaterial = asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const { title, content, level, tags, userId, rating } = req.body;
+    const { title, language, level, tags, userId, rating } = req.body;
 
     const material = await Material.findById(id);
     if (!material) {
@@ -49,7 +49,7 @@ const updateMaterial = asyncHandler(async (req, res) => {
     }
 
     if (title) material.title = title;
-    if (content) material.content = content;
+    if (language) material.language = language;
     if (level) material.level = level;
     if (tags) material.tags = tags;
 
@@ -80,18 +80,24 @@ const updateMaterial = asyncHandler(async (req, res) => {
 // @route DELETE /materials/:id
 // @access Private
 const deleteMaterial = asyncHandler(async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.body
 
-    const material = await Material.findById(id);
+    if (!id) {
+        return res.status(400).json({ message: 'Material ID Required' })
+    }
+
+    const material = await Material.findById(id).exec()
+
     if (!material) {
         return res.status(404).json({ message: 'Material not found' })
     }
 
-    await material.deleteOne();
+    const result = await material.deleteOne()
 
-    const reply = ({ message: `Material with ID ${id} deleted successfully` })
+    const reply = `Material deleted`
 
     res.json(reply)
+    
 });
 
 module.exports = {
