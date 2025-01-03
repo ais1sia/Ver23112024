@@ -1,25 +1,56 @@
+import React from "react";
 import { Link } from "react-router-dom";
-import React from 'react'
-import { Button } from "@/components/ui/button"
 
 const Public = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-100 to-white flex flex-col items-center justify-center p-4">
-      <header className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-blue-600 mb-2">Welcome to ReadyAimFluent</h1>
-        <p className="text-xl text-gray-600">Your journey to multilingual mastery starts here!</p>
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "linear-gradient(to bottom, #ebf8ff, #ffffff)",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "16px",
+      }}
+    >
+      <header style={{ textAlign: "center", marginBottom: "32px" }}>
+        <h1 style={{ fontSize: "32px", fontWeight: "bold", color: "#2563eb", marginBottom: "8px" }}>
+          Welcome to ReadyAimFluent
+        </h1>
+        <p style={{ fontSize: "18px", color: "#4b5563" }}>
+          Your journey to multilingual mastery starts here!
+        </p>
       </header>
 
-      <main className="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
-        <p className="text-gray-700 mb-6">
-          ReadyAimFluent offers an immersive and interactive way to learn new languages. 
-          With personalized lessons, real-time pronunciation feedback, and a 
-          supportive community, you'll be speaking fluently in no time!
+      <main
+        style={{
+          maxWidth: "400px",
+          width: "100%",
+          backgroundColor: "#ffffff",
+          borderRadius: "8px",
+          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+          padding: "32px",
+        }}
+      >
+        <p style={{ color: "#374151", marginBottom: "24px" }}>
+          ReadyAimFluent offers an immersive and interactive way to learn new
+          languages. With personalized lessons, real-time pronunciation feedback,
+          and a supportive community, you'll be speaking fluently in no time!
         </p>
 
-        <div className="space-y-4">
-          <h2 className="text-2xl font-semibold text-blue-600">Get Started Today</h2>
-          <ul className="list-disc list-inside text-gray-700 mb-6">
+        <div style={{ marginBottom: "24px" }}>
+          <h2 style={{ fontSize: "24px", fontWeight: "600", color: "#2563eb" }}>
+            Get Started Today
+          </h2>
+          <ul
+            style={{
+              listStyleType: "disc",
+              paddingLeft: "20px",
+              color: "#374151",
+              marginBottom: "24px",
+            }}
+          >
             <li>Access to 30+ languages</li>
             <li>Personalized learning paths</li>
             <li>Interactive speaking exercises</li>
@@ -27,23 +58,52 @@ const Public = () => {
           </ul>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button asChild className="bg-blue-600 hover:bg-blue-700 text-white">
-            <Link to="/signup">Sign Up</Link>
-          </Button>
-          <Button asChild variant="outline">
-            <Link to="/login">Log In</Link>
-          </Button>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "16px",
+            justifyContent: "center",
+          }}
+        >
+          <Link
+            to="/signup"
+            style={{
+              display: "inline-block",
+              backgroundColor: "#2563eb",
+              color: "#ffffff",
+              padding: "10px 16px",
+              textAlign: "center",
+              borderRadius: "4px",
+              textDecoration: "none",
+              fontWeight: "600",
+            }}
+          >
+            Sign Up
+          </Link>
+          <Link
+            to="/login"
+            style={{
+              display: "inline-block",
+              border: "1px solid #2563eb",
+              color: "#2563eb",
+              padding: "10px 16px",
+              textAlign: "center",
+              borderRadius: "4px",
+              textDecoration: "none",
+              fontWeight: "600",
+            }}
+          >
+            Log In
+          </Link>
         </div>
       </main>
 
-      <footer className="mt-8 text-center text-gray-500">
+      <footer style={{ marginTop: "32px", textAlign: "center", color: "#9ca3af" }}>
         <p>&copy; 2025 ReadyAimFluent. All rights reserved.</p>
       </footer>
     </div>
-  )
-}
+  );
+};
 
-export default Public
-
-
+export default Public;
