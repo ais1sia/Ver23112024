@@ -18,7 +18,6 @@ export const materialsApiSlice = apiSlice.injectEndpoints({
             validateStatus: (response, result) => {
                 return response.status === 200 && !result.isError
             },
-            keepUnusedDataFor: 5,
             transformResponse: responseData => {
                 const loadedMaterials = responseData.map(material => {
                     material.id = material._id
@@ -35,12 +34,50 @@ export const materialsApiSlice = apiSlice.injectEndpoints({
                 } else return [{ type: 'Material', id: 'LIST' }]
             }
         }),
+        addNewMaterial: builder.mutation({
+            query: initialMaterial => ({
+                url: '/materials',
+                method: 'POST',
+                body: {
+                    ...initialMaterial,
+                }
+            }),
+            invalidatesTags: [
+                { type: 'Material', id: "LIST" }
+            ]
+        }),
+        updateMaterial: builder.mutation({
+            query: initialMaterial => ({
+                url: '/materials',
+                method: 'PATCH',
+                body: {
+                    ...initialMaterial,
+                }
+            }),
+            invalidatesTags: (result, error, arg) => [
+                { type: 'Material', id: arg.id }
+            ]
+        }),
+        deleteMaterial: builder.mutation({
+            query: ({ id }) => ({
+                url: `/materials`,
+                method: 'DELETE',
+                body: { id }
+            }),
+            invalidatesTags: (result, error, arg) => [
+                { type: 'Material', id: arg.id }
+            ]
+        }),
     }),
 })
 
 export const {
     useGetMaterialsQuery,
+    useAddNewMaterialMutation,
+    useUpdateMaterialMutation,
+    useDeleteMaterialMutation,
 } = materialsApiSlice
+
 
 // returns the query result object
 export const selectMaterialsResult = materialsApiSlice.endpoints.getMaterials.select()
