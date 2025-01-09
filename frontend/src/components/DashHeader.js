@@ -5,7 +5,7 @@ const DashHeader = () => {
     <header className="dash-header">
       <div className="dash-header__container">
         <div className="flex items-center space-x-4">
-          <Link to="/dash/materials">
+          <Link to="/dash">
             <h1 className="dash-header__title">ReadyAimFluent</h1>
           </Link>
         </div>

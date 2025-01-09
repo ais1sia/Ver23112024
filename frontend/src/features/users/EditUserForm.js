@@ -108,7 +108,7 @@ const EditUserForm = ({ user }) => {
         )
     })
 
-    const goalOptions = ["general", "weight loss", "muscle gain", "flexibility"].map(goal => {
+    const goalOptions = ["general", "business", "technical", "vacation", "military", "exam"].map(goal => {
         return (
             <option
                 key={goal}
@@ -230,9 +230,12 @@ const EditUserForm = ({ user }) => {
                     value={level}
                     onChange={onLevelChanged}
                 >
-                    <option value="beginner">Beginner</option>
-                    <option value="intermediate">Intermediate</option>
-                    <option value="advanced">Advanced</option>
+                    <option value="A1">A1</option>
+                    <option value="A2">A2</option>
+                    <option value="B1">B1</option>
+                    <option value="B2">B2</option>
+                    <option value="C1">C1</option>
+                    <option value="C2">C2</option>
                 </select>
 
                 <label className="form__label" htmlFor="roles">

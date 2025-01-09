@@ -16,7 +16,7 @@ const getAllMaterials = asyncHandler(async (req, res) => {
 // @route POST /materials
 // @access Private
 const createNewMaterial = asyncHandler(async (req, res) => {
-    const { title, language, level, tags } = req.body;
+    const { title, language, level, content, tags } = req.body;
 
     if (!title || !language || !level) {
         return res.status(400).json({ message: 'Title, language, level, and content are required' })

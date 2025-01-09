@@ -80,8 +80,12 @@ const Welcome = () => {
         ))}
       </div>
       <p><Link to="/dash/materials">View Materials</Link></p>
+      <p><Link to="/dash/materials/new">View Materials</Link></p>
 
       <p><Link to="/dash/users">View Users</Link></p>
+      <p><Link to="/dash/users/new">View Users</Link></p>
+
+
     </div>
     
   );

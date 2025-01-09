@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
     },
     level: {
         type: String,
-        default: "beginner"
+        default: "A1"
     },
     roles: [{
         type: String,

@@ -13,17 +13,18 @@ const NewUserForm = () => {
     const [addNewUser, { isLoading, isSuccess, isError, error }] = useAddNewUserMutation()
     const navigate = useNavigate()
 
-    // State variables for existing and new fields
     const [username, setUsername] = useState('')
     const [validUsername, setValidUsername] = useState(false)
     const [password, setPassword] = useState('')
     const [validPassword, setValidPassword] = useState(false)
     const [email, setEmail] = useState('')
     const [validEmail, setValidEmail] = useState(false)
-    const [firstName, setFirstName] = useState('')
-    const [lastName, setLastName] = useState('')
-    const [isActive, setIsActive] = useState(true)  // assuming true by default
+    const [firstname, setFirstname] = useState('')
+    const [lastname, setLastname] = useState('')
+    const [level, setLevel] = useState('beginner')
     const [roles, setRoles] = useState(["User"])
+    const [goals, setGoals] = useState(["general"])
+    const [isActive, setIsActive] = useState(true)
 
     useEffect(() => {
         setValidUsername(USER_REGEX.test(username))
@@ -42,9 +43,11 @@ const NewUserForm = () => {
             setUsername('')
             setPassword('')
             setEmail('')
-            setFirstName('')
-            setLastName('')
+            setFirstname('')
+            setLastname('')
+            setLevel('beginner')
             setRoles(["User"])
+            setGoals(["general"])
             setIsActive(true)
             navigate('/dash/users')
         }
@@ -53,8 +56,9 @@ const NewUserForm = () => {
     const onUsernameChanged = e => setUsername(e.target.value)
     const onPasswordChanged = e => setPassword(e.target.value)
     const onEmailChanged = e => setEmail(e.target.value)
-    const onFirstNameChanged = e => setFirstName(e.target.value)
-    const onLastNameChanged = e => setLastName(e.target.value)
+    const onFirstnameChanged = e => setFirstname(e.target.value)
+    const onLastnameChanged = e => setLastname(e.target.value)
+    const onLevelChanged = e => setLevel(e.target.value)
     const onIsActiveChanged = e => setIsActive(e.target.checked)
 
     const onRolesChanged = e => {
@@ -65,19 +69,39 @@ const NewUserForm = () => {
         setRoles(values)
     }
 
+    const onGoalsChanged = e => {
+        const values = Array.from(
+            e.target.selectedOptions,
+            (option) => option.value
+        )
+        setGoals(values)
+    }
+
     const canSave = [
-        roles.length, validUsername, validPassword, validEmail, firstName, lastName
+        roles.length, goals.length, validUsername, validPassword, validEmail, firstname, lastname
     ].every(Boolean) && !isLoading
 
     const onSaveUserClicked = async (e) => {
         e.preventDefault()
+        console.log("Saving user...", { username, password, email, firstname, lastname, level, isActive, roles, goals });
         if (canSave) {
-            await addNewUser({ username, password, email, firstName, lastName, isActive, roles })
+            try {
+                const response = await addNewUser({ username, password, email, firstname, lastname, level, isActive, roles, goals });
+                console.log("User created successfully:", response);
+            } catch (err) {
+                console.error("Failed to create user:", err);
+            }
+        } else {
+            console.warn("Cannot save user. Check validation or state.");
         }
     }
 
-    const options = Object.values(ROLES).map(role => (
-        <option key={role} value={role}> {role}</option>
+    const roleOptions = Object.values(ROLES).map(role => (
+        <option key={role} value={role}>{role}</option>
+    ))
+
+    const goalOptions = ["general", "business", "technical", "vacation", "military", "exam"].map(goal => (
+        <option key={goal} value={goal}>{goal}</option>
     ))
 
     const errClass = isError ? "errmsg" : "offscreen"
@@ -85,6 +109,7 @@ const NewUserForm = () => {
     const validPwdClass = !validPassword ? 'form__input--incomplete' : ''
     const validEmailClass = !validEmail ? 'form__input--incomplete' : ''
     const validRolesClass = !Boolean(roles.length) ? 'form__input--incomplete' : ''
+    const validGoalsClass = !Boolean(goals.length) ? 'form__input--incomplete' : ''
 
     return (
         <>
@@ -134,37 +159,56 @@ const NewUserForm = () => {
                     onChange={onEmailChanged}
                 />
 
-                <label className="form__label" htmlFor="firstName">
+                <label className="form__label" htmlFor="firstname">
                     First Name:</label>
                 <input
                     className="form__input"
-                    id="firstName"
-                    name="firstName"
+                    id="firstname"
+                    name="firstname"
                     type="text"
-                    value={firstName}
-                    onChange={onFirstNameChanged}
+                    value={firstname}
+                    onChange={onFirstnameChanged}
                 />
 
-                <label className="form__label" htmlFor="lastName">
+                <label className="form__label" htmlFor="lastname">
                     Last Name:</label>
                 <input
                     className="form__input"
-                    id="lastName"
-                    name="lastName"
+                    id="lastname"
+                    name="lastname"
                     type="text"
-                    value={lastName}
-                    onChange={onLastNameChanged}
+                    value={lastname}
+                    onChange={onLastnameChanged}
                 />
 
-                <label className="form__label" htmlFor="isActive">
-                    Active User:</label>
-                <input
-                    id="isActive"
-                    name="isActive"
-                    type="checkbox"
-                    checked={isActive}
-                    onChange={onIsActiveChanged}
-                />
+                <label className="form__label" htmlFor="level">
+                    Level:</label>
+                <select
+                    id="level"
+                    name="level"
+                    className="form__select"
+                    value={level}
+                    onChange={onLevelChanged}
+                >
+                    <option value="A1">A1</option>
+                    <option value="A2">A2</option>
+                    <option value="B1">B1</option>
+                    <option value="B2">B2</option>
+                    <option value="C1">C1</option>
+                    <option value="C2">C2</option>
+                </select>
+
+                <label className="form__label form__checkbox-container" htmlFor="user-active">
+                    ACTIVE:
+                    <input
+                        className="form__checkbox"
+                        id="user-active"
+                        name="user-active"
+                        type="checkbox"
+                        checked={isActive}
+                        onChange={onIsActiveChanged}
+                    />
+                </label>
 
                 <label className="form__label" htmlFor="roles">
                     ASSIGNED ROLES:</label>
@@ -177,7 +221,21 @@ const NewUserForm = () => {
                     value={roles}
                     onChange={onRolesChanged}
                 >
-                    {options}
+                    {roleOptions}
+                </select>
+
+                <label className="form__label" htmlFor="goals">
+                    GOALS:</label>
+                <select
+                    id="goals"
+                    name="goals"
+                    className={`form__select ${validGoalsClass}`}
+                    multiple={true}
+                    size="3"
+                    value={goals}
+                    onChange={onGoalsChanged}
+                >
+                    {goalOptions}
                 </select>
             </form>
         </>
@@ -185,3 +243,4 @@ const NewUserForm = () => {
 }
 
 export default NewUserForm
+
