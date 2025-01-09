@@ -33,6 +33,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "general"
     }],
+    isActive: {
+        type: Boolean,
+        default: true
+    },
     progress: [{
         materialId: {
             type: mongoose.Schema.Types.ObjectId,

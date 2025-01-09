@@ -27,6 +27,7 @@ const User = ({ userId }) => {
                 <td className={`table__cell ${cellStatus}`}>{user.level}</td>
                 <td className={`table__cell ${cellStatus}`}>{userRolesString}</td>
                 <td className={`table__cell ${cellStatus}`}>{userGoalsString}</td>
+                <td className={`table__cell ${cellStatus}`}>{user.isActive}</td>
                 <td className={`table__cell ${cellStatus}`}>
                     <button
                         className="icon-button table__button"

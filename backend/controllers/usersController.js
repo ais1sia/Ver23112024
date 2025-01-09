@@ -17,7 +17,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
 // @route POST /users
 // @access Private
 const createNewUser = asyncHandler(async (req, res) => {
-    const { username, email, firstname, lastname, password, level, roles, goals } = req.body
+    const { username, email, firstname, lastname, password, level, roles, goals, isActive } = req.body
 
     if (!username || !email || !firstname || !lastname || !password) {
         return res.status(400).json({ message: 'All fields are required' })
@@ -43,7 +43,8 @@ const createNewUser = asyncHandler(async (req, res) => {
         password: hashedPwd,
         roles: roles && roles.length ? roles : ['User'],
         goals: goals && goals.length ? goals : ['general'],
-        level: level || 'beginner'
+        level: level || 'beginner',
+        isActive: isActive || true
     };
 
     const user = await User.create(userObject);
@@ -59,10 +60,10 @@ const createNewUser = asyncHandler(async (req, res) => {
 // @route PATCH /users
 // @access Private
 const updateUser = asyncHandler(async (req, res) => {
-    const { id, username, email, firstname, lastname, level, roles, goals, active, password } = req.body
+    const { id, username, email, firstname, lastname, level, roles, goals, isActive, password } = req.body
 
-    if (!id || !username || !email || !firstname || !lastname) {
-        return res.status(400).json({ message: 'All fields except password are required' })
+    if (!id ) {
+        return res.status(400).json({ message: 'ID is required' })
     }
 
     const user = await User.findById(id).exec();
@@ -71,13 +72,14 @@ const updateUser = asyncHandler(async (req, res) => {
         return res.status(404).json({ message: 'User not found' })
     }
 
-    user.username = username
-    user.email = email
-    user.firstname = firstname
-    user.lastname = lastname
-    user.level = level || user.level
-    user.roles = roles || user.roles
-    user.goals = goals || user.goals
+    if(username) user.username = username
+    if(email) user.email = email
+    if(firstname) user.firstname = firstname
+    if(lastname) user.lastname = lastname
+    if(level) user.level = level || user.level
+    if(roles) user.roles = roles || user.roles
+    if(goals) user.goals = goals || user.goals
+    if(isActive) user.isActive = isActive || user.isActive
 
     if (password) {
         user.password = await bcrypt.hash(password, 10)

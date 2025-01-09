@@ -6,7 +6,7 @@ const DashHeader = () => {
       <div className="dash-header__container">
         <div className="flex items-center space-x-4">
           <Link to="/dash/materials">
-            <h1 classname="dash-header__title">ReadyAimFluent</h1>
+            <h1 className="dash-header__title">ReadyAimFluent</h1>
           </Link>
         </div>
       </div>
