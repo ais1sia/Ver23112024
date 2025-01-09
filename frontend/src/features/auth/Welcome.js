@@ -73,13 +73,17 @@ const Welcome = () => {
                 textDecoration: 'none',
                 textAlign: 'center',
               }}
-            >
-              Start Learning
+            >            
             </Link>
+            
           </div>
         ))}
       </div>
+      <p><Link to="/dash/materials">View Materials</Link></p>
+
+      <p><Link to="/dash/users">View Users</Link></p>
     </div>
+    
   );
 };
 

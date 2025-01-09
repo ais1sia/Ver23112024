@@ -19,13 +19,14 @@ const createNewMaterial = asyncHandler(async (req, res) => {
     const { title, language, level, tags } = req.body;
 
     if (!title || !language || !level) {
-        return res.status(400).json({ message: 'Title, language, and level are required' })
+        return res.status(400).json({ message: 'Title, language, level, and content are required' })
     }
 
     const material = await Material.create({
         title,
         language,
         level,
+        content,
         tags
     });
 
@@ -37,37 +38,40 @@ const createNewMaterial = asyncHandler(async (req, res) => {
 });
 
 // @desc Update material ratings
-// @route PATCH /materials/:id/rating
+// @route PATCH /materials/:id
 // @access Private
 const updateMaterial = asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const { title, language, level, tags, userId, rating } = req.body;
+    const { id, title, language, level, content, tags} = req.body; //rating
+    console.log(`PATCH request received for Material ID: ${id}`);
 
-    const material = await Material.findById(id);
-    if (!material) {
-        return res.status(404).json({ message: 'Material not found' })
-    }
 
-    if (title) material.title = title;
-    if (language) material.language = language;
-    if (level) material.level = level;
-    if (tags) material.tags = tags;
-
-    if (userId && rating) {
-        if (rating < 1 || rating > 5) {
-            return res.status(400).json({ message: 'Rating must be between 1 and 5' });
+    const material = await Material.findById(id).exec();
+    
+        if (!material) {
+            return res.status(404).json({ message: 'Materialxxx not found' })
         }
 
-        const existingRating = material.usefulness.find((entry) => entry.userId.toString() === userId)
+    if (title) material.title = title
+    if (language) material.language = language
+    if (level) material.level = level
+    if (content) material.content = content
+    if (tags) material.tags = tags
 
-        if (existingRating) {
-            existingRating.rating = rating;
-        } else {
-            material.usefulness.push({ userId, rating })
-        }
+    // if (rating) {
+    //     if (rating < 1 || rating > 5) {
+    //         return res.status(400).json({ message: 'Rating must be between 1 and 5' });
+    //     }
 
-        material.calculateAverageRating();
-    }
+    //     const existingRating = material.usefulness.find((entry) => entry.userId.toString() === userId)
+
+    //     if (existingRating) {
+    //         existingRating.rating = rating;
+    //     } else {
+    //         material.usefulness.push({ userId, rating })
+    //     }
+
+    //     material.calculateAverageRating();
+    // }
 
     await material.save();
     
