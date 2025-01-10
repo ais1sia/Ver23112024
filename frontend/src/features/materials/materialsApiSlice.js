@@ -5,8 +5,7 @@ import {
 import { apiSlice } from "../../app/api/apiSlice"
 
 const materialsAdapter = createEntityAdapter({
-    //TODO: sort materials if needed (e. g. lowest to highest rating?)
-    //sortComparer: (a, b) => (a.completed === b.completed) ? 0 : a.completed ? 1 : -1
+    sortComparer: (a, b) => (a.completed === b.completed) ? 0 : a.completed ? 1 : -1
 })
 
 const initialState = materialsAdapter.getInitialState()
@@ -77,7 +76,6 @@ export const {
     useUpdateMaterialMutation,
     useDeleteMaterialMutation,
 } = materialsApiSlice
-
 
 // returns the query result object
 export const selectMaterialsResult = materialsApiSlice.endpoints.getMaterials.select()

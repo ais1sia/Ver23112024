@@ -1,28 +1,17 @@
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { selectMaterialById, useGetMaterialsQuery } from './materialsApiSlice'
+import { selectMaterialById } from './materialsApiSlice'
+import { selectAllUsers } from '../users/usersApiSlice'
 import EditMaterialForm from './EditMaterialForm'
 
 const EditMaterial = () => {
     const { id } = useParams()
 
-    const { isLoading, isSuccess } = useGetMaterialsQuery()
-
     const material = useSelector(state => selectMaterialById(state, id))
+    const users = useSelector(selectAllUsers)
 
-    let content
-
-    if (isLoading) {
-        content = <p>Loading...</p>
-    } else if (!isSuccess) {
-        content = <p>Failed to fetch material data</p>
-    } else if (!material) {
-        content = <p>Material not found!</p>
-    } else {
-        content = <EditMaterialForm material={material} />
-    }
+    const content = material && users ? <EditMaterialForm material={material} users={users} /> : <p>Loading...</p>
 
     return content
 }
-
 export default EditMaterial
