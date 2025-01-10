@@ -198,12 +198,12 @@ const NewUserForm = () => {
                     <option value="C2">C2</option>
                 </select>
 
-                <label className="form__label form__checkbox-container" htmlFor="user-active">
+                <label className="form__label form__checkbox-container" htmlFor="user-isActive">
                     ACTIVE:
                     <input
                         className="form__checkbox"
-                        id="user-active"
-                        name="user-active"
+                        id="user-isActive"
+                        name="user-isActive"
                         type="checkbox"
                         checked={isActive}
                         onChange={onIsActiveChanged}

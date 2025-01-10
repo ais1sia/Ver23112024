@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const NewMaterial = () => {
+const NewMaterialForm = () => {
   const [addNewMaterial, { isLoading, isSuccess, isError, error }] =
     useAddNewMaterialMutation();
   const navigate = useNavigate();
@@ -174,4 +174,4 @@ const NewMaterial = () => {
   );
 };
 
-export default NewMaterial;
+export default NewMaterialForm;
