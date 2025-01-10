@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { redirect } from 'react-router-dom'
 
 const authSlice = createSlice({
     name: 'auth',
@@ -10,9 +9,8 @@ const authSlice = createSlice({
             state.token = accessToken
         },
         logOut: (state, action) => {
-            state.token = null
-            redirect('/login')
-        },
+            state.token = null;
+        }
     }
 })
 
