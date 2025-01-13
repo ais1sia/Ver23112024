@@ -4,8 +4,13 @@ import { useNavigate } from 'react-router-dom'
 
 import { useSelector } from 'react-redux'
 import { selectMaterialById } from './materialsApiSlice'
+import useAuth from "../../hooks/useAuth"
+
+// TABLE STRUCTURE HERE
 
 const Material = ({ materialId }) => {
+    const { isAdmin } = useAuth()
+
 
     const material = useSelector(state => selectMaterialById(state, materialId))
 
@@ -24,11 +29,11 @@ const Material = ({ materialId }) => {
         <td className="table__cell">{material.level}</td>
         <td className="table__cell">{material.content}</td>
         <td className="table__cell">{materialTagsString}</td>
-        <td className="table__cell">
+        {(isAdmin) && <td className="table__cell">
           <button className="icon-button table__button" onClick={handleEdit}>
             <FontAwesomeIcon icon={faPenToSquare} />
           </button>
-        </td>
+        </td>}
       </tr>
     )} else return null
 }
