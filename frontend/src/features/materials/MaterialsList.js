@@ -1,7 +1,11 @@
 import { useGetMaterialsQuery } from "./materialsApiSlice"
 import Material from "./Material"
+import useAuth from "../../hooks/useAuth"
+
 
 const MaterialsList = () => {
+    const { isAdmin } = useAuth()
+
     const {
         data: materials,
         isLoading,
@@ -46,9 +50,10 @@ const MaterialsList = () => {
               <th scope="col" className="table__th material__tags">
                 Tags
               </th>
+              { (isAdmin) &&
               <th scope="col" className="table__th material__edit">
                 Edit
-              </th>
+              </th> }
             </tr>
           </thead>
           <tbody>{tableContent}</tbody>
