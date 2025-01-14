@@ -25,14 +25,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "A1"
     },
-    roles: [{
-        type: String,
+    roles: {
+        type: [String],
         default: "User"
-    }],
-    goals: [{
-        type: String,
+    },
+    goals: {
+        type: [String],
         default: "general"
-    }],
+    },
     isActive: {
         type: Boolean,
         default: true

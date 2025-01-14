@@ -32,22 +32,20 @@ const DashHeader = () => {
   ] = useSendLogoutMutation();
 
     useEffect(() => {
-      // console.log("Logout success state:", isSuccess);
       if (isSuccess) {
-          // console.log("Attempting navigation to '/'");
         navigate("/");
       }
     }, [isSuccess, navigate]);
 
-  // const handleLogout = async () => {
-  //   try {
-  //     await sendLogout().unwrap() // Waits for success
-  //     //console.log("Logout successful, navigating...");
-  //     navigate("/");
-  //   } catch (err) {
-  //     console.error("Error during logout:", err);
-  //   }
-  // };
+  const handleLogout = async () => {
+    try {
+      await sendLogout().unwrap() // Waits for success
+      //console.log("Logout successful, navigating...");
+      navigate("/");
+    } catch (err) {
+      console.error("Error during logout:", err);
+    }
+  }
 
   const onNewMaterialClicked = () => navigate("/dash/materials/new");
   const onNewUserClicked = () => navigate("/dash/users/new");
@@ -116,7 +114,7 @@ const DashHeader = () => {
   }
 
   const logoutButton = (
-    <button className="icon-button" title="Logout" onClick={sendLogout}>
+    <button className="icon-button" title="Logout" onClick={handleLogout}>
       <FontAwesomeIcon icon={faRightFromBracket} />
     </button>
   );

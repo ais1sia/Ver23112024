@@ -26,7 +26,7 @@ const createNewUser = asyncHandler(async (req, res) => {
     //409: conflict
     const duplicate = await User.findOne({
         $or: [{ email }, { username }]
-    }).lean().exec();
+    }).collation({ locale: 'en', strength: 2 }).lean().exec()
     
     if (duplicate) {
         return res.status(409).json({ message: 'Email or username already in use' })
@@ -70,6 +70,14 @@ const updateUser = asyncHandler(async (req, res) => {
 
     if (!user) {
         return res.status(404).json({ message: 'User not found' })
+    }
+
+    const duplicate = await User.findOne({
+        $or: [{ email }, { username }]
+    }).collation({ locale: 'en', strength: 2 }).lean().exec()
+    
+    if (duplicate) {
+        return res.status(409).json({ message: 'Email or username already in use' })
     }
 
     if(username) user.username = username

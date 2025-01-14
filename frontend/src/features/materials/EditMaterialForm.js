@@ -8,7 +8,7 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { LEVELS } from "../../config/levels"
 import { TAGS } from "../../config/tags"
-
+import PulseLoader from 'react-spinners/PulseLoader'
 
 const EditMaterialForm = ({ material }) => {
   const [updateMaterial, { isLoading, isSuccess, isError, error }] =
@@ -91,7 +91,7 @@ const EditMaterialForm = ({ material }) => {
   const errContent = (error?.data?.message || delerror?.data?.message) ?? "";
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <PulseLoader color={"#FFF"} />
   }
 
   return (

@@ -17,9 +17,9 @@ const materialSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    tags: [{
-        type: String
-    }],
+    tags: {
+        type: [String]
+    },
     usefulness: [{
         userId: {
             type: mongoose.Schema.Types.ObjectId,

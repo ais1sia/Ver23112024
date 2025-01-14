@@ -14,8 +14,10 @@ import EditUser from "./features/users/EditUser"
 import NewUserForm from "./features/users/NewUserForm"
 import UsersList from "./features/users/UsersList"
 import { Routes, Route } from "react-router-dom"
+import useTitle from "./hooks/useTitle"
 
 function App() {
+  useTitle('ReadyAimFluent')
   return (
     <Routes>
       <Route path="/" element={<Layout />}>

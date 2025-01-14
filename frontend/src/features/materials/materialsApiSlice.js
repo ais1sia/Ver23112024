@@ -13,10 +13,12 @@ const initialState = materialsAdapter.getInitialState()
 export const materialsApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
         getMaterials: builder.query({
-            query: () => '/materials',
-            validateStatus: (response, result) => {
-                return response.status === 200 && !result.isError
-            },
+            query: () => ({
+                url: '/materials',
+                validateStatus: (response, result) => {
+                    return response.status === 200 && !result.isError
+                },
+            }),
             transformResponse: responseData => {
                 const loadedMaterials = responseData.map(material => {
                     material.id = material._id
