@@ -375,3 +375,33 @@ tr {
     position: static;
   }
 }
+
+/* CUSTOM SELECTOR */
+
+.custom-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.custom-selector__option {
+  padding: 10px 20px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #f9f9f9;
+  text-align: center;
+  color: #000;
+  transition: all 0.3s ease;
+}
+
+.custom-selector__option:hover {
+  border-color: #007bff;
+  background-color: #e6f7ff;
+}
+
+.custom-selector__option.selected {
+  border-color: #007bff;
+  background-color: hsla(240, 64%, 27%, 0.65);
+  color: #fff;
+}

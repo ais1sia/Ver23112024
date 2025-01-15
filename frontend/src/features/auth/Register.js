@@ -7,6 +7,7 @@ import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { ROLES } from "../../config/roles";
 import { GOALS } from "../../config/goals";
 import { LEVELS } from "../../config/levels";
+import CustomGoalSelector from "../../config/CustomGoalSelector";
 
 const Register = () => {
   const userRef = useRef();
@@ -76,11 +77,13 @@ const Register = () => {
     </option>
   ));
 
-  const goalOptions = Object.values(GOALS).map((goal) => (
-    <option key={goal} value={goal}>
-      {goal}
-    </option>
-  ));
+  // const goalOptions = Object.values(GOALS).map((goal) => (
+  //   <option key={goal} value={goal}>
+  //     {goal}
+  //   </option>
+  // ));
+
+  const goalOptions = Object.values(GOALS).map((goal) => goal)
 
   const errClass = errMsg ? "errmsg" : "offscreen";
 
@@ -218,8 +221,16 @@ const Register = () => {
           >
             {roleOptions}
           </select>
-
+            {/* CUSTOM GOAL SELECTOR */}
           <label className="form__label" htmlFor="goals">
+            GOALS:
+          </label>
+          <CustomGoalSelector
+            goalOptions={goalOptions}   // Passing the goal options
+            selectedGoals={goals}        // Passing selected goals state
+            setGoals={setGoals}          // Passing the state setter function
+          />
+          {/* <label className="form__label" htmlFor="goals">
             GOALS:
           </label>
           <select
@@ -235,7 +246,7 @@ const Register = () => {
             required
           >
             {goalOptions}
-          </select>
+          </select> */}
         </form>
       </main>
       <footer>

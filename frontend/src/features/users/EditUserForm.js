@@ -109,14 +109,8 @@ const EditUserForm = ({ user }) => {
         )
     })
 
-    const goalOptions = ["general", "business", "technical", "vacation", "military", "exam"].map(goal => {
-        return (
-            <option
-                key={goal}
-                value={goal}
-            > {goal}</option >
-        )
-    })
+    const goalOptions = Object.values(GOALS).map((goal) => goal)
+
 
     let canSave
     if (password) {
@@ -252,8 +246,16 @@ const EditUserForm = ({ user }) => {
                 >
                     {options}
                 </select>
-
+                {/* CUSTOM GOAL SELECTOR */}
                 <label className="form__label" htmlFor="goals">
+                    GOALS:
+                </label>
+                <CustomGoalSelector
+                    goalOptions={goalOptions}   // Passing the goal options
+                    selectedGoals={goals}        // Passing selected goals state
+                    setGoals={setGoals}          // Passing the state setter function
+                />
+                {/* <label className="form__label" htmlFor="goals">
                     GOALS:</label>
                 <select
                     id="goals"
@@ -265,7 +267,7 @@ const EditUserForm = ({ user }) => {
                     onChange={onGoalsChanged}
                 >
                     {goalOptions}
-                </select>
+                </select> */}
 
                 <label className="form__label form__checkbox-container" htmlFor="user-isActive">
                     ACTIVE:
