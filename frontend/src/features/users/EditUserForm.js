@@ -4,9 +4,11 @@ import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faTrashCan } from "@fortawesome/free-solid-svg-icons"
 import { ROLES } from "../../config/roles"
+import { GOALS } from "../../config/goals"
 import PulseLoader from 'react-spinners/PulseLoader'
+import CustomGoalSelector from '../../config/CustomGoalSelector'
 
-const USER_REGEX = /^[A-z]{3,20}$/
+const USER_REGEX = /^[A-z0-9!@#$%]{3,20}$/
 const PWD_REGEX = /^[A-z0-9!@#$%]{4,12}$/
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -78,13 +80,13 @@ const EditUserForm = ({ user }) => {
         )
         setRoles(values)
     }
-    const onGoalsChanged = e => {
-        const values = Array.from(
-            e.target.selectedOptions,
-            (option) => option.value
-        )
-        setGoals(values)
-    }
+    // const onGoalsChanged = e => {
+    //     const values = Array.from(
+    //         e.target.selectedOptions,
+    //         (option) => option.value
+    //     )
+    //     setGoals(values)
+    // }
     const onIsActiveChanged = () => setIsActive(prev => !prev)
 
     const onSaveUserClicked = async (e) => {
@@ -112,19 +114,19 @@ const EditUserForm = ({ user }) => {
     const goalOptions = Object.values(GOALS).map((goal) => goal)
 
 
-    let canSave
-    if (password) {
-        canSave = [roles.length, goals.length, validUsername, validEmail, validPassword].every(Boolean) && !isLoading
-    } else {
-        canSave = [roles.length, goals.length, validUsername, validEmail].every(Boolean) && !isLoading
-    }
+    // let canSave
+    // if (password) {
+    //     canSave = [roles.length, goals.length, validUsername, validEmail, validPassword].every(Boolean) && !isLoading
+    // } else {
+    //     canSave = [roles.length, goals.length, validUsername, validEmail].every(Boolean) && !isLoading
+    // }
 
     const errClass = (isError || isDelError) ? "errmsg" : "offscreen"
     const validUserClass = !validUsername ? 'form__input--incomplete' : ''
     const validEmailClass = !validEmail ? 'form__input--incomplete' : ''
     const validPwdClass = password && !validPassword ? 'form__input--incomplete' : ''
     const validRolesClass = !Boolean(roles.length) ? 'form__input--incomplete' : ''
-    const validGoalsClass = !Boolean(goals.length) ? 'form__input--incomplete' : ''
+    // const validGoalsClass = !Boolean(goals.length) ? 'form__input--incomplete' : ''
 
     const errContent = (error?.data?.message || delerror?.data?.message) ?? ''
 
@@ -143,7 +145,7 @@ const EditUserForm = ({ user }) => {
                         <button
                             className="icon-button"
                             title="Save"
-                            disabled={!canSave}
+                            //disabled={!canSave}
                         >
                             <FontAwesomeIcon icon={faSave} />
                         </button>
