@@ -3,6 +3,49 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const asyncHandler = require('express-async-handler')
 
+//@desc Register
+//@route POST /users
+//@access public
+const register = asyncHandler(async (req, res) => {
+    const { username, email, firstname, lastname, password, level, roles, goals, isActive } = req.body
+
+    if (!username || !email || !firstname || !lastname || !password) {
+        return res.status(400).json({ message: 'All fields are required' })
+    }
+    // !Array.isArray(roles) || !Array.isArray(level) || !Array.isArray(goals)
+    //409: conflict
+    const duplicate = await User.findOne({
+        $or: [{ email }, { username }]
+    }).collation({ locale: 'en', strength: 2 }).lean().exec()
+    
+    if (duplicate) {
+        return res.status(409).json({ message: 'Email or username already in use' })
+    }
+    
+
+    const hashedPwd = await bcrypt.hash(password, 10)
+
+    const userObject = {
+        username,
+        email,
+        firstname,
+        lastname,
+        password: hashedPwd,
+        roles: roles && roles.length ? roles : ['User'],
+        goals: goals && goals.length ? goals : ['general'],
+        level: level || 'beginner',
+        isActive: isActive || true
+    };
+
+    const user = await User.create(userObject);
+
+    if (user) {
+        res.status(201).json({ message: `User ${username} created successfully` });
+    } else {
+        res.status(400).json({ message: 'Invalid user data' });
+    }
+})
+
 // @desc Login
 // @route POST /auth
 // @access Public
@@ -31,7 +74,7 @@ const login = asyncHandler(async (req, res) => {
             }
         },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: '15m' }
+        { expiresIn: '30m' }
     )
 
     const refreshToken = jwt.sign(
@@ -80,7 +123,7 @@ const refresh = (req, res) => {
                     }
                 },
                 process.env.ACCESS_TOKEN_SECRET,
-                { expiresIn: '15m' }
+                { expiresIn: '30m' }
             )
 
             res.json({ accessToken })
@@ -99,6 +142,7 @@ const logout = (req, res) => {
 }
 
 module.exports = {
+    register,
     login,
     refresh,
     logout

@@ -50,11 +50,11 @@ const createNewUser = asyncHandler(async (req, res) => {
     const user = await User.create(userObject);
 
     if (user) {
-        res.status(201).json({ message: `User ${username} created successfully` });
+        res.status(201).json({ message: `User ${username} created successfully` })
     } else {
-        res.status(400).json({ message: 'Invalid user data' });
+        res.status(400).json({ message: 'Invalid user data' })
     }
-});
+})
 
 // @desc Update a user
 // @route PATCH /users

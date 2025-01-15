@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import PulseLoader from 'react-spinners/PulseLoader'
 
+
 const Login = () => {
   const userRef = useRef();
   const errRef = useRef();
@@ -30,7 +31,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { accessToken } = await login({ username, password }).unwrap();
+      const { accessToken } = await login({ username, password }).unwrap()
       dispatch(setCredentials({ accessToken }));
       setUsername("");
       setPassword("");
@@ -104,7 +105,8 @@ const Login = () => {
         </form>
       </main>
       <footer>
-        <Link to="/">Back to Home</Link>
+        <p><Link to="/">Home</Link></p>
+        <p><Link to="/register">Sign up</Link></p>
       </footer>
     </section>
   );

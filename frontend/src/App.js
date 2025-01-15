@@ -11,7 +11,7 @@ import EditMaterial from "./features/materials/EditMaterial"
 import MaterialsList from "./features/materials/MaterialsList"
 import NewMaterial from "./features/materials/NewMaterial"
 import EditUser from "./features/users/EditUser"
-import NewUserForm from "./features/users/NewUserForm"
+import Register from "./features/auth/Register"
 import UsersList from "./features/users/UsersList"
 import { Routes, Route } from "react-router-dom"
 import useTitle from "./hooks/useTitle"
@@ -24,6 +24,7 @@ function App() {
         {/* public routes */}
         <Route index element={<Public />} />
         <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
         {/* protected routes */}
         <Route element={<PersistLogin />}>
           <Route
@@ -37,7 +38,6 @@ function App() {
                   <Route path="users">
                     <Route index element={<UsersList />} />
                     <Route path=":id" element={<EditUser />} />
-                    <Route path="new" element={<NewUserForm />} />
                   </Route>
                 </Route>
 

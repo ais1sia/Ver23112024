@@ -10,7 +10,8 @@ const Public = () => {
                 <p>Make your journey to language fluency!</p>
             </main>
             <footer>
-                <Link to="/login">User Login</Link>
+                <p><Link to="/login">Sign up</Link></p>
+                <p><Link to="/register">Sign in</Link></p>
             </footer>
         </section>
 

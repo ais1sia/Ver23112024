@@ -3,6 +3,16 @@ import { logOut, setCredentials } from "./authSlice"
 
 export const authApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
+        register: builder.mutation({
+            query: userData => ({
+                url: '/auth/register',
+                method: 'POST',
+                body: { ...userData },
+            }),
+            invalidatesTags: [
+                { type: 'User', id: "LIST" }
+            ]
+        }),
         login: builder.mutation({
             query: credentials => ({
                 url: '/auth',
@@ -48,6 +58,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
 })
 
 export const {
+    useRegisterMutation,
     useLoginMutation,
     useSendLogoutMutation,
     useRefreshMutation,
