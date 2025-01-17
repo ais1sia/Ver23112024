@@ -18,29 +18,33 @@ const Material = ({ materialId }) => {
 
   const navigate = useNavigate();
 
+      //17.01.2025
   if (material) {
-    const handleEdit = () => navigate(`/dash/materials/${materialId}`)
+    const handleView = () => navigate(`/dash/materials/${materialId}`)
+    const handleEdit = (e) => {
+      e.stopPropagation()
+      navigate(`/dash/materials/edit/${materialId}`)
+    }
 
     const materialTagsString = material.tags.join(", ")
 
     return (
-      <tr className="table__row material">
-        <td className="table__cell">{material.title}</td>
-        <td className="table__cell">{material.language}</td>
-        <td className="table__cell">{material.level}</td>
-        <td className="table__cell">{material.content}</td>
-        <td className="table__cell">{materialTagsString}</td>
-        {isAdmin && (
-          <td className="table__cell">
-            <button className="icon-button table__button" onClick={handleEdit}>
+      <div className="card material" onClick={handleView}>
+        <h3 className="card__title">{material.title}</h3>
+        <p className="card__language">Language: {material.language}</p>
+        <p className="card__level">Level: {material.level}</p>
+        <p className="card__tags">Tags: {materialTagsString}</p>
+        <div className="card__actions">
+          {isAdmin && (
+            <button className="icon-button edit-button" onClick={handleEdit}>
               <FontAwesomeIcon icon={faPenToSquare} />
             </button>
-          </td>
-        )}
-      </tr>
-    );
-  } else return null;
-};
+          )}
+        </div>
+      </div>
+    )
+  } else return null
+}
 
 const memoizedMaterial = memo(Material)
 

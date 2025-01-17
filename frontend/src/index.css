@@ -10,16 +10,14 @@
 
 :root {
   /* COLORS */
-  --BGCOLOR: #0F172A;
-  --BORDER-COLOR: #FFF;
-  --COLOR: #FFF;
+  --BGCOLOR: #FFF5EB;
+  --BORDER-COLOR: #000;
+  --COLOR: #000;
   --ERROR: firebrick;
-  --INACTIVE: lightgray;
-  --LINK-COLOR: whitesmoke;
-  --LINK-HOVER: rgba(245, 245, 245, 0.9);
-  --MATERIAL-BGCOLOR: hsla(240, 64%, 27%, 0.65);
-  --STATUS-COMPLETE: limegreen;
-  --STATUS-OPEN: firebrick;
+  --INACTIVE: gray;
+  --LINK-COLOR: black;
+  --LINK-HOVER: blue;
+  --MATERIAL-BGCOLOR: white;
   --TABLE-BGCOLOR: #FFF;
   --TABLE-COLOR: #000;
   --INPUT-INVALID: #F00;
@@ -161,6 +159,10 @@ a:focus-visible {
   gap: 0.5em;
 }
 
+.dash-header__title {
+  color:#FF9933
+}
+
 .dash-container {
   padding: 0.75em 0.5em 0.5em;
   flex-grow: 1;
@@ -240,19 +242,6 @@ tr {
   display: none;
 }
 
-.material__status {
-  font-weight: bold;
-}
-
-.material__status--open {
-  color: var(--STATUS-OPEN);
-}
-
-.material__status--completed {
-  color: var(--STATUS-COMPLETE);
-}
-
-
 /* || FORM - GENERAL */
 
 .form {
@@ -286,6 +275,7 @@ tr {
 .form__submit-button {
   padding: 0.5em;
   border-radius: 15px;
+  border: 1px solid var(--COLOR);
 }
 
 .form__input--text {
@@ -386,7 +376,7 @@ tr {
 
 .custom-selector__option {
   padding: 10px 20px;
-  border: 2px solid #ccc;
+  border: 2px solid --COLOR;
   border-radius: 5px;
   cursor: pointer;
   background-color: #f9f9f9;
@@ -404,4 +394,91 @@ tr {
   border-color: #007bff;
   background-color: hsla(240, 64%, 27%, 0.65);
   color: #fff;
+}
+
+.materials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+
+.materials-grid .card {
+  border: 1px solid --COLOR;
+  padding: 16px;
+  border-radius: 8px;
+  background-color: var(--BGCOLOR);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* WELCOME PAGE LOGIN JOIN NOW STYLE */
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #FFF5EB;
+}
+
+.login-form {
+  background: white;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+h1 {
+  margin: 0;
+  text-align: center;
+  font-family: monospace;
+  font-size: 24px;
+}
+
+.form-group {
+  margin: 20px 0;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid --COLOR;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid --COLOR;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.sign-up-btn {
+  background-color: #FF9933;
+  color: white;
+}
+
+.join-now-btn {
+  background-color: #FF9933;
+  color: white;
+  margin-top: 10px;
+}
+
+.divider {
+  text-align: center;
+  margin: 15px 0;
+  color: #666;
+  font-size: 14px;
 }

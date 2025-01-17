@@ -6,7 +6,7 @@ import { faSave, faTrashCan } from "@fortawesome/free-solid-svg-icons"
 import { ROLES } from "../../config/roles"
 import { GOALS } from "../../config/goals"
 import PulseLoader from 'react-spinners/PulseLoader'
-import CustomGoalSelector from '../../config/CustomGoalSelector'
+import CustomSelector from '../../config/CustomSelector'
 
 const USER_REGEX = /^[A-z0-9!@#$%]{3,20}$/
 const PWD_REGEX = /^[A-z0-9!@#$%]{4,12}$/
@@ -28,12 +28,12 @@ const EditUserForm = ({ user }) => {
 
     const navigate = useNavigate()
 
-    const [username, setUsername] = useState(user.username)
+    const [username, setUsername] = useState('')
     const [validUsername, setValidUsername] = useState(false)
-    const [email, setEmail] = useState(user.email)
+    const [email, setEmail] = useState('')
     const [validEmail, setValidEmail] = useState(false)
-    const [firstname, setFirstname] = useState(user.firstname)
-    const [lastname, setLastname] = useState(user.lastname)
+    const [firstname, setFirstname] = useState('')
+    const [lastname, setLastname] = useState('')
     const [password, setPassword] = useState('')
     const [validPassword, setValidPassword] = useState(false)
     const [level, setLevel] = useState(user.level)
@@ -113,14 +113,6 @@ const EditUserForm = ({ user }) => {
 
     const goalOptions = Object.values(GOALS).map((goal) => goal)
 
-
-    // let canSave
-    // if (password) {
-    //     canSave = [roles.length, goals.length, validUsername, validEmail, validPassword].every(Boolean) && !isLoading
-    // } else {
-    //     canSave = [roles.length, goals.length, validUsername, validEmail].every(Boolean) && !isLoading
-    // }
-
     const errClass = (isError || isDelError) ? "errmsg" : "offscreen"
     const validUserClass = !validUsername ? 'form__input--incomplete' : ''
     const validEmailClass = !validEmail ? 'form__input--incomplete' : ''
@@ -145,7 +137,6 @@ const EditUserForm = ({ user }) => {
                         <button
                             className="icon-button"
                             title="Save"
-                            //disabled={!canSave}
                         >
                             <FontAwesomeIcon icon={faSave} />
                         </button>
@@ -252,24 +243,11 @@ const EditUserForm = ({ user }) => {
                 <label className="form__label" htmlFor="goals">
                     GOALS:
                 </label>
-                <CustomGoalSelector
-                    goalOptions={goalOptions}   // Passing the goal options
-                    selectedGoals={goals}        // Passing selected goals state
-                    setGoals={setGoals}          // Passing the state setter function
+                <CustomSelector
+                    options={goalOptions} 
+                    selectedOptions={goals} 
+                    setOptions={setGoals} 
                 />
-                {/* <label className="form__label" htmlFor="goals">
-                    GOALS:</label>
-                <select
-                    id="goals"
-                    name="goals"
-                    className={`form__select ${validGoalsClass}`}
-                    multiple={true}
-                    size="3"
-                    value={goals}
-                    onChange={onGoalsChanged}
-                >
-                    {goalOptions}
-                </select> */}
 
                 <label className="form__label form__checkbox-container" htmlFor="user-isActive">
                     ACTIVE:

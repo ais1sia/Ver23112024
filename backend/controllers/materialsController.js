@@ -1,9 +1,32 @@
 const Material = require("../models/Material");
 const asyncHandler = require("express-async-handler");
 
-// @desc Get all materials
+// @desc Get all materials with filters
 // @route GET /materials
 // @access Public
+// const getAllMaterials = asyncHandler(async (req, res) => {
+//   const { searchQuery, tags, language, level } = req.query;
+//   let filter = {};
+
+//   if (searchQuery) {
+//     filter.title = { $regex: searchQuery, $options: 'i' };
+//   }
+//   if (tags) {
+//     filter.tags = { $in: tags.split(',') };
+//   }
+//   if (language) {
+//     filter.language = language;
+//   }
+//   if (level) {
+//     filter.level = level;
+//   // }
+
+//   const materials = await Material.find(filter).lean();
+//   if (!materials.length) {
+//     return res.status(404).json({ message: "No materials found" });
+//   }
+//   res.json(materials);
+// });
 const getAllMaterials = asyncHandler(async (req, res) => {
   const materials = await Material.find().lean();
   if (!materials || materials.length === 0) {
@@ -58,7 +81,7 @@ const updateMaterial = asyncHandler(async (req, res) => {
   const material = await Material.findById(id).exec();
 
   if (!material) {
-    return res.status(404).json({ message: "Materialxxx not found" });
+    return res.status(404).json({ message: "Material not found" });
   }
 
   const duplicate = await Material.findOne({ title })

@@ -35,7 +35,7 @@ const Login = () => {
       dispatch(setCredentials({ accessToken }));
       setUsername("");
       setPassword("");
-      navigate("/dash");
+      navigate("/dash/materials");
     } catch (err) {
       if (!err.status) {
         setErrMsg("No Server Response");
@@ -106,7 +106,7 @@ const Login = () => {
       </main>
       <footer>
         <p><Link to="/">Home</Link></p>
-        <p><Link to="/register">Sign up</Link></p>
+        <p><Link to="/register">Sign in</Link></p>
       </footer>
     </section>
   );

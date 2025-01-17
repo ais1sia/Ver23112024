@@ -1,12 +1,20 @@
-import { Link } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
+import { useEffect } from 'react'
 
 const Welcome = () => {
 
     const { username, isAdmin } = useAuth()
+    const navigate = useNavigate()
 
     const date = new Date()
     const today = new Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeStyle: 'long' }).format(date)
+
+    useEffect(() => {
+        if (!isAdmin) {
+          navigate("/dash/materials", { replace: true });
+        }
+      }, [isAdmin, navigate]);
 
     const content = (
         <section className="welcome">

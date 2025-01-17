@@ -1,66 +1,44 @@
-import { useGetMaterialsQuery } from "./materialsApiSlice"
-import Material from "./Material"
-import useAuth from "../../hooks/useAuth"
-import PulseLoader from 'react-spinners/PulseLoader'
+import { useGetMaterialsQuery } from "./materialsApiSlice";
+import Material from "./Material";
+//import useAuth from "../../hooks/useAuth";
+import PulseLoader from "react-spinners/PulseLoader";
 
 const MaterialsList = () => {
-    const { isAdmin } = useAuth()
+  //const { isAdmin } = useAuth();
 
-    const {
-        data: materials,
-        isLoading,
-        isSuccess,
-        isError,
-        error
-    } = useGetMaterialsQuery()
+  const {
+    data: materials,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+  } = useGetMaterialsQuery();
 
-    let content
+  let content;
 
-    if (isLoading) content = <PulseLoader color={"#FFF"} />
+  // Show a loading spinner while materials are loading
+  if (isLoading) content = <PulseLoader color={"#FFF"} />;
 
-    if (isError) {
-        content = <p className="errmsg">{error?.data?.message}</p>
-    }
+  // Show an error message if the query failed
+  if (isError) {
+    content = <p className="errmsg">{error?.data?.message}</p>;
+  }
 
-    if (isSuccess) {
-      const { ids } = materials;
-  
-      const tableContent = ids?.length
-        ? ids.map((materialId) => (
-            <Material key={materialId} materialId={materialId} />
-          ))
-        : null;
-  
-      content = (
-        <table className="table table--materials">
-          <thead className="table__thead">
-            <tr>
-              <th scope="col" className="table__th material__title">
-                Title
-              </th>
-              <th scope="col" className="table__th material__language">
-                Language
-              </th>
-              <th scope="col" className="table__th material__level">
-                Level
-              </th>
-              <th scope="col" className="table__th material__content">
-                Content
-              </th>
-              <th scope="col" className="table__th material__tags">
-                Tags
-              </th>
-              { (isAdmin) &&
-              <th scope="col" className="table__th material__edit">
-                Edit
-              </th> }
-            </tr>
-          </thead>
-          <tbody>{tableContent}</tbody>
-        </table>
-      );
-    }
-  
-    return content;
-}
-export default MaterialsList
+  // Render materials as cards if the query was successful
+  if (isSuccess) {
+    const { ids } = materials;
+
+    // Map through material IDs to generate MaterialCard components
+    const cardContent = ids?.length
+      ? ids.map((materialId) => (
+          <Material key={materialId} materialId={materialId} />
+        ))
+      : <p>No materials found.</p>;
+
+    content = <div className="materials-grid">{cardContent}</div>;
+  }
+
+  return content;
+};
+
+export default MaterialsList;

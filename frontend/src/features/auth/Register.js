@@ -4,10 +4,9 @@ import { useNavigate, Link } from "react-router-dom";
 import PulseLoader from "react-spinners/PulseLoader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
-import { ROLES } from "../../config/roles";
 import { GOALS } from "../../config/goals";
 import { LEVELS } from "../../config/levels";
-import CustomGoalSelector from "../../config/CustomGoalSelector";
+import CustomSelector from "../../config/CustomSelector";
 
 const Register = () => {
   const userRef = useRef();
@@ -20,9 +19,9 @@ const Register = () => {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [level, setLevel] = useState("A1"); // Default value for level
-  const [roles, setRoles] = useState(["User"]); // Default role
+  const roles = useState(["User"]); // Default role
   const [goals, setGoals] = useState(["general"]); // Default goal
-  const [isActive, setIsActive] = useState(true); // Default to active
+  const isActive = useState(true); // Default to active
   const [errMsg, setErrMsg] = useState("");
 
   const navigate = useNavigate();
@@ -65,23 +64,11 @@ const Register = () => {
     }
   };
 
-  const roleOptions = Object.values(ROLES).map((role) => (
-    <option key={role} value={role}>
-      {role}
-    </option>
-  ));
-
   const levelOptions = Object.values(LEVELS).map((level) => (
     <option key={level} value={level}>
       {level}
     </option>
   ));
-
-  // const goalOptions = Object.values(GOALS).map((goal) => (
-  //   <option key={goal} value={goal}>
-  //     {goal}
-  //   </option>
-  // ));
 
   const goalOptions = Object.values(GOALS).map((goal) => goal)
 
@@ -189,68 +176,20 @@ const Register = () => {
             {levelOptions}
           </select>
 
-          <label
-            className="form__label form__checkbox-container"
-            htmlFor="user-isActive"
-          >
-            ACTIVE:
-            <input
-              className="form__checkbox"
-              id="user-isActive"
-              name="user-isActive"
-              type="checkbox"
-              checked={isActive}
-              onChange={(e) => setIsActive(e.target.checked)}
-            />
-          </label>
-
-          <label className="form__label" htmlFor="roles">
-            ASSIGNED ROLES:
-          </label>
-          <select
-            id="roles"
-            name="roles"
-            className="form__select"
-            multiple={true}
-            size="3"
-            value={roles}
-            onChange={(e) =>
-              setRoles(Array.from(e.target.selectedOptions, (option) => option.value))
-            }
-            required
-          >
-            {roleOptions}
-          </select>
-            {/* CUSTOM GOAL SELECTOR */}
           <label className="form__label" htmlFor="goals">
             GOALS:
           </label>
-          <CustomGoalSelector
-            goalOptions={goalOptions}   // Passing the goal options
-            selectedGoals={goals}        // Passing selected goals state
-            setGoals={setGoals}          // Passing the state setter function
+          <CustomSelector
+            options={goalOptions}   // Passing the goal options
+            selectedOptions={goals}        // Passing selected goals state
+            setOptions={setGoals}  
+            multiChoice={true}         // Passing the state setter function
           />
-          {/* <label className="form__label" htmlFor="goals">
-            GOALS:
-          </label>
-          <select
-            id="goals"
-            name="goals"
-            className="form__select"
-            multiple={true}
-            size="3"
-            value={goals}
-            onChange={(e) =>
-              setGoals(Array.from(e.target.selectedOptions, (option) => option.value))
-            }
-            required
-          >
-            {goalOptions}
-          </select> */}
         </form>
       </main>
       <footer>
-        <Link to="/login">Back to Login</Link>
+      <p><Link to="/">Back to Home</Link></p>
+      <p><Link to="/login">Sign up</Link></p>
       </footer>
     </section>
   );

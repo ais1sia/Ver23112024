@@ -6,6 +6,7 @@ import {
   faUserGear,
   faUserPlus,
   faRightFromBracket,
+  faCrosshairs
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate, Link, useLocation } from "react-router-dom";
@@ -142,9 +143,12 @@ const DashHeader = () => {
 
       <header className="dash-header">
         <div className={`dash-header__container ${dashClass}`}>
-          <Link to="/dash">
-            <h1 className="dash-header__title">ReadyAimFluent</h1>
-          </Link>
+          {(!isAdmin) && <Link to="/dash/materials">
+            <h1 className="dash-header__title"> <FontAwesomeIcon icon={faCrosshairs} /> ReadyAimFluent </h1>
+          </Link>}
+          {(isAdmin) && <Link to="/dash">
+            <h1 className="dash-header__title"> <FontAwesomeIcon icon={faCrosshairs} /> ReadyAimFluent</h1>
+          </Link>}
           <nav className="dash-header__nav">{buttonContent}</nav>
         </div>
       </header>

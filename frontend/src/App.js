@@ -15,6 +15,7 @@ import Register from "./features/auth/Register"
 import UsersList from "./features/users/UsersList"
 import { Routes, Route } from "react-router-dom"
 import useTitle from "./hooks/useTitle"
+import ViewMaterial from "./features/materials/ViewMaterial"
 
 function App() {
   useTitle('ReadyAimFluent')
@@ -43,8 +44,9 @@ function App() {
 
                 <Route path="materials">
                   <Route index element={<MaterialsList />} />
+                  <Route path=":id" element={<ViewMaterial />} />
                   <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-                    <Route path=":id" element={<EditMaterial />} />
+                    <Route path="edit/:id" element={<EditMaterial />} />
                     <Route path="new" element={<NewMaterial />} />
                   </Route>
                 </Route>

@@ -7,7 +7,7 @@ import useAuth from '../../hooks/useAuth'
 import useTitle from '../../hooks/useTitle'
 
 const EditMaterial = () => {
-    useTitle('techMaterials: Edit Material')
+    useTitle('Edit Material')
 
     const { id } = useParams()
 

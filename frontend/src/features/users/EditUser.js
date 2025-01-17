@@ -6,7 +6,7 @@ import PulseLoader from 'react-spinners/PulseLoader'
 const EditUser = () => {
     const { id } = useParams()
 
-    const { isLoading, isSuccess } = useGetUsersQuery()
+    //const { isLoading, isSuccess } = useGetUsersQuery()
 
     const { user } = useGetUsersQuery("usersList", {
         selectFromResult: ({ data }) => ({
