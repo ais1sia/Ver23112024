@@ -4,7 +4,7 @@ import {
   faFileCirclePlus,
   faFilePen,
   faUserGear,
-  faUserPlus,
+  //faUserPlus,
   faRightFromBracket,
   faCrosshairs
 } from "@fortawesome/free-solid-svg-icons";
@@ -49,7 +49,7 @@ const DashHeader = () => {
   }
 
   const onNewMaterialClicked = () => navigate("/dash/materials/new");
-  const onNewUserClicked = () => navigate("/dash/users/new");
+  //const onNewUserClicked = () => navigate("/dash/users/new");
   const onMaterialsClicked = () => navigate("/dash/materials");
   const onUsersClicked = () => navigate("/dash/users");
 
@@ -77,18 +77,18 @@ const DashHeader = () => {
     }
   }
   
-  let newUserButton = null;
-  if (USERS_REGEX.test(pathname)) {
-    newUserButton = (
-      <button
-        className="icon-button"
-        title="New User"
-        onClick={onNewUserClicked}
-      >
-        <FontAwesomeIcon icon={faUserPlus} />
-      </button>
-    );
-  }
+  // let newUserButton = null;
+  // if (USERS_REGEX.test(pathname)) {
+  //   newUserButton = (
+  //     <button
+  //       className="icon-button"
+  //       title="New User"
+  //       onClick={onNewUserClicked}
+  //     >
+  //       <FontAwesomeIcon icon={faUserPlus} />
+  //     </button>
+  //   );
+  // }
 
   let userButton = null;
   if (isAdmin) {
@@ -129,7 +129,7 @@ const DashHeader = () => {
     buttonContent = (
       <>
         {newMaterialButton}
-        {newUserButton}
+        {/* {newUserButton} */}
         {materialsButton}
         {userButton}
         {logoutButton}

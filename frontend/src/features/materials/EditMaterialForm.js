@@ -1,7 +1,7 @@
 import {
   useUpdateMaterialMutation,
   useDeleteMaterialMutation,
-} from "./materialsApiSlice";
+} from "./materialsApiSlice"
 import { faSave, faTrashCan } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useState, useEffect } from "react"
@@ -12,55 +12,68 @@ import PulseLoader from 'react-spinners/PulseLoader'
 
 const EditMaterialForm = ({ material }) => {
   const [updateMaterial, { isLoading, isSuccess, isError, error }] =
-    useUpdateMaterialMutation();
+    useUpdateMaterialMutation()
 
   const [
     deleteMaterial,
     { isSuccess: isDelSuccess, isError: isDelError, error: delerror },
-  ] = useDeleteMaterialMutation();
+  ] = useDeleteMaterialMutation()
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const [title, setTitle] = useState(material.title);
-  const [language, setLanguage] = useState(material.language);
-  const [level, setLevel] = useState(material.level);
-  const [content, setContent] = useState(material.content);
-  const [tags, setTags] = useState(material.tags);
+  const [title, setTitle] = useState('')
+  const [language, setLanguage] = useState('')
+  const [short, setShort] = useState('')
+  const [level, setLevel] = useState("A1")
+  const [content, setContent] = useState('')
+  const [imageUrl, setImageUrl] = useState('')
+  const [sourceUrl, setSourceUrl] = useState('')
+  const [tags, setTags] = useState(["general"])
 
   useEffect(() => {
     if (isSuccess || isDelSuccess) {
-      setTitle("");
-      setLanguage("");
-      setLevel("");
-      setContent("");
-      setTags([]);
+      setTitle("")
+      setLanguage("")
+      setShort("")
+      setLevel("")
+      setContent("")
+      setImageUrl("")
+      setSourceUrl("")
+      setTags([])
       navigate("/dash/materials");
     }
   }, [isSuccess, isDelSuccess, navigate]);
 
-  const onTitleChanged = (e) => setTitle(e.target.value);
-  const onLanguageChanged = (e) => setLanguage(e.target.value);
-  const onLevelChanged = (e) => setLevel(e.target.value);
-  const onContentChanged = (e) => setContent(e.target.value);
+  const onTitleChanged = (e) => setTitle(e.target.value)
+  const onLanguageChanged = (e) => setLanguage(e.target.value)
+  const onShortChanged = (e) => setShort(e.target.value)
+  const onLevelChanged = (e) => setLevel(e.target.value)
+  const onContentChanged = (e) => setContent(e.target.value)
+  const onImageUrlChanged = (e) => setImageUrl(e.target.value)
+  const onSourceUrlChanged = (e) => setSourceUrl(e.target.value)
+
   const onTagsChanged = (e) => {
     const values = Array.from(
       e.target.selectedOptions,
       (option) => option.value
-    );
-    setTags(values);
-  };
+    )
+    setTags(values)
+  }
 
   const onSaveMaterialClicked = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     await updateMaterial({
       id: material.id,
       title,
       language,
+      short,
       level,
       content,
+      imageUrl,
+      sourceUrl,
       tags,
-    });
-  };
+    })
+  }
 
   const onDeleteMaterialClicked = async () => {
     await deleteMaterial({ id: material.id });
@@ -84,11 +97,11 @@ const EditMaterialForm = ({ material }) => {
     )
   })
 
-  let canSave = !isLoading;
+  let canSave = !isLoading
 
-  const errClass = isError || isDelError ? "errmsg" : "offscreen";
+  const errClass = isError || isDelError ? "errmsg" : "offscreen"
 
-  const errContent = (error?.data?.message || delerror?.data?.message) ?? "";
+  const errContent = (error?.data?.message || delerror?.data?.message) ?? ""
 
   if (isLoading) {
     return <PulseLoader color={"#FFF"} />
@@ -139,6 +152,18 @@ const EditMaterialForm = ({ material }) => {
           onChange={onLanguageChanged}
         />
 
+        <label className="form__label" htmlFor="short">
+          Short description:
+        </label>
+        <input
+          className="form__input"
+          id="short"
+          name="short"
+          type="short"
+          value={short}
+          onChange={onShortChanged}
+        />
+
         <label className="form__label" htmlFor="level">
           Level:
         </label>
@@ -165,6 +190,29 @@ const EditMaterialForm = ({ material }) => {
           onChange={onContentChanged}
         />
 
+        <label className="form__label" htmlFor="setImageUrl">
+          Image Url:
+        </label>
+        <input
+          className="form__input"
+          id="setImageUrl"
+          name="imageUrl"
+          type="imageUrl"
+          value={imageUrl}
+          onChange={onImageUrlChanged}
+        />
+        <label className="form__label" htmlFor="sourceUrl">
+          Linked resource:
+        </label>
+        <input
+          className="form__input"
+          id="sourceUrl"
+          name="sourceUrl"
+          type="sourceUrl"
+          value={sourceUrl}
+          onChange={onSourceUrlChanged}
+        />
+
         <label className="form__label" htmlFor="tags">
           Tags:
         </label>
@@ -180,7 +228,7 @@ const EditMaterialForm = ({ material }) => {
         </select>
       </form>
     </>
-  );
-};
+  )
+}
 
-export default EditMaterialForm;
+export default EditMaterialForm

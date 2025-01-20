@@ -9,6 +9,10 @@ const materialSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    short: {
+        type: String,
+        required: true
+    },
     level: {
         type: String,
         required: true,
@@ -16,6 +20,13 @@ const materialSchema = new mongoose.Schema({
     content: {
         type: String,
         required: true
+    },
+    imageUrl: {
+        type: String,
+        default: "../public/materialbg.png"
+    },
+    sourceUrl: {
+        type: String
     },
     tags: {
         type: [String]

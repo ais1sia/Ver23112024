@@ -87,20 +87,24 @@ const EditUserForm = ({ user }) => {
     //     )
     //     setGoals(values)
     // }
-    const onIsActiveChanged = () => setIsActive(prev => !prev)
+    const onIsActiveChanged = (e) => setIsActive(e.target.value)
 
     const onSaveUserClicked = async (e) => {
         e.preventDefault()
-        if (password) {
-            await updateUser({ id: user.id, username, email, firstname, lastname, password, level, roles, goals, isActive })
-        } else {
-            await updateUser({ id: user.id, username, email, firstname, lastname, level, roles, goals, isActive })
-        }
+        //DEBUG SHIT
+        console.log("isActive:", isActive)
+        await updateUser({ id: user.id, username, email, firstname, lastname, password, level, roles, goals, isActive })
+        console.log("Payload:", { id: user.id, username, email, firstname, lastname, password, level, roles, goals, isActive });
     }
 
     const onDeleteUserClicked = async () => {
         await deleteUser({ id: user.id })
     }
+
+    //DEBUG SHIT:
+    useEffect(() => {
+        console.log("isActive updated value:", isActive);
+    }, [isActive]);
 
     const options = Object.values(ROLES).map(role => {
         return (
@@ -244,9 +248,9 @@ const EditUserForm = ({ user }) => {
                     GOALS:
                 </label>
                 <CustomSelector
-                    options={goalOptions} 
-                    selectedOptions={goals} 
-                    setOptions={setGoals} 
+                    options={goalOptions}
+                    selectedOptions={goals}
+                    setOptions={setGoals}
                 />
 
                 <label className="form__label form__checkbox-container" htmlFor="user-isActive">
@@ -259,7 +263,7 @@ const EditUserForm = ({ user }) => {
                         checked={isActive}
                         onChange={onIsActiveChanged}
                     />
-                </label>
+                </label>        
             </form>
         </>
     )

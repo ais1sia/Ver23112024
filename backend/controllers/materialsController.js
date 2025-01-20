@@ -39,12 +39,12 @@ const getAllMaterials = asyncHandler(async (req, res) => {
 // @route POST /materials
 // @access Private
 const createNewMaterial = asyncHandler(async (req, res) => {
-  const { title, language, level, content, tags } = req.body;
+  const { title, language, short, level, content, imageUrl, sourceUrl, tags } = req.body;
 
   if (!title || !language || !level) {
     return res
       .status(400)
-      .json({ message: "Title, language, level, and content are required" });
+      .json({ message: "Title, language, and level are required" });
   }
 
   const duplicate = await Material.findOne({ title })
@@ -59,8 +59,11 @@ const createNewMaterial = asyncHandler(async (req, res) => {
   const material = await Material.create({
     title,
     language,
+    short,
     level,
     content,
+    imageUrl,
+    sourceUrl,
     tags,
   });
 
@@ -75,7 +78,7 @@ const createNewMaterial = asyncHandler(async (req, res) => {
 // @route PATCH /materials/:id
 // @access Private
 const updateMaterial = asyncHandler(async (req, res) => {
-  const { id, title, language, level, content, tags } = req.body; //rating
+  const { id, title, language, short, level, content, imageUrl, sourceUrl, tags } = req.body; //rating
   console.log(`PATCH request received for Material ID: ${id}`);
 
   const material = await Material.findById(id).exec();
@@ -95,8 +98,11 @@ const updateMaterial = asyncHandler(async (req, res) => {
 
   if (title) material.title = title;
   if (language) material.language = language;
+  if (short) material.short = short;
   if (level) material.level = level;
   if (content) material.content = content;
+  if (imageUrl) material.imageUrl = imageUrl;
+  if (sourceUrl) material.sourceUrl = sourceUrl;
   if (tags) material.tags = tags;
 
   // if (rating) {

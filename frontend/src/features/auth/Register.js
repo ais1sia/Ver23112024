@@ -19,9 +19,9 @@ const Register = () => {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [level, setLevel] = useState("A1"); // Default value for level
-  const roles = useState(["User"]); // Default role
+  //const roles = useState(["User"]); // Default role
   const [goals, setGoals] = useState(["general"]); // Default goal
-  const isActive = useState(true); // Default to active
+  //const isActive = useState(true); // Default to active
   const [errMsg, setErrMsg] = useState("");
 
   const navigate = useNavigate();
@@ -42,8 +42,8 @@ const Register = () => {
         firstname,
         lastname,
         level,
-        isActive,
-        roles,
+        //isActive,
+        //roles,
         goals,
       }).unwrap();
       console.log("User registered successfully:", response);

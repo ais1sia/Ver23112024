@@ -32,6 +32,7 @@ const Material = ({ materialId }) => {
       <div className="card material" onClick={handleView}>
         <h3 className="card__title">{material.title}</h3>
         <p className="card__language">Language: {material.language}</p>
+        <p className="card__short">Short description: {material.short}</p>
         <p className="card__level">Level: {material.level}</p>
         <p className="card__tags">Tags: {materialTagsString}</p>
         <div className="card__actions">

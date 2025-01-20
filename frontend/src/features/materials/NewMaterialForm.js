@@ -1,74 +1,89 @@
-import { LEVELS } from "../../config/levels";
-import { TAGS } from "../../config/tags";
-import { useAddNewMaterialMutation } from "./materialsApiSlice";
-import { faSave } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { LEVELS } from "../../config/levels"
+import { TAGS } from "../../config/tags"
+import { useAddNewMaterialMutation } from "./materialsApiSlice"
+import { faSave } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 
 const NewMaterial = () => {
   const [addNewMaterial, { isLoading, isSuccess, isError, error }] =
-    useAddNewMaterialMutation();
-  const navigate = useNavigate();
+    useAddNewMaterialMutation()
+  const navigate = useNavigate()
 
-  const [title, setTitle] = useState('');
-  const [language, setLanguage] = useState('');
-  const [level, setLevel] = useState("A1");
-  const [content, setContent] = useState('');
-  const [tags, setTags] = useState(["general"]);
+  const [title, setTitle] = useState('')
+  const [language, setLanguage] = useState('')
+  const [short, setShort] = useState('')
+  const [level, setLevel] = useState("A1")
+  const [content, setContent] = useState('')
+  const [imageUrl, setImageUrl] = useState('')
+  const [sourceUrl, setSourceUrl] = useState('')
+  const [tags, setTags] = useState(["general"])
 
   useEffect(() => {
     if (isSuccess) {
-      setTitle("");
-      setLanguage("");
-      setLevel("");
-      setContent("");
-      setTags([]);
-      navigate("/dash/materials");
+      setTitle("")
+      setLanguage("")
+      setShort("")
+      setLevel("")
+      setContent("")
+      setImageUrl("")
+      setSourceUrl("")
+      setTags([])
+      navigate("/dash/materials")
     }
-  }, [isSuccess, navigate]);
+  }, [isSuccess, navigate])
 
-  const onTitleChanged = (e) => setTitle(e.target.value);
-  const onLanguageChanged = (e) => setLanguage(e.target.value);
-  const onLevelChanged = (e) => setLevel(e.target.value);
-  const onContentChanged = (e) => setContent(e.target.value);
+  const onTitleChanged = (e) => setTitle(e.target.value)
+  const onLanguageChanged = (e) => setLanguage(e.target.value)
+  const onShortChanged = (e) => setShort(e.target.value)
+  const onLevelChanged = (e) => setLevel(e.target.value)
+  const onContentChanged = (e) => setContent(e.target.value)
+  const onImageUrlChanged = (e) => setImageUrl(e.target.value)
+  const onSourceUrlChanged = (e) => setSourceUrl(e.target.value)
 
   const onTagsChanged = (e) => {
     const values = Array.from(
       e.target.selectedOptions,
       (option) => option.value
-    );
-    setTags(values);
+    )
+    setTags(values)
   };
 
   const canSave = !isLoading;
 
   const onSaveMaterialClicked = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     console.log("Saving material...", {
       title,
       language,
+      short,
       level,
       content,
+      imageUrl,
+      sourceUrl,
       tags,
-    });
+    })
     if (canSave) {
       try {
         const response = await addNewMaterial({
           title,
           language,
+          short,
           level,
           content,
+          imageUrl,
+          sourceUrl,
           tags,
-        });
+        })
         console.log("Material created successfully:", response);
       } catch (err) {
         console.error("Failed to create material:", err);
       }
     } else {
-      console.warn("Cannot save material. Check validation or state.");
+      console.warn("Cannot save material. Check validation or state.")
     }
-  };
+  }
 
   const levelOptions = Object.values(LEVELS).map((level) => {
     return (
@@ -76,8 +91,8 @@ const NewMaterial = () => {
         {" "}
         {level}
       </option>
-    );
-  });
+    )
+  })
 
   const tagsOptions = Object.values(TAGS).map((tag) => {
     return (
@@ -85,8 +100,8 @@ const NewMaterial = () => {
         {" "}
         {tag}
       </option>
-    );
-  });
+    )
+  })
 
   const errClass = isError ? "errmsg" : "offscreen";
   return (
@@ -128,6 +143,18 @@ const NewMaterial = () => {
           onChange={onLanguageChanged}
         />
 
+        <label className="form__label" htmlFor="short">
+          Short description:
+        </label>
+        <input
+          className="form__input"
+          id="short"
+          name="short"
+          type="short"
+          value={short}
+          onChange={onShortChanged}
+        />
+
         <label className="form__label" htmlFor="level">
           Level:
         </label>
@@ -153,6 +180,28 @@ const NewMaterial = () => {
           type="content"
           value={content}
           onChange={onContentChanged}
+        />
+        <label className="form__label" htmlFor="setImageUrl">
+          Image Url:
+        </label>
+        <input
+          className="form__input"
+          id="setImageUrl"
+          name="imageUrl"
+          type="imageUrl"
+          value={imageUrl}
+          onChange={onImageUrlChanged}
+        />
+        <label className="form__label" htmlFor="sourceUrl">
+          Linked resource:
+        </label>
+        <input
+          className="form__input"
+          id="sourceUrl"
+          name="sourceUrl"
+          type="sourceUrl"
+          value={sourceUrl}
+          onChange={onSourceUrlChanged}
         />
 
         <label className="form__label" htmlFor="tags">
