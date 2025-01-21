@@ -69,6 +69,13 @@ export const materialsApiSlice = apiSlice.injectEndpoints({
                 { type: 'Material', id: arg.id }
             ]
         }),
+        rateMaterial: builder.mutation({
+            query: ({ id, rating, userId }) => ({
+                url: `/materials/rate/${id}`,
+                method: "PATCH",
+                body: { userId, rating },
+            }),
+        }),
     }),
 })
 
@@ -77,6 +84,7 @@ export const {
     useAddNewMaterialMutation,
     useUpdateMaterialMutation,
     useDeleteMaterialMutation,
+    useRateMaterialMutation,
 } = materialsApiSlice
 
 // returns the query result object

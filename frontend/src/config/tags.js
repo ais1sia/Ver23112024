@@ -1,10 +1,12 @@
 export const TAGS = {
+    general: "general", 
+    business: "business", 
+    technical: "technical", 
     military: "military",
     exam: "exam",
-    holidays: "holidays",
+    vacation: "vacation",
     grammar: "grammar",
     vocubulary: "vocabulary",
     listening: "listening",
     culture: "culture",
-    general: "general"
 }

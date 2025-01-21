@@ -11,4 +11,8 @@ router.route('/')
     .patch(materialsController.updateMaterial)
     .delete(materialsController.deleteMaterial)
 
+    //21.01.2025
+router.route('/recommend/:userId').get(materialsController.getRecommendedMaterials)
+router.route('/rate/:id').patch(materialsController.rateMaterial)
+
 module.exports = router 

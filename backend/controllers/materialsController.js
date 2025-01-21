@@ -1,5 +1,6 @@
-const Material = require("../models/Material");
-const asyncHandler = require("express-async-handler");
+const mongoose = require('mongoose')
+const Material = require("../models/Material")
+const asyncHandler = require("express-async-handler")
 
 // @desc Get all materials with filters
 // @route GET /materials
@@ -28,11 +29,11 @@ const asyncHandler = require("express-async-handler");
 //   res.json(materials);
 // });
 const getAllMaterials = asyncHandler(async (req, res) => {
-  const materials = await Material.find().lean();
+  const materials = await Material.find().lean()
   if (!materials || materials.length === 0) {
-    return res.status(404).json({ message: "No materials found" });
+    return res.status(404).json({ message: "No materials found" })
   }
-  res.json(materials);
+  res.json(materials)
 });
 
 // @desc Create a new material
@@ -148,11 +149,119 @@ const deleteMaterial = asyncHandler(async (req, res) => {
   const reply = `Material deleted`;
 
   res.json(reply);
+})
+
+//21.01.2025
+const getRecommendedMaterials = asyncHandler(async (req, res) => {
+  const { userId } = req.params;
+
+  // Fetch user progress data
+  const user = await User.findById(userId).populate('progress.materialId').exec();
+  if (!user) return res.status(404).json({ message: "User not found" });
+
+  // Fetch all materials
+  const allMaterials = await Material.find().exec();
+
+  // Map of material ratings by users
+  const materialRatings = {};
+  allMaterials.forEach((material) => {
+      materialRatings[material._id] = material.usefulness.map((entry) => ({
+          userId: entry.userId.toString(),
+          rating: entry.rating || 0,
+      }))
+  })
+
+  // User's rated materials
+  const userRatings = user.progress.map((entry) => ({
+      materialId: entry.materialId._id.toString(),
+      rating: entry.rating || 0,
+  }));
+
+  // Calculate similarity
+  const similarityScores = {};
+  userRatings.forEach((userRating) => {
+      const { materialId, rating } = userRating;
+
+      allMaterials.forEach((otherMaterial) => {
+          if (materialId !== otherMaterial._id.toString()) {
+              const similarity = calculateCosineSimilarity(
+                  materialRatings[materialId] || [],
+                  materialRatings[otherMaterial._id.toString()] || []
+              );
+
+              if (!similarityScores[otherMaterial._id]) similarityScores[otherMaterial._id] = 0;
+              similarityScores[otherMaterial._id] += similarity * rating;
+          }
+      });
+  });
+
+  // Sort materials by score
+  const sortedMaterials = Object.entries(similarityScores)
+      .sort(([, scoreA], [, scoreB]) => scoreB - scoreA)
+      .map(([materialId]) => materialId);
+
+  const recommendedMaterials = await Material.find({ _id: { $in: sortedMaterials } }).exec();
+
+  res.json(recommendedMaterials);
+})
+
+// Helper to calculate cosine similarity
+function calculateCosineSimilarity(materialA, materialB) {
+  const ratingsA = materialA.map((entry) => entry.rating);
+  const ratingsB = materialB.map((entry) => entry.rating);
+
+  const dotProduct = ratingsA.reduce((sum, rating, idx) => sum + rating * (ratingsB[idx] || 0), 0);
+  const magnitudeA = Math.sqrt(ratingsA.reduce((sum, rating) => sum + rating ** 2, 0));
+  const magnitudeB = Math.sqrt(ratingsB.reduce((sum, rating) => sum + rating ** 2, 0));
+
+  return magnitudeA && magnitudeB ? dotProduct / (magnitudeA * magnitudeB) : 0;
+}
+
+// 21.01.2025
+// @desc Rate a material
+// @route PATCH /materials/rate/:id
+// @access Private
+const rateMaterial = asyncHandler(async (req, res) => {
+  const { id } = req.params; // Material ID
+  const { userId, rating } = req.body; // User ID and rating
+
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: "Invalid user ID" });
+  }
+
+  if (!rating || rating < 1 || rating > 5) {
+      return res.status(400).json({ message: "Invalid rating. Must be between 1 and 5" });
+  }
+
+  const material = await Material.findById(id);
+  if (!material) {
+      return res.status(404).json({ message: "Material not found" });
+  }
+
+  const objectIdUserId = new mongoose.Types.ObjectId(userId);
+
+  const existingRating = material.usefulness.find(
+      (entry) => entry.userId.toString() === objectIdUserId.toString()
+  );
+
+  if (existingRating) {
+      existingRating.rating = rating;
+  } else {
+      material.usefulness.push({ userId: objectIdUserId, rating });
+  }
+
+  material.calculateAverageRating();
+  await material.save();
+
+  res.json({ message: "Rating updated", averageRating: material.averageRating });
 });
+
 
 module.exports = {
   getAllMaterials,
   createNewMaterial,
   updateMaterial,
   deleteMaterial,
-};
+  getRecommendedMaterials,
+  rateMaterial,
+}
