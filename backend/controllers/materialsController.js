@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const Material = require("../models/Material")
 const asyncHandler = require("express-async-handler")
+const User = require('../models/User')
 
 // @desc Get all materials with filters
 // @route GET /materials
@@ -152,58 +153,58 @@ const deleteMaterial = asyncHandler(async (req, res) => {
 })
 
 //21.01.2025
-const getRecommendedMaterials = asyncHandler(async (req, res) => {
-  const { userId } = req.params;
+// const getRecommendedMaterials = asyncHandler(async (req, res) => {
+//   const { userId } = req.params;
 
-  // Fetch user progress data
-  const user = await User.findById(userId).populate('progress.materialId').exec();
-  if (!user) return res.status(404).json({ message: "User not found" });
+//   // Fetch user progress data
+//   const user = await User.findById(userId).populate('progress.materialId').exec();
+//   if (!user) return res.status(404).json({ message: "User not found" });
 
-  // Fetch all materials
-  const allMaterials = await Material.find().exec();
+//   // Fetch all materials
+//   const allMaterials = await Material.find().exec();
 
-  // Map of material ratings by users
-  const materialRatings = {};
-  allMaterials.forEach((material) => {
-      materialRatings[material._id] = material.usefulness.map((entry) => ({
-          userId: entry.userId.toString(),
-          rating: entry.rating || 0,
-      }))
-  })
+//   // Map of material ratings by users
+//   const materialRatings = {};
+//   allMaterials.forEach((material) => {
+//       materialRatings[material._id] = material.usefulness.map((entry) => ({
+//           userId: entry.userId.toString(),
+//           rating: entry.rating || 0,
+//       }))
+//   })
 
-  // User's rated materials
-  const userRatings = user.progress.map((entry) => ({
-      materialId: entry.materialId._id.toString(),
-      rating: entry.rating || 0,
-  }));
+//   // User's rated materials
+//   const userRatings = user.progress.map((entry) => ({
+//       materialId: entry.materialId._id.toString(),
+//       rating: entry.rating || 0,
+//   }));
 
-  // Calculate similarity
-  const similarityScores = {};
-  userRatings.forEach((userRating) => {
-      const { materialId, rating } = userRating;
+//   // Calculate similarity
+//   const similarityScores = {};
+//   userRatings.forEach((userRating) => {
+//       const { materialId, rating } = userRating;
 
-      allMaterials.forEach((otherMaterial) => {
-          if (materialId !== otherMaterial._id.toString()) {
-              const similarity = calculateCosineSimilarity(
-                  materialRatings[materialId] || [],
-                  materialRatings[otherMaterial._id.toString()] || []
-              );
+//       allMaterials.forEach((otherMaterial) => {
+//           if (materialId !== otherMaterial._id.toString()) {
+//               const similarity = calculateCosineSimilarity(
+//                   materialRatings[materialId] || [],
+//                   materialRatings[otherMaterial._id.toString()] || []
+//               );
 
-              if (!similarityScores[otherMaterial._id]) similarityScores[otherMaterial._id] = 0;
-              similarityScores[otherMaterial._id] += similarity * rating;
-          }
-      });
-  });
+//               if (!similarityScores[otherMaterial._id]) similarityScores[otherMaterial._id] = 0;
+//               similarityScores[otherMaterial._id] += similarity * rating;
+//           }
+//       });
+//   });
 
-  // Sort materials by score
-  const sortedMaterials = Object.entries(similarityScores)
-      .sort(([, scoreA], [, scoreB]) => scoreB - scoreA)
-      .map(([materialId]) => materialId);
+//   // Sort materials by score
+//   const sortedMaterials = Object.entries(similarityScores)
+//       .sort(([, scoreA], [, scoreB]) => scoreB - scoreA)
+//       .map(([materialId]) => materialId);
 
-  const recommendedMaterials = await Material.find({ _id: { $in: sortedMaterials } }).exec();
+//   const recommendedMaterials = await Material.find({ _id: { $in: sortedMaterials } }).exec();
 
-  res.json(recommendedMaterials);
-})
+//   res.json(recommendedMaterials);
+// })
 
 // Helper to calculate cosine similarity
 function calculateCosineSimilarity(materialA, materialB) {
@@ -262,6 +263,6 @@ module.exports = {
   createNewMaterial,
   updateMaterial,
   deleteMaterial,
-  getRecommendedMaterials,
+  //getRecommendedMaterials,
   rateMaterial,
 }

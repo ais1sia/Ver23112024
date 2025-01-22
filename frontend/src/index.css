@@ -488,3 +488,13 @@ button {
   color: #666;
   font-size: 14px;
 }
+
+/* 21.01.2025 */
+.DraftEditor-root {
+  min-height: 200px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background: #fff;
+}
+

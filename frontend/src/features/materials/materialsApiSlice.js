@@ -35,18 +35,21 @@ export const materialsApiSlice = apiSlice.injectEndpoints({
                 } else return [{ type: 'Material', id: 'LIST' }]
             }
         }),
-        addNewMaterial: builder.mutation({
-            query: initialMaterial => ({
-                url: '/materials',
-                method: 'POST',
-                body: {
-                    ...initialMaterial,
-                }
-            }),
-            invalidatesTags: [
-                { type: 'Material', id: "LIST" }
-            ]
-        }),
+        // getRecommendedMaterials: builder.query({
+        //     query: (userId) => `/materials/recommend/${userId}`,
+        //   }),
+        // addNewMaterial: builder.mutation({
+        //     query: initialMaterial => ({
+        //         url: '/materials',
+        //         method: 'POST',
+        //         body: {
+        //             ...initialMaterial,
+        //         }
+        //     }),
+        //     invalidatesTags: [
+        //         { type: 'Material', id: "LIST" }
+        //     ]
+        // }),
         updateMaterial: builder.mutation({
             query: initialMaterial => ({
                 url: '/materials',
@@ -81,6 +84,7 @@ export const materialsApiSlice = apiSlice.injectEndpoints({
 
 export const {
     useGetMaterialsQuery,
+    //useGetRecommendedMaterialsQuery,
     useAddNewMaterialMutation,
     useUpdateMaterialMutation,
     useDeleteMaterialMutation,

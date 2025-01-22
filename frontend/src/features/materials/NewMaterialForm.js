@@ -5,6 +5,7 @@ import { faSave } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
+import RichTextEditor from "../../config/RichTextEditor"
 
 const NewMaterial = () => {
   const [addNewMaterial, { isLoading, isSuccess, isError, error }] =
@@ -12,7 +13,7 @@ const NewMaterial = () => {
   const navigate = useNavigate()
 
   const [title, setTitle] = useState('')
-  const [language, setLanguage] = useState('')
+  const [language, setLanguage] = useState('English')
   const [short, setShort] = useState('')
   const [level, setLevel] = useState("A1")
   const [content, setContent] = useState('')
@@ -38,7 +39,10 @@ const NewMaterial = () => {
   const onLanguageChanged = (e) => setLanguage(e.target.value)
   const onShortChanged = (e) => setShort(e.target.value)
   const onLevelChanged = (e) => setLevel(e.target.value)
-  const onContentChanged = (e) => setContent(e.target.value)
+  //const onContentChanged = (e) => setContent(e.target.value)
+  const onContentChanged = (newContent) => {
+    setContent(newContent);  // Set the new content (HTML)
+  }
   const onImageUrlChanged = (e) => setImageUrl(e.target.value)
   const onSourceUrlChanged = (e) => setSourceUrl(e.target.value)
 
@@ -170,7 +174,7 @@ const NewMaterial = () => {
           {levelOptions}
         </select>
 
-        <label className="form__label" htmlFor="content">
+        {/* <label className="form__label" htmlFor="content">
           Content:
         </label>
         <input
@@ -180,7 +184,8 @@ const NewMaterial = () => {
           type="content"
           value={content}
           onChange={onContentChanged}
-        />
+        /> */}
+        <RichTextEditor initialContent={content} onContentChange={onContentChanged} />
         <label className="form__label" htmlFor="setImageUrl">
           Image Url:
         </label>
