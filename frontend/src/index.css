@@ -498,3 +498,47 @@ button {
   background: #fff;
 }
 
+/* 22.01.2025 */
+
+.dashboard-recommendations {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+}
+
+.dashboard-recommendations h2 {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.dashboard-recommendations ul {
+  list-style: none;
+  padding: 0;
+}
+
+.dashboard-recommendations li {
+  margin-bottom: 15px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.recommendations-section,
+.materials-section {
+    margin-bottom: 20px;
+}
+
+.recommendations-grid,
+.materials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.recommendations-section h2,
+.materials-section h2 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+
