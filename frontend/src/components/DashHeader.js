@@ -1,9 +1,9 @@
 import { useSendLogoutMutation } from "../features/auth/authApiSlice";
 import useAuth from "../hooks/useAuth";
 import {
-  faFileCirclePlus,
-  faFilePen,
-  faUserGear,
+  // faFileCirclePlus,
+  // faFilePen,
+  // faUserGear,
   //faUserPlus,
   faRightFromBracket,
   faCrosshairs
@@ -17,7 +17,7 @@ const MATERIALS_REGEX = /^\/dash\/materials(\/)?$/;
 const USERS_REGEX = /^\/dash\/users(\/)?$/;
 
 const DashHeader = () => {
-  const { isAdmin } = useAuth();
+  const { username, isAdmin } = useAuth();
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -48,10 +48,10 @@ const DashHeader = () => {
     }
   }
 
-  const onNewMaterialClicked = () => navigate("/dash/materials/new");
-  //const onNewUserClicked = () => navigate("/dash/users/new");
-  const onMaterialsClicked = () => navigate("/dash/materials");
-  const onUsersClicked = () => navigate("/dash/users");
+  // const onNewMaterialClicked = () => navigate("/dash/materials/new");
+  // //const onNewUserClicked = () => navigate("/dash/users/new");
+  // const onMaterialsClicked = () => navigate("/dash/materials");
+  // const onUsersClicked = () => navigate("/dash/users");
 
   let dashClass = null;
   if (
@@ -59,23 +59,23 @@ const DashHeader = () => {
     !MATERIALS_REGEX.test(pathname) &&
     !USERS_REGEX.test(pathname)
   ) {
-    dashClass = "dash-header__container--small";
+    dashClass = "dash-header__container";
   }
 
-  let newMaterialButton = null;
-  if (isAdmin) {
-    if (MATERIALS_REGEX.test(pathname)) {
-      newMaterialButton = (
-        <button
-          className="icon-button"
-          title="New Material"
-          onClick={onNewMaterialClicked}
-        >
-          <FontAwesomeIcon icon={faFileCirclePlus} />
-        </button>
-      );
-    }
-  }
+  // let newMaterialButton = null;
+  // if (isAdmin) {
+  //   if (MATERIALS_REGEX.test(pathname)) {
+  //     newMaterialButton = (
+  //       <button
+  //         className="icon-button"
+  //         title="New Material"
+  //         onClick={onNewMaterialClicked}
+  //       >
+  //         <FontAwesomeIcon icon={faFileCirclePlus} />
+  //       </button>
+  //     );
+  //   }
+  // }
   
   // let newUserButton = null;
   // if (USERS_REGEX.test(pathname)) {
@@ -90,29 +90,29 @@ const DashHeader = () => {
   //   );
   // }
 
-  let userButton = null;
-  if (isAdmin) {
-    if (!USERS_REGEX.test(pathname) && pathname.includes("/dash")) {
-      userButton = (
-        <button className="icon-button" title="Users" onClick={onUsersClicked}>
-          <FontAwesomeIcon icon={faUserGear} />
-        </button>
-      );
-    }
-  }
+  // let userButton = null;
+  // if (isAdmin) {
+  //   if (!USERS_REGEX.test(pathname) && pathname.includes("/dash")) {
+  //     userButton = (
+  //       <button className="icon-button" title="Users" onClick={onUsersClicked}>
+  //         <FontAwesomeIcon icon={faUserGear} />
+  //       </button>
+  //     );
+  //   }
+  // }
 
-  let materialsButton = null;
-  if (!MATERIALS_REGEX.test(pathname) && pathname.includes("/dash")) {
-    materialsButton = (
-      <button
-        className="icon-button"
-        title="Materials"
-        onClick={onMaterialsClicked}
-      >
-        <FontAwesomeIcon icon={faFilePen} />
-      </button>
-    );
-  }
+  // let materialsButton = null;
+  // if (!MATERIALS_REGEX.test(pathname) && pathname.includes("/dash")) {
+  //   materialsButton = (
+  //     <button
+  //       className="icon-button"
+  //       title="Materials"
+  //       onClick={onMaterialsClicked}
+  //     >
+  //       <FontAwesomeIcon icon={faFilePen} />
+  //     </button>
+  //   );
+  // }
 
   const logoutButton = (
     <button className="icon-button" title="Logout" onClick={handleLogout}>
@@ -128,10 +128,10 @@ const DashHeader = () => {
   } else {
     buttonContent = (
       <>
-        {newMaterialButton}
-        {/* {newUserButton} */}
+        {/* {newMaterialButton}
+        {newUserButton}
         {materialsButton}
-        {userButton}
+        {userButton} */}
         {logoutButton}
       </>
     );
@@ -149,6 +149,7 @@ const DashHeader = () => {
           {(isAdmin) && <Link to="/dash">
             <h1 className="dash-header__title"> <FontAwesomeIcon icon={faCrosshairs} /> ReadyAimFluent</h1>
           </Link>}
+          <div className="dash-header__welcome">Welcome back, {username}!</div>
           <nav className="dash-header__nav">{buttonContent}</nav>
         </div>
       </header>

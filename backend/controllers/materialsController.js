@@ -3,32 +3,6 @@ const Material = require("../models/Material")
 const asyncHandler = require("express-async-handler")
 const User = require('../models/User')
 
-// @desc Get all materials with filters
-// @route GET /materials
-// @access Public
-// const getAllMaterials = asyncHandler(async (req, res) => {
-//   const { searchQuery, tags, language, level } = req.query;
-//   let filter = {};
-
-//   if (searchQuery) {
-//     filter.title = { $regex: searchQuery, $options: 'i' };
-//   }
-//   if (tags) {
-//     filter.tags = { $in: tags.split(',') };
-//   }
-//   if (language) {
-//     filter.language = language;
-//   }
-//   if (level) {
-//     filter.level = level;
-//   // }
-
-//   const materials = await Material.find(filter).lean();
-//   if (!materials.length) {
-//     return res.status(404).json({ message: "No materials found" });
-//   }
-//   res.json(materials);
-// });
 const getAllMaterials = asyncHandler(async (req, res) => {
   const materials = await Material.find().lean()
   if (!materials || materials.length === 0) {
@@ -107,22 +81,6 @@ const updateMaterial = asyncHandler(async (req, res) => {
   if (sourceUrl) material.sourceUrl = sourceUrl;
   if (tags) material.tags = tags;
 
-  // if (rating) {
-  //     if (rating < 1 || rating > 5) {
-  //         return res.status(400).json({ message: 'Rating must be between 1 and 5' });
-  //     }
-
-  //     const existingRating = material.usefulness.find((entry) => entry.userId.toString() === userId)
-
-  //     if (existingRating) {
-  //         existingRating.rating = rating;
-  //     } else {
-  //         material.usefulness.push({ userId, rating })
-  //     }
-
-  //     material.calculateAverageRating();
-  // }
-
   await material.save();
 
   const reply = { message: "Material updated successfully", material };
@@ -156,54 +114,69 @@ const deleteMaterial = asyncHandler(async (req, res) => {
 const getRecommendedMaterials = asyncHandler(async (req, res) => {
   const { userId } = req.params;
 
-  // Fetch user progress data
-  const user = await User.findById(userId).populate('progress.materialId').exec();
+  // Fetch user data
+  const user = await User.findById(userId).exec();
   if (!user) return res.status(404).json({ message: "User not found" });
 
-  // Fetch all materials
-  const allMaterials = await Material.find().exec();
+  // If the user has progress, proceed with collaborative filtering
+  if (user.progress.length > 0) {
+      const allMaterials = await Material.find().exec();
 
-  // Map material ratings by users
-  const materialRatings = {};
-  allMaterials.forEach(material => {
-      materialRatings[material._id] = material.usefulness.map(entry => ({
-          userId: entry.userId.toString(),
+      // Map material ratings by users
+      const materialRatings = {};
+      allMaterials.forEach(material => {
+          materialRatings[material._id] = material.usefulness.map(entry => ({
+              userId: entry.userId.toString(),
+              rating: entry.rating || 0,
+          }));
+      });
+
+      // User's rated materials
+      const userRatings = user.progress.map(entry => ({
+          materialId: entry.materialId.toString(),
           rating: entry.rating || 0,
       }));
-  });
 
-  // User's rated materials
-  const userRatings = user.progress.map(entry => ({
-      materialId: entry.materialId._id.toString(),
-      rating: entry.rating || 0,
-  }));
+      // Calculate similarity
+      const similarityScores = {};
+      userRatings.forEach(userRating => {
+          const { materialId, rating } = userRating;
 
-  // Calculate similarity
-  const similarityScores = {};
-  userRatings.forEach(userRating => {
-      const { materialId, rating } = userRating;
+          allMaterials.forEach(otherMaterial => {
+              if (materialId !== otherMaterial._id.toString()) {
+                  const similarity = calculateCosineSimilarity(
+                      materialRatings[materialId] || [],
+                      materialRatings[otherMaterial._id.toString()] || []
+                  );
 
-      allMaterials.forEach(otherMaterial => {
-          if (materialId !== otherMaterial._id.toString()) {
-              const similarity = calculateCosineSimilarity(
-                  materialRatings[materialId] || [],
-                  materialRatings[otherMaterial._id.toString()] || []
-              );
-
-              if (!similarityScores[otherMaterial._id]) similarityScores[otherMaterial._id] = 0;
-              similarityScores[otherMaterial._id] += similarity * rating;
-          }
+                  if (!similarityScores[otherMaterial._id]) similarityScores[otherMaterial._id] = 0;
+                  similarityScores[otherMaterial._id] += similarity * rating;
+              }
+          });
       });
-  });
 
-  // Sort materials by score
-  const sortedMaterials = Object.entries(similarityScores)
-      .sort(([, scoreA], [, scoreB]) => scoreB - scoreA)
-      .map(([materialId]) => materialId);
+      // Sort materials by score
+      const sortedMaterials = Object.entries(similarityScores)
+          .sort(([, scoreA], [, scoreB]) => scoreB - scoreA)
+          .map(([materialId]) => materialId);
 
-  const recommendedMaterials = await Material.find({ _id: { $in: sortedMaterials } }).exec();
+      const recommendedMaterials = await Material.find({ _id: { $in: sortedMaterials } }).exec();
 
-  res.json(recommendedMaterials);
+      return res.json(recommendedMaterials);
+  }
+
+  // If no progress, recommend materials based on user's goals
+  if (user.goals.length > 0) {
+      const recommendedMaterials = await Material.find({
+          tags: { $in: user.goals },
+      }).exec();
+
+      if (recommendedMaterials.length > 0) {
+          return res.json(recommendedMaterials);
+      }
+  }
+
+  res.status(404).json({ message: "No recommendations available" });
 });
 
 // Helper to calculate cosine similarity

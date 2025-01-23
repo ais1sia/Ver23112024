@@ -23,7 +23,6 @@ const materialSchema = new mongoose.Schema({
     },
     imageUrl: {
         type: String,
-        default: "../public/materialbg.png"
     },
     sourceUrl: {
         type: String

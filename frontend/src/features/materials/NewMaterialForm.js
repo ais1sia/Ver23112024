@@ -1,8 +1,8 @@
 import { LEVELS } from "../../config/levels"
 import { TAGS } from "../../config/tags"
 import { useAddNewMaterialMutation } from "./materialsApiSlice"
-import { faSave } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+// import { faSave } from "@fortawesome/free-solid-svg-icons"
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import RichTextEditor from "../../config/RichTextEditor"
@@ -115,11 +115,6 @@ const NewMaterial = () => {
       <form className="form" onSubmit={onSaveMaterialClicked}>
         <div className="form__title-row">
           <h2>New Material</h2>
-          <div className="form__action-buttons">
-            <button className="icon-button" title="Save" disabled={!canSave}>
-              <FontAwesomeIcon icon={faSave} />
-            </button>
-          </div>
         </div>
 
         <label className="form__label" htmlFor="title">
@@ -223,6 +218,9 @@ const NewMaterial = () => {
         >
           {tagsOptions}
         </select>
+          <button className="final-submit-btn" title="Save" disabled={!canSave}>
+          SAVE
+        </button>
       </form>
     </>
   );

@@ -99,7 +99,7 @@ const Public = (props) => {
 
         <div className="divider">or</div>
 
-        <button className="join-now-btn" onClick={handleJoinNow}>
+        <button className="final-submit-btn" onClick={handleJoinNow}>
           JOIN NOW
         </button>
       </div>

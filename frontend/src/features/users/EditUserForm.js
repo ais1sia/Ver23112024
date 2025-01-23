@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faTrashCan } from "@fortawesome/free-solid-svg-icons"
 import { ROLES } from "../../config/roles"
 import { GOALS } from "../../config/goals"
+import { LEVELS } from "../../config/levels"
 import PulseLoader from 'react-spinners/PulseLoader'
 import CustomSelector from '../../config/CustomSelector'
 
@@ -117,6 +118,12 @@ const EditUserForm = ({ user }) => {
 
     const goalOptions = Object.values(GOALS).map((goal) => goal)
 
+    const levelOptions = Object.values(LEVELS).map((level) => (
+        <option key={level} value={level}>
+          {level}
+        </option>
+      ))
+
     const errClass = (isError || isDelError) ? "errmsg" : "offscreen"
     const validUserClass = !validUsername ? 'form__input--incomplete' : ''
     const validEmailClass = !validEmail ? 'form__input--incomplete' : ''
@@ -213,22 +220,19 @@ const EditUserForm = ({ user }) => {
                     onChange={onPasswordChanged}
                 />
 
-                <label className="form__label" htmlFor="level">
-                    Level:</label>
-                <select
-                    id="level"
-                    name="level"
-                    className="form__select"
-                    value={level}
-                    onChange={onLevelChanged}
-                >
-                    <option value="A1">A1</option>
-                    <option value="A2">A2</option>
-                    <option value="B1">B1</option>
-                    <option value="B2">B2</option>
-                    <option value="C1">C1</option>
-                    <option value="C2">C2</option>
-                </select>
+<label className="form__label" htmlFor="level">
+            Level:
+          </label>
+          <select
+            id="level"
+            name="level"
+            className="form__select"
+            value={level}
+            onChange={onLevelChanged}
+            required
+          >
+            {levelOptions}
+          </select>
 
                 <label className="form__label" htmlFor="roles">
                     ASSIGNED ROLES:</label>

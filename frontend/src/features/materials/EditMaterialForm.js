@@ -28,7 +28,7 @@ const EditMaterialForm = ({ material }) => {
   const [content, setContent] = useState('')
   const [imageUrl, setImageUrl] = useState('')
   const [sourceUrl, setSourceUrl] = useState('')
-  const [tags, setTags] = useState(["general"])
+  const [tags, setTags] = useState(material.tags)
 
   useEffect(() => {
     if (isSuccess || isDelSuccess) {

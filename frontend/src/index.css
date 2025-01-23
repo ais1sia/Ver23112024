@@ -21,6 +21,7 @@
   --TABLE-BGCOLOR: #FFF;
   --TABLE-COLOR: #000;
   --INPUT-INVALID: #F00;
+  --BUTTON: #FF9933;
 }
 
 /* || UTILITY CLASSES */
@@ -115,7 +116,8 @@ a:focus-visible {
 }
 
 .public__main,
-.login {
+.login,
+.register {
   flex-grow: 1;
   border-top: 2px solid var(--BORDER-COLOR);
   border-bottom: 2px solid var(--BORDER-COLOR);
@@ -136,9 +138,9 @@ a:focus-visible {
   position: sticky;
   top: 0;
   z-index: 1;
-  background-color: var(--BGCOLOR);
+  background-color: var(--MATERIAL-BGCOLOR);
   padding: 0 0.5em;
-  border-bottom: 1px solid var(--BORDER-COLOR);
+  /* border-bottom: 1px solid var(--BORDER-COLOR); */
 }
 
 .dash-header__container {
@@ -146,10 +148,6 @@ a:focus-visible {
   flex-flow: row nowrap;
   justify-content: space-between;
   align-items: center;
-}
-
-.dash-header__container--small {
-  max-width: 800px;
 }
 
 .dash-header__nav {
@@ -160,10 +158,20 @@ a:focus-visible {
 }
 
 .dash-header__title {
-  color:#FF9933
+  font-size: 2rem;
+  color:#FF9933;
+}
+
+.dash-header__welcome {
+  font-size: 1.5rem;
+  font-family: monospace;
+  font-weight: bold;
+  text-align: center;
+  color: var(--COLOR);
 }
 
 .dash-container {
+  margin: 30px;
   padding: 0.75em 0.5em 0.5em;
   flex-grow: 1;
 }
@@ -173,9 +181,9 @@ a:focus-visible {
   position: sticky;
   bottom: 0;
   z-index: 1;
-  background-color: var(--BGCOLOR);
+  background-color: var(--MATERIAL-BGCOLOR);
   padding: 0.5em;
-  border-top: 1px solid var(--BORDER-COLOR);
+  /* border-top: 1px solid var(--BORDER-COLOR); */
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
@@ -242,50 +250,41 @@ tr {
 
 /* ||  MATERIAL */
 
-.material__created,
-.material__updated,
-.material__username {
-  display: none;
-}
 
-/* || FORM - GENERAL */
+/* || FORM - GENERAL (UPDATED FOR CONSISTENCY WITH "/" PAGE) */
 
 .form {
   display: flex;
   flex-flow: column nowrap;
-  gap: 0.75em;
+  gap: 1em;
   max-width: 800px;
+  background-color: white; /* White background for the form */
+  padding: 40px; /* Consistent padding */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  margin: 0 auto; /* Center align the form */
 }
 
-.form__checkbox-container {
-  display: flex;
-  align-items: center;
-  width: fit-content;
-  gap: 0.5em;
-}
-
-.form__persist {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  gap: 0.5em;
-}
-
-.form__title-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.form__title-row h1 {
+  text-align: center; /* Center-align the title */
+  font-family: monospace; /* Monospace font for consistency */
+  font-size: 24px;
+  margin: 0;
 }
 
 .form__input,
 .form__submit-button {
-  padding: 0.5em;
-  border-radius: 15px;
-  border: 1px solid var(--COLOR);
+  padding: 12px; /* Larger padding for better click targets */
+  border-radius: 8px; /* Rounded corners */
+  border: 1px solid var(--COLOR); /* Theme color for borders */
+  font-size: 14px; /* Consistent font size */
+  width: 100%; /* Ensure full width for inputs and buttons */
+  box-sizing: border-box; /* Include padding in width */
 }
 
 .form__input--text {
   min-height: 150px;
+  resize: vertical; /* Allow resizing for textareas */
 }
 
 .form__input--incomplete {
@@ -293,85 +292,83 @@ tr {
   outline: 1px solid var(--INPUT-INVALID);
 }
 
+.form__checkbox-container,
+.form__persist {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
 .form__checkbox {
   width: 24px;
   height: 24px;
 }
 
-.form__select {
-  width: fit-content;
-  padding: 0.25em;
-}
-
 .form__action-buttons {
   display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 0.5em;
-  position: absolute;
-  right: 0.5em;
+  justify-content: space-between;
+  gap: 1em;
+  margin-top: 20px; /* Add spacing above buttons */
+}
+
+.form__submit-button {
+  background-color: #FF9933; /* Orange theme for buttons */
+  color: white; /* White text */
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.form__select {
+  width: fit-content;
+  padding: 0.5em;
+  border-radius: 8px;
 }
 
 .form__row {
   display: flex;
-  flex-flow: row nowrap;
-  gap: 2em;
+  flex-wrap: wrap;
+  gap: 1.5em; /* Space between rows */
 }
 
 .form__divider {
-  display: flex;
-  flex-flow: column nowrap;
-  gap: 0.5em;
+  text-align: center;
+  margin: 15px 0; /* Spacing around divider */
+  color: #666; /* Subtle color */
+  font-size: 14px;
 }
+
+/* MEDIA QUERIES */
 
 @media screen and (max-width: 400px) {
-  h1 {
-    font-size: 2rem;
+  .form {
+    padding: 20px; /* Smaller padding on small screens */
   }
 
-  .dash-header__nav {
-    gap: 0;
+  .form__title-row h1 {
+    font-size: 1.5rem; /* Adjust font size for small screens */
   }
 
-  .icon-button {
-    font-size: 1.5rem;
+  .form__input,
+  .form__submit-button {
+    font-size: 12px; /* Smaller font size for inputs and buttons */
   }
 }
-
 
 @media screen and (min-width: 768px) {
-
-  body {
-    font-size: 1.25rem;
+  .form {
+    padding: 40px; /* Restore padding on larger screens */
   }
 
-  .dash-header {
-    padding: 0 1em;
+  .form__title-row h1 {
+    font-size: 2rem; /* Larger title for bigger screens */
   }
 
-  .dash-container {
-    padding: 1em;
-  }
-
-  .table {
-    font-size: 1.5rem;
-  }
-
-  .table--materials {
-    grid-template-columns: repeat(3, 1fr) 2fr repeat(2, 1fr);
-  }
-
-  .material__created,
-  .material__updated,
-  .material__username {
-    display: block
-  }
-
-  .form__action-buttons {
-    position: static;
+  .form__input,
+  .form__submit-button {
+    font-size: 16px; /* Increase font size for better readability */
   }
 }
-
 /* CUSTOM SELECTOR */
 
 .custom-selector {
@@ -392,29 +389,48 @@ tr {
 }
 
 .custom-selector__option:hover {
-  border-color: #007bff;
-  background-color: #e6f7ff;
+  border-color: var(--BORDER-COLOR);
+  background-color: var(--MATERIAL-BGCOLOR);
 }
 
 .custom-selector__option.selected {
-  border-color: #007bff;
-  background-color: hsla(240, 64%, 27%, 0.65);
-  color: #fff;
+  border-color: var(--BORDER-COLOR);
+  background-color: var(--BUTTON);
+  color: var(--COLOR);
 }
 
 .materials-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeatrepeat(auto-fit, minmax(200px, 1fr));
   gap: 16px;
   padding: 16px;
 }
 
-.materials-grid .card {
-  border: 1px solid --COLOR;
+.materials-grid .card, 
+.recommendations-grid .card {
+  background-color: #ffffff; /* White background */
   padding: 16px;
-  border-radius: 8px;
-  background-color: var(--BGCOLOR);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* border-radius: 8px; */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for elevation */
+  border: 1px solid #ddd; /* Light border for contrast */
+  color: var(--COLOR); /* Ensure text uses the theme color */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: center; /* Optional for better alignment */
+}
+
+.card:hover {
+  transform: translateY(-3px); /* Lift on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
+  transition: all 0.2s ease;
+}
+
+.card__image {
+  width: 100%; /* Full width of the card */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 8px; /* Add rounded corners if desired */
+  margin-bottom: 8px; /* Add space below the image */
 }
 
 /* WELCOME PAGE LOGIN JOIN NOW STYLE */
@@ -476,7 +492,7 @@ button {
   color: white;
 }
 
-.join-now-btn {
+.final-submit-btn {
   background-color: #FF9933;
   color: white;
   margin-top: 10px;
@@ -541,4 +557,24 @@ button {
     margin-bottom: 10px;
 }
 
+/* 23.01.2025 */
+.card__rating {
+  display: flex;
+  gap: 5px; /* Spacing between stars */
+  justify-content: center; /* Center the stars */
+}
 
+.star-icon {
+  font-size: 24px; /* Adjust size as needed */
+  color: #ccc; /* Default color for unselected stars */
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.star-icon.active {
+  color: #ffcc00; /* Highlight color for selected stars */
+}
+
+.star-icon:hover {
+  color: #ffcc00; /* Highlight stars on hover */
+}

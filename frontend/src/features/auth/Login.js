@@ -3,8 +3,9 @@ import { useLoginMutation } from "./authApiSlice";
 import { setCredentials } from "./authSlice";
 import { useRef, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, /*Link*/ } from "react-router-dom";
 import PulseLoader from 'react-spinners/PulseLoader'
+import DashFooter from "../../components/DashFooter";
 
 
 const Login = () => {
@@ -105,8 +106,9 @@ const Login = () => {
         </form>
       </main>
       <footer>
-        <p><Link to="/">Home</Link></p>
-        <p><Link to="/register">Sign in</Link></p>
+        {/* <p><Link to="/">Home</Link></p>
+        <p><Link to="/register">Sign in</Link></p> */}
+        <DashFooter />
       </footer>
     </section>
   );

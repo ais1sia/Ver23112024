@@ -1,12 +1,11 @@
 import { useRegisterMutation } from "./authApiSlice";
 import { useRef, useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, /*Link*/ } from "react-router-dom";
 import PulseLoader from "react-spinners/PulseLoader";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { GOALS } from "../../config/goals";
 import { LEVELS } from "../../config/levels";
 import CustomSelector from "../../config/CustomSelector";
+import DashFooter from "../../components/DashFooter";
 
 const Register = () => {
   const userRef = useRef();
@@ -20,7 +19,7 @@ const Register = () => {
   const [lastname, setLastname] = useState("");
   const [level, setLevel] = useState("A1"); // Default value for level
   //const roles = useState(["User"]); // Default role
-  const [goals, setGoals] = useState(["general"]); // Default goal
+  const [goals, setGoals] = useState([""]); // Default goal
   //const isActive = useState(true); // Default to active
   const [errMsg, setErrMsg] = useState("");
 
@@ -73,7 +72,7 @@ const Register = () => {
   const goalOptions = Object.values(GOALS).map((goal) => goal)
 
   const errClass = errMsg ? "errmsg" : "offscreen";
-
+  // NEW USER FORM HERE
   if (isLoading) return <PulseLoader color={"#FFF"} />;
   const content = (
     <section className="public">
@@ -88,11 +87,6 @@ const Register = () => {
         <form className="form" onSubmit={handleSubmit}>
           <div className="form__title-row">
             <h2>New User</h2>
-            <div className="form__action-buttons">
-              <button className="icon-button" title="Register">
-                <FontAwesomeIcon icon={faSave} />
-              </button>
-            </div>
           </div>
 
           <label className="form__label" htmlFor="username">
@@ -178,19 +172,23 @@ const Register = () => {
 
           <label className="form__label" htmlFor="goals">
             GOALS:
+            <p><i> Note: This app is for aimed learning. Choose one (you can change it later).</i></p>
           </label>
           <CustomSelector
-            options={goalOptions}   // Passing the goal options
-            selectedOptions={goals}        // Passing selected goals state
+            options={goalOptions}
+            selectedOptions={goals}
             setOptions={setGoals}  
-            multiChoice={true}         // Passing the state setter function
+            multiChoice={true}
           />
+          <button className="final-submit-btn" title="SIGN IN">
+          SIGN IN
+        </button>
         </form>
+            
       </main>
-      <footer>
-      <p><Link to="/">Back to Home</Link></p>
-      <p><Link to="/login">Sign up</Link></p>
-      </footer>
+      {/* <p><Link to="/">Back to Home</Link></p>
+      <p><Link to="/login">Sign up</Link></p> */}
+      <DashFooter />
     </section>
   );
 
