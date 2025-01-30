@@ -72,7 +72,6 @@ const Public = (props) => {
             <label>Username</label>
             <input
               type="text"
-              placeholder="email@imglearnpro.com"
               value={username}
               onChange={handleUserInput}
               ref={userRef}

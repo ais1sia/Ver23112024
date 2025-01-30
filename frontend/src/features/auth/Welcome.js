@@ -16,12 +16,11 @@ const Welcome = () => {
     const content = (
         <section className="welcome">
 
-            <p><Link to="/dash/materials">View All Materials</Link></p>
+            <p><Link to="/dash/materials">View Materials Dashboard</Link></p>
 
             {(isAdmin) && <p><Link to="/dash/materials/new">Add New Material</Link></p>}
 
-            {(isAdmin) && <p><Link to="/dash/users">View User Settings</Link></p>}
-
+            {(isAdmin) && <p><Link to="/dash/users">View All Users</Link></p>}
 
         </section>
     )

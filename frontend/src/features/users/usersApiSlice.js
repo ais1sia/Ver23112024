@@ -33,6 +33,10 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 } else return [{ type: 'User', id: 'LIST' }]
             }
         }),
+        getUserProfile: builder.query({
+            query: (userId) => '/account',
+            providesTags: [{ type: 'User', id: 'PROFILE' }]
+        }),
         addNewUser: builder.mutation({
             query: initialUserData => ({
                 url: '/users',
@@ -73,24 +77,21 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 
 export const {
     useGetUsersQuery,
+    useGetUserProfileQuery,
     useAddNewUserMutation,
     useUpdateUserMutation,
     useDeleteUserMutation,
 } = usersApiSlice
 
-// returns the query result object
 export const selectUsersResult = usersApiSlice.endpoints.getUsers.select()
 
-// creates memoized selector
 const selectUsersData = createSelector(
     selectUsersResult,
-    usersResult => usersResult.data // normalized state object with ids & entities
+    usersResult => usersResult.data 
 )
 
-//getSelectors creates these selectors and we rename them with aliases using destructuring
 export const {
     selectAll: selectAllUsers,
     selectById: selectUserById,
     selectIds: selectUserIds
-    // Pass in a selector that returns the users slice of state
 } = usersAdapter.getSelectors(state => selectUsersData(state) ?? initialState)

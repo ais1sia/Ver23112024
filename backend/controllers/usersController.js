@@ -11,7 +11,16 @@ const getAllUsers = asyncHandler(async (req, res) => {
         return res.status(400).json({ message: 'No users found' })
     }
     res.json(users);
-});
+})
+
+// @desc Get user profile
+// @route GET /users
+// @access Private
+const getUserProfile = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user.id).select('-password').lean()
+    if (!user) return res.status(404).json({ message: 'User not found' })
+    res.json(user);
+})
 
 // @desc Create a new user
 // @route POST /users
@@ -27,11 +36,11 @@ const createNewUser = asyncHandler(async (req, res) => {
     const duplicate = await User.findOne({
         $or: [{ email }, { username }]
     }).collation({ locale: 'en', strength: 2 }).lean().exec()
-    
+
     if (duplicate) {
         return res.status(409).json({ message: 'Email or username already in use' })
     }
-    
+
 
     const hashedPwd = await bcrypt.hash(password, 10)
 
@@ -62,7 +71,7 @@ const createNewUser = asyncHandler(async (req, res) => {
 const updateUser = asyncHandler(async (req, res) => {
     const { id, username, email, firstname, lastname, level, roles, goals, isActive, password } = req.body
 
-    if (!id ) {
+    if (!id) {
         return res.status(400).json({ message: 'ID is required' })
     }
 
@@ -75,19 +84,19 @@ const updateUser = asyncHandler(async (req, res) => {
     const duplicate = await User.findOne({
         $or: [{ email }, { username }]
     }).collation({ locale: 'en', strength: 2 }).lean().exec()
-    
+
     if (duplicate) {
         return res.status(409).json({ message: 'Email or username already in use' })
     }
 
-    if(username) user.username = username
-    if(email) user.email = email
-    if(firstname) user.firstname = firstname
-    if(lastname) user.lastname = lastname
-    if(level) user.level = level || user.level
-    if(roles) user.roles = roles || user.roles
-    if(goals) user.goals = goals || user.goals
-    if(isActive) user.isActive = isActive || user.isActive
+    if (username) user.username = username
+    if (email) user.email = email
+    if (firstname) user.firstname = firstname
+    if (lastname) user.lastname = lastname
+    if (level) user.level = level || user.level
+    if (roles) user.roles = roles || user.roles
+    if (goals) user.goals = goals || user.goals
+    if (isActive) user.isActive = isActive || user.isActive
 
     if (password) {
         user.password = await bcrypt.hash(password, 10)
@@ -119,11 +128,12 @@ const deleteUser = asyncHandler(async (req, res) => {
     const reply = `User deleted`
 
     res.json(reply)
-    
+
 });
 
 module.exports = {
     getAllUsers,
+    getUserProfile,
     createNewUser,
     updateUser,
     deleteUser,

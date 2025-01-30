@@ -65,6 +65,19 @@ const login = asyncHandler(async (req, res) => {
     const match = await bcrypt.compare(password, foundUser.password)
 
     if (!match) return res.status(401).json({ message: 'Unauthorized' })
+    
+        if (foundUser && match) {
+            const today = new Date().setHours(0, 0, 0, 0);
+            const lastLogin = foundUser.lastLogin ? new Date(foundUser.lastLogin).setHours(0, 0, 0, 0) : null;
+        
+            if (lastLogin && today - lastLogin === 86400000) {
+                foundUser.streak += 1;
+            } else {
+                foundUser.streak = 1;
+            }
+            foundUser.lastLogin = new Date()
+            await foundUser.save()
+        }
 
     const accessToken = jwt.sign(
         {

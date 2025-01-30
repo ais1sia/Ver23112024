@@ -16,6 +16,7 @@ import UsersList from "./features/users/UsersList"
 import { Routes, Route } from "react-router-dom"
 import useTitle from "./hooks/useTitle"
 import ViewMaterial from "./features/materials/ViewMaterial"
+import Account from "./features/users/Account"
 
 function App() {
   useTitle('ReadyAimFluent')
@@ -32,6 +33,7 @@ function App() {
             element={<RequireAuth allowedRoles={[...Object.values(ROLES)]} />}
           >
             <Route element={<Prefetch />}>
+            <Route path="/account" element={<Account />} />
               <Route path="dash" element={<DashLayout />}>
                 <Route index element={<Welcome />} />
 

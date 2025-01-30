@@ -22,12 +22,12 @@ const EditMaterialForm = ({ material }) => {
   const navigate = useNavigate()
 
   const [title, setTitle] = useState('')
-  const [language, setLanguage] = useState('')
-  const [short, setShort] = useState('')
+  const [language, setLanguage] = useState(material.language)
+  const [short, setShort] = useState(material.short)
   const [level, setLevel] = useState("A1")
-  const [content, setContent] = useState('')
-  const [imageUrl, setImageUrl] = useState('')
-  const [sourceUrl, setSourceUrl] = useState('')
+  const [content, setContent] = useState(material.content)
+  const [imageUrl, setImageUrl] = useState(material.imageUrl)
+  const [sourceUrl, setSourceUrl] = useState(material.sourceUrl)
   const [tags, setTags] = useState(material.tags)
 
   useEffect(() => {

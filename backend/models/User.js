@@ -37,6 +37,13 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
+    lastLogin: {
+        type: Date
+    },
+    streak: {
+        type: Number,
+        default: 0
+    },
     progress: [{
         materialId: {
             type: mongoose.Schema.Types.ObjectId,

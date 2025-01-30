@@ -208,7 +208,7 @@ tr {
   font-size: 1rem;
   width: 100%;
   display: grid;
-  grid-template-columns: 2fr 2fr 2fr 2fr 1fr 1fr 3fr 1fr 1fr;
+  grid-template-columns: 2fr 2fr 2fr 2fr 1fr 1fr 3fr 1fr 1fr 1fr 1fr;
   color: var(--TABLE-COLOR);
   gap: 0.1em;
 }
@@ -577,4 +577,14 @@ button {
 
 .star-icon:hover {
   color: #ffcc00; /* Highlight stars on hover */
+}
+
+/* ACCOUNT */
+.account-container {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 20px;
+  border-radius: 10px;
+  background: #f4f4f4;
+  text-align: center;
 }
