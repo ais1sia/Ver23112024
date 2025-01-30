@@ -46,7 +46,7 @@
 import { useGetMaterialsQuery, useGetRecommendedMaterialsQuery } from "./materialsApiSlice";
 import Material from "./Material";
 import PulseLoader from "react-spinners/PulseLoader";
-import useAuth from "../../hooks/useAuth"; // Ensure useAuth provides userId
+import useAuth from "../../hooks/useAuth";
 
 const MaterialsList = () => {
     const { userId } = useAuth();

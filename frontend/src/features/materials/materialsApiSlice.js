@@ -37,7 +37,7 @@ export const materialsApiSlice = apiSlice.injectEndpoints({
         }),
         getRecommendedMaterials: builder.query({
             query: (userId) => `/materials/recommend/${userId}`,
-            transformResponse: responseData => responseData, // Optionally process the response if needed
+            transformResponse: responseData => responseData,
             providesTags: (result, error, arg) => [{ type: 'Material', id: 'RECOMMENDATIONS' }],
         }),
         addNewMaterial: builder.mutation({

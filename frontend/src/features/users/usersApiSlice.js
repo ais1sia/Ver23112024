@@ -34,8 +34,9 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             }
         }),
         getUserProfile: builder.query({
-            query: (userId) => '/account',
-            providesTags: [{ type: 'User', id: 'PROFILE' }]
+            query: (userId) => `/profile/${userId}`,
+            transformResponse: responseData => responseData,
+            providesTags: (result, error, arg) => [{ type: 'User', id: 'PROFILE' }],
         }),
         addNewUser: builder.mutation({
             query: initialUserData => ({
