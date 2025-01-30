@@ -12,16 +12,14 @@ const Register = () => {
   const errRef = useRef();
 
   // Define states for form fields
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [level, setLevel] = useState("A1"); // Default value for level
-  //const roles = useState(["User"]); // Default role
-  const [goals, setGoals] = useState([""]); // Default goal
-  //const isActive = useState(true); // Default to active
-  const [errMsg, setErrMsg] = useState("");
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [email, setEmail] = useState("")
+  const [firstname, setFirstname] = useState("")
+  const [lastname, setLastname] = useState("")
+  const [level, setLevel] = useState("A1")
+  const [goals, setGoals] = useState(["general"])
+  const [errMsg, setErrMsg] = useState("")
 
   const navigate = useNavigate();
 
@@ -41,8 +39,6 @@ const Register = () => {
         firstname,
         lastname,
         level,
-        //isActive,
-        //roles,
         goals,
       }).unwrap();
       console.log("User registered successfully:", response);
@@ -67,7 +63,7 @@ const Register = () => {
     <option key={level} value={level}>
       {level}
     </option>
-  ));
+  ))
 
   const goalOptions = Object.values(GOALS).map((goal) => goal)
 

@@ -6,7 +6,8 @@ import {
   // faUserGear,
   //faUserPlus,
   faRightFromBracket,
-  faCrosshairs
+  faCrosshairs,
+  faCircleUser
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate, Link, useLocation } from "react-router-dom";
@@ -52,6 +53,7 @@ const DashHeader = () => {
   // //const onNewUserClicked = () => navigate("/dash/users/new");
   // const onMaterialsClicked = () => navigate("/dash/materials");
   // const onUsersClicked = () => navigate("/dash/users");
+  const onAccountClicked = () => navigate("/account");
 
   let dashClass = null;
   if (
@@ -118,7 +120,13 @@ const DashHeader = () => {
     <button className="icon-button" title="Logout" onClick={handleLogout}>
       <FontAwesomeIcon icon={faRightFromBracket} />
     </button>
-  );
+  )
+
+  const accountButton = (
+    <button className="icon-button" title="Account" onClick={onAccountClicked}>
+      <FontAwesomeIcon icon={faCircleUser} />
+    </button>
+  )
 
   const errClass = isError ? "errmsg" : "offscreen";
 
@@ -132,6 +140,7 @@ const DashHeader = () => {
         {newUserButton}
         {materialsButton}
         {userButton} */}
+        {accountButton}
         {logoutButton}
       </>
     );

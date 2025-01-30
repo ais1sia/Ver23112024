@@ -1,19 +1,20 @@
-import React from "react"
-import { render } from "react-dom"
-import ReactStars from "react-rating-stars-component"
-import { useSelector } from "react-redux"
-import { useParams } from "react-router-dom"
-import { selectMaterialById } from "./materialsApiSlice"
-import { useRateMaterialMutation } from "./materialsApiSlice"
-import useAuth from "../../hooks/useAuth"
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { selectMaterialById } from "./materialsApiSlice";
+import { useRateMaterialMutation } from "./materialsApiSlice";
+import useAuth from "../../hooks/useAuth";
+import Rating from "@mui/material/Rating"; // Import Material-UI Rating
+import StarIcon from '@mui/icons-material/Star';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
-
 const ViewMaterial = () => {
-  const { id } = useParams()
-  const { userId } = useAuth()
+  const { id } = useParams();
+  const { userId } = useAuth();
+  const [rating, setRating] = useState(0); // State for rating
 
-  const [rateMaterial] = useRateMaterialMutation()
+  const [rateMaterial] = useRateMaterialMutation();
 
   const material = useSelector((state) => selectMaterialById(state, id));
 
@@ -23,15 +24,15 @@ const ViewMaterial = () => {
 
   const { title, imageUrl, content, sourceUrl } = material;
 
-  //21.01.2025
-  //const rating = useState(0)
-  const handleRate = async (rating) => {
+  // Handle rating change
+  const handleRate = async (event, newValue) => {
+    setRating(newValue); // Update local state
     try {
-      await rateMaterial({ id: id, rating, userId: userId }).unwrap()
+      await rateMaterial({ id, rating: newValue, userId }).unwrap();
     } catch (err) {
       console.error("Failed to rate material:", err);
     }
-  }
+  };
 
   return (
     <div style={styles.container}>
@@ -54,19 +55,20 @@ const ViewMaterial = () => {
           </p>
         </div>
       )}
-      <div>
-        <h2>Oceń materiał:</h2>
-        <ReactStars
-          count={5}
-          value={material.rating || 0}
-          onChange={handleRate}
-          size={200}
-          isHalf={true}
-          emptyIcon={<i className="far fa-star"></i>}
-          halfIcon={<i className="fas fa-star-half-alt"></i>}
-          fullIcon={<i className="fas fa-star"></i>}
-          activeColor="#ffd700"
-        />
+
+      <div style={styles.ratingContainer}>
+        <h3>Rate this content:</h3>
+        <div style={{ marginTop: 10 }}>
+          <Rating
+            name="material-rating"
+            value={rating}
+            onChange={handleRate}
+            precision={0.5}
+            icon={<StarIcon style={{ fontSize: 30 }} />}
+            emptyIcon={<StarBorderIcon style={{ fontSize: 30 }} />}
+          />
+        </div>
+        <i>Rating helps us to choose the best content for You!</i>
       </div>
 
     </div>
@@ -107,6 +109,13 @@ const styles = {
     color: "#666",
     borderTop: "1px solid #ddd",
     paddingTop: "10px",
+  },
+  ratingContainer: {
+    display: "flex",
+    flexDirection: 'column',
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: "20px",
   },
 };
 

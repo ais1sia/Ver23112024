@@ -11,6 +11,6 @@ router.route('/')
     .patch(usersController.updateUser)
     .delete(usersController.deleteUser)
 
-    router.route('/profile/${userId}').get(usersController.getUserProfile)
+    router.route('/profile/:userId').get(usersController.getUserProfile)
 
 module.exports = router 
