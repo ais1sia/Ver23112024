@@ -1,11 +1,11 @@
-import usePersist from "../../hooks/usePersist";
-import { useLoginMutation } from "./authApiSlice";
-import { setCredentials } from "./authSlice";
-import { useRef, useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate, /*Link*/ } from "react-router-dom";
+import usePersist from "../../hooks/usePersist"
+import { useLoginMutation } from "./authApiSlice"
+import { setCredentials } from "./authSlice"
+import { useRef, useState, useEffect } from "react"
+import { useDispatch } from "react-redux"
+import { useNavigate, /*Link*/ } from "react-router-dom"
 import PulseLoader from 'react-spinners/PulseLoader'
-import DashFooter from "../../components/DashFooter";
+import DashFooter from "../../components/DashFooter"
 
 
 const Login = () => {

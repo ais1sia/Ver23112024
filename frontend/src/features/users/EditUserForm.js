@@ -8,6 +8,7 @@ import { GOALS } from "../../config/goals"
 import { LEVELS } from "../../config/levels"
 import PulseLoader from 'react-spinners/PulseLoader'
 import CustomSelector from '../../config/CustomSelector'
+import useAuth from "../../hooks/useAuth"
 
 const USER_REGEX = /^[A-z0-9!@#$%]{3,20}$/
 const PWD_REGEX = /^[A-z0-9!@#$%]{4,12}$/

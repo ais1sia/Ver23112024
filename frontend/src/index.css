@@ -503,17 +503,6 @@ button {
   font-size: 14px;
 }
 
-/* 21.01.2025 */
-.DraftEditor-root {
-  min-height: 200px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  background: #fff;
-}
-
-/* 22.01.2025 */
-
 .dashboard-recommendations {
   background-color: #f9f9f9;
   padding: 20px;
@@ -556,55 +545,108 @@ button {
 }
 
 
-/* ACCOUNT */
+/* ACCOUNT - UPDATED FOR CONSISTENCY */
+
 .account-container {
-  max-width: 500px;
-  margin: 50px auto;
-  padding: 20px;
-  border-radius: 10px;
-  background: var(--MATERIAL-BGCOLOR);
+  width: 100%;
+  max-width: 900px; /* Increased width for better visibility */
+  margin: 40px auto; /* More spacing for centering */
+  padding: 40px;
+  border-radius: 8px;
+  background: white;
   text-align: center;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Only shadow, no border */
 }
 
 .account-title {
   color: var(--BUTTON);
-  font-size: 1.8rem;
-  margin-bottom: 10px;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  font-weight: bold;
 }
 
 .account-info p {
-  font-size: 1rem;
-  margin: 8px 0;
+  font-size: 1.1rem;
+  margin: 12px 0;
+  color: var(--COLOR);
 }
 
+/* Streak section adjustments */
 .streak-container {
-  margin-top: 15px;
-  padding: 10px;
+  margin-top: 20px;
+  padding: 15px;
   background: #ffe5b4;
   border-radius: 8px;
   text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .streak-text {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: bold;
+  color: var(--COLOR);
 }
 
 .streak-progress {
   width: 100%;
-  height: 10px;
+  height: 14px;
   background: #ddd;
-  border-radius: 5px;
-  margin-top: 5px;
+  border-radius: 7px;
+  margin-top: 10px;
   overflow: hidden;
 }
 
 .streak-bar {
   height: 100%;
-  background: #ff9933;
+  background: var(--BUTTON);
   transition: width 0.5s ease-in-out;
 }
+
+/* Align buttons with other forms */
+.account-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+  margin-top: 20px;
+}
+
+.account-button {
+  background-color: var(--BUTTON);
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.account-button:hover {
+  background-color: var(--LINK-HOVER);
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 600px) {
+  .account-container {
+    padding: 30px;
+  }
+
+  .account-title {
+    font-size: 1.8rem;
+  }
+
+  .account-info p {
+    font-size: 1rem;
+  }
+
+  .account-button {
+    font-size: 14px;
+    padding: 12px;
+  }
+}
+
 
 .error-message {
   color: var(--ERROR);
