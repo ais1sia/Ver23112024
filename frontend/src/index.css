@@ -159,6 +159,7 @@ a:focus-visible {
 
 .dash-header__title {
   font-size: 2rem;
+  font-family: monospace;
   color:#FF9933;
 }
 
@@ -178,23 +179,29 @@ a:focus-visible {
 
 .dash-footer {
   font-size: 1rem;
-  position: sticky;
+  position: fixed;
   bottom: 0;
   z-index: 1;
   background-color: var(--MATERIAL-BGCOLOR);
   padding: 0.5em;
-  /* border-top: 1px solid var(--BORDER-COLOR); */
   display: flex;
   flex-flow: row nowrap;
-  justify-content: flex-start;
+  justify-content: space-between;
+  width: 100%;
   gap: 1em;
+}
+
+.dash-footer__title {
+  text-align: right;
 }
 
 .dash-footer__button {
   font-size: 1rem;
   width: auto;
   height: auto;
+  text-align: left;
 }
+
 
 /* || TABLES - GENERAL */
 
@@ -216,6 +223,7 @@ tr {
 .table__button {
   padding: 0.25em;
   font-size: 1.5rem;
+  font-family: monospace;
   color: var(--TABLE-COLOR);
 }
 
@@ -256,28 +264,31 @@ tr {
   flex-flow: column nowrap;
   gap: 1em;
   max-width: 800px;
-  background-color: white; /* White background for the form */
-  padding: 40px; /* Consistent padding */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  margin: 0 auto; /* Center align the form */
+  background-color: white; 
+  padding: 40px; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 10px auto; 
 }
 
 .form__title-row h1 {
-  text-align: center; /* Center-align the title */
-  font-family: monospace; /* Monospace font for consistency */
+  text-align: center;
+  font-family: monospace;
   font-size: 24px;
   margin: 0;
+}
+.form__title-row h2 {
+  font-family: monospace;
+  font-size: 23px;
+  margin: 5px;
 }
 
 .form__input,
 .form__submit-button {
-  padding: 12px; /* Larger padding for better click targets */
-  border-radius: 8px; /* Rounded corners */
-  border: 1px solid var(--COLOR); /* Theme color for borders */
-  font-size: 14px; /* Consistent font size */
-  width: 100%; /* Ensure full width for inputs and buttons */
-  box-sizing: border-box; /* Include padding in width */
+  padding: 12px; 
+  border: 1px solid var(--COLOR);
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .form__input--text {
@@ -304,19 +315,21 @@ tr {
   flex-direction: column;
   justify-content: space-between;
   gap: 1em;
-  margin-top: 20px; /* Add spacing above buttons */
+  margin-top: 20px;
 }
 
 .form__submit-button {
-  background-color: #FF9933; /* Orange theme for buttons */
-  color: white; /* White text */
+  background-color: #FF9933;
+  color: white;
   font-weight: bold;
+  font-family: monospace;
   text-transform: uppercase;
   cursor: pointer;
 }
 
 .form__deactivate-button {
-  background-color: var(--INACTIVE); /* Orange theme for buttons */
+  background-color: var(--INACTIVE);
+  font-family: monospace;
   color: var(--COLOR);
   font-weight: bold;
   text-transform: uppercase;
@@ -326,7 +339,6 @@ tr {
 .form__select {
   width: fit-content;
   padding: 0.5em;
-  border-radius: 8px;
 }
 
 .form__row {
@@ -350,6 +362,7 @@ tr {
   }
 
   .form__title-row h1 {
+    font-family: monospace;
     font-size: 1.5rem; /* Adjust font size for small screens */
   }
 
@@ -365,6 +378,7 @@ tr {
   }
 
   .form__title-row h1 {
+    font-family: monospace;
     font-size: 2rem; /* Larger title for bigger screens */
   }
 
@@ -425,16 +439,15 @@ tr {
 }
 
 .card:hover {
-  transform: translateY(-3px); /* Lift on hover */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); 
   transition: all 0.2s ease;
 }
 
 .card__image {
-  width: 100%; /* Full width of the card */
-  height: auto; /* Maintain aspect ratio */
-  border-radius: 8px; /* Add rounded corners if desired */
-  margin-bottom: 8px; /* Add space below the image */
+  width: 100%; 
+  height: auto; 
+  margin-bottom: 8px;
 }
 
 /* WELCOME PAGE LOGIN JOIN NOW STYLE */
@@ -449,7 +462,6 @@ tr {
 .login-form {
   background: white;
   padding: 40px;
-  border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   width: 100%;
   max-width: 400px;
@@ -476,7 +488,6 @@ input {
   width: 100%;
   padding: 8px;
   border: 1px solid --COLOR;
-  border-radius: 4px;
   font-size: 14px;
 }
 
@@ -484,8 +495,8 @@ button {
   width: 100%;
   padding: 12px;
   border: 1px solid --COLOR;
-  border-radius: 4px;
   font-size: 14px;
+  font-family: monospace;
   font-weight: bold;
   cursor: pointer;
   text-transform: uppercase;
@@ -555,18 +566,19 @@ button {
 
 .account-container {
   width: 100%;
-  max-width: 900px; /* Increased width for better visibility */
+  max-width: 900px;
+  min-height: 100vh; /* Increased width for better visibility */
   margin: 40px auto; /* More spacing for centering */
   padding: 40px;
-  border-radius: 8px;
   background: white;
-  text-align: center;
+  text-align: left;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Only shadow, no border */
 }
 
 .account-title {
   color: var(--BUTTON);
   font-size: 2rem;
+  font-family: monospace;
   margin-bottom: 20px;
   font-weight: bold;
 }
@@ -580,9 +592,9 @@ button {
 /* Streak section adjustments */
 .streak-container {
   margin-top: 20px;
+  margin-bottom: 20px;
   padding: 15px;
   background: #ffe5b4;
-  border-radius: 8px;
   text-align: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -597,7 +609,6 @@ button {
   width: 100%;
   height: 14px;
   background: #ddd;
-  border-radius: 7px;
   margin-top: 10px;
   overflow: hidden;
 }
@@ -619,10 +630,10 @@ button {
 .account-button {
   background-color: var(--BUTTON);
   color: white;
+  font-family: monospace;
   font-weight: bold;
   text-transform: uppercase;
   padding: 14px;
-  border-radius: 8px;
   font-size: 16px;
   cursor: pointer;
   width: 100%;
@@ -640,6 +651,7 @@ button {
   }
 
   .account-title {
+    font-family: monospace;
     font-size: 1.8rem;
   }
 

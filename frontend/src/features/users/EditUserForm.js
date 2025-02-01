@@ -28,7 +28,7 @@ const EditUserForm = ({ user }) => {
     const [level, setLevel] = useState(user.level);
     const [roles, setRoles] = useState(user.roles);
     const [goals, setGoals] = useState(user.goals);
-    const [isActive, setIsActive] = useState(user.isActive);
+    const [isActive] = useState(user.isActive);
 
     const goalOptions = Object.values(GOALS).map((goal) => goal);
 
@@ -171,13 +171,13 @@ const EditUserForm = ({ user }) => {
 
             <div className="form__action-buttons">
                 {isAdmin ? (
-                    <label className="form__checkbox-container">
-                    {isActive ? "YES" : "FALSE - TO DELETE"}
-                    <input
+                    <label className="form__checkbox-container"> ACTIVE: 
+                    {isActive ? "   YES" : "    FALSE - TO DELETE"}
+                    {/* <input
                         type="checkbox"
                         checked={isActive}
                         onChange={(e) => setIsActive(e.target.checked)}
-                    />
+                    /> */}
                 </label>
                 ) : (
                     <button type="button" className="form__deactivate-button" onClick={onDeactivateClicked}>
