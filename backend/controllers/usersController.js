@@ -72,42 +72,50 @@ const createNewUser = asyncHandler(async (req, res) => {
 // @route PATCH /users
 // @access Private
 const updateUser = asyncHandler(async (req, res) => {
-    const { id, username, email, firstname, lastname, level, roles, goals, isActive, password } = req.body
-
+    const { id, username, email, firstname, lastname, level, roles, goals, isActive, password } = req.body;
+    
     if (!id) {
-        return res.status(400).json({ message: 'ID is required' })
+        return res.status(400).json({ message: 'ID is required' });
     }
 
     const user = await User.findById(id).exec();
-
     if (!user) {
-        return res.status(404).json({ message: 'User not found' })
+        return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Ensure the logged-in user is modifying their own account or is an admin
+    if (req.user !== user.username && !req.roles.includes('Admin')) {
+        return res.status(403).json({ message: 'Unauthorized' });
     }
 
     const duplicate = await User.findOne({
         $or: [{ email }, { username }]
-    }).collation({ locale: 'en', strength: 2 }).lean().exec()
+    }).collation({ locale: 'en', strength: 2 }).lean().exec();
 
-    if (duplicate) {
-        return res.status(409).json({ message: 'Email or username already in use' })
+    if (duplicate && duplicate._id.toString() !== id) {
+        return res.status(409).json({ message: 'Email or username already in use' });
     }
 
-    if (username) user.username = username
-    if (email) user.email = email
-    if (firstname) user.firstname = firstname
-    if (lastname) user.lastname = lastname
-    if (level) user.level = level || user.level
-    if (roles) user.roles = roles || user.roles
-    if (goals) user.goals = goals || user.goals
-    if (isActive) user.isActive = isActive || user.isActive
+    if (username) user.username = username;
+    if (email) user.email = email;
+    if (firstname) user.firstname = firstname;
+    if (lastname) user.lastname = lastname;
+    if (level) user.level = level || user.level;
+
+    // Restrict role modification to Admins only
+    if (roles && req.roles.includes('Admin')) {
+        user.roles = roles;
+    }
+    
+    if (goals) user.goals = goals || user.goals;
+    if (isActive) user.isActive = isActive || user.isActive;
 
     if (password) {
-        user.password = await bcrypt.hash(password, 10)
+        user.password = await bcrypt.hash(password, 10);
     }
 
-    const updatedUser = await user.save()
-
-    res.json({ message: `User ${updatedUser.username} updated successfully` })
+    const updatedUser = await user.save();
+    res.json({ message: `User ${updatedUser.username} updated successfully` });
 });
 
 // @desc Delete a user

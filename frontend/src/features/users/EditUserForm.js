@@ -11,7 +11,7 @@ import CustomSelector from '../../config/CustomSelector'
 import useAuth from "../../hooks/useAuth"
 
 const EditUserForm = ({ user }) => {
-    const { roles: userRoles } = useAuth();
+    const { userId, roles: userRoles } = useAuth();
     const isAdmin = userRoles.includes("Admin");
 
     //const [updateUser, { isLoading, isSuccess }] = useUpdateUserMutation();
@@ -40,15 +40,17 @@ const EditUserForm = ({ user }) => {
           ))
 
     const onSaveUserClicked = async (e) => {
-        e.preventDefault();
+        e.preventDefault()
 
-        const updatedFields = {};
+        const updatedFields = {}
+        
+        updatedFields.id = userId;
 
         if (username !== user.username) updatedFields.username = username;
         if (email !== user.email) updatedFields.email = email;
         if (firstname !== user.firstname) updatedFields.firstname = firstname;
         if (lastname !== user.lastname) updatedFields.lastname = lastname;
-        if (password) updatedFields.password = password; // Only send password if changed
+        if (password) updatedFields.password = password;
         if (level !== user.level) updatedFields.level = level;
         if (JSON.stringify(goals) !== JSON.stringify(user.goals)) updatedFields.goals = goals;
 
@@ -58,18 +60,16 @@ const EditUserForm = ({ user }) => {
         }
 
         if (Object.keys(updatedFields).length === 0) {
-            console.log("No changes detected.");
-            return;
+            console.log("No changes detected.")
+            return
         }
 
-        updatedFields.id = user.id;
-
-        await updateUser(updatedFields);
-    };
+        await updateUser(updatedFields)
+    }
 
     const onDeleteUserClicked = async () => {
         await deleteUser({ id: user.id });
-    };
+    }
 
     if (isLoading) {
         return <PulseLoader color={"#FFF"} />
