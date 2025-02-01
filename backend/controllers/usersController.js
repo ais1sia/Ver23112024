@@ -55,7 +55,7 @@ const createNewUser = asyncHandler(async (req, res) => {
         password: hashedPwd,
         roles: roles && roles.length ? roles : ['User'],
         goals: goals && goals.length ? goals : ['general'],
-        level: level || 'beginner',
+        level: level || 'A1',
         isActive: isActive || true
     };
 

@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useUpdateUserMutation, useDeleteUserMutation } from "./usersApiSlice"
-import { useNavigate } from "react-router-dom"
+//import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSave, faTrashCan } from "@fortawesome/free-solid-svg-icons"
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons"
 import { ROLES } from "../../config/roles"
 import { GOALS } from "../../config/goals"
 import { LEVELS } from "../../config/levels"
@@ -10,218 +10,109 @@ import PulseLoader from 'react-spinners/PulseLoader'
 import CustomSelector from '../../config/CustomSelector'
 import useAuth from "../../hooks/useAuth"
 
-const USER_REGEX = /^[A-z0-9!@#$%]{3,20}$/
-const PWD_REGEX = /^[A-z0-9!@#$%]{4,12}$/
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
 const EditUserForm = ({ user }) => {
-    const [updateUser, {
-        isLoading,
-        isSuccess,
-        isError,
-        error
-    }] = useUpdateUserMutation()
+    const { roles: userRoles } = useAuth();
+    const isAdmin = userRoles.includes("Admin");
 
-    const [deleteUser, {
-        isSuccess: isDelSuccess,
-        isError: isDelError,
-        error: delerror
-    }] = useDeleteUserMutation()
+    //const [updateUser, { isLoading, isSuccess }] = useUpdateUserMutation();
+    //const [deleteUser, { isSuccess: isDelSuccess }] = useDeleteUserMutation();
+    const [updateUser, { isLoading}] = useUpdateUserMutation();
+    const [deleteUser] = useDeleteUserMutation();
 
-    const navigate = useNavigate()
+   // const navigate = useNavigate();
 
-    const [username, setUsername] = useState('')
-    const [validUsername, setValidUsername] = useState(false)
-    const [email, setEmail] = useState('')
-    const [validEmail, setValidEmail] = useState(false)
-    const [firstname, setFirstname] = useState('')
-    const [lastname, setLastname] = useState('')
+    const [username, setUsername] = useState(user.username)
+    const [email, setEmail] = useState(user.email)
+    const [firstname, setFirstname] = useState(user.firstname)
+    const [lastname, setLastname] = useState(user.lastname)
     const [password, setPassword] = useState('')
-    const [validPassword, setValidPassword] = useState(false)
     const [level, setLevel] = useState(user.level)
     const [roles, setRoles] = useState(user.roles)
     const [goals, setGoals] = useState(user.goals)
     const [isActive, setIsActive] = useState(user.isActive)
 
-    useEffect(() => {
-        setValidUsername(USER_REGEX.test(username))
-    }, [username])
-
-    useEffect(() => {
-        setValidEmail(EMAIL_REGEX.test(email))
-    }, [email])
-
-    useEffect(() => {
-        setValidPassword(password === '' || PWD_REGEX.test(password))
-    }, [password])
-
-    useEffect(() => {
-        if (isSuccess || isDelSuccess) {
-            setUsername('')
-            setEmail('')
-            setFirstname('')
-            setLastname('')
-            setPassword('')
-            setLevel('')
-            setRoles([])
-            setGoals([])
-            navigate('/dash/users')
-        }
-    }, [isSuccess, isDelSuccess, navigate])
-
-    const onUsernameChanged = e => setUsername(e.target.value)
-    const onEmailChanged = e => setEmail(e.target.value)
-    const onFirstnameChanged = e => setFirstname(e.target.value)
-    const onLastnameChanged = e => setLastname(e.target.value)
-    const onPasswordChanged = e => setPassword(e.target.value)
-    const onLevelChanged = e => setLevel(e.target.value)
-    const onRolesChanged = e => {
-        const values = Array.from(
-            e.target.selectedOptions,
-            (option) => option.value
-        )
-        setRoles(values)
-    }
-    // const onGoalsChanged = e => {
-    //     const values = Array.from(
-    //         e.target.selectedOptions,
-    //         (option) => option.value
-    //     )
-    //     setGoals(values)
-    // }
-    const onIsActiveChanged = (e) => setIsActive(e.target.value)
-
-    const onSaveUserClicked = async (e) => {
-        e.preventDefault()
-        //DEBUG SHIT
-        console.log("isActive:", isActive)
-        await updateUser({ id: user.id, username, email, firstname, lastname, password, level, roles, goals, isActive })
-        console.log("Payload:", { id: user.id, username, email, firstname, lastname, password, level, roles, goals, isActive });
-    }
-
-    const onDeleteUserClicked = async () => {
-        await deleteUser({ id: user.id })
-    }
-
-    //DEBUG SHIT:
-    useEffect(() => {
-        console.log("isActive updated value:", isActive);
-    }, [isActive]);
-
-    const options = Object.values(ROLES).map(role => {
-        return (
-            <option
-                key={role}
-                value={role}
-            > {role}</option >
-        )
-    })
-
     const goalOptions = Object.values(GOALS).map((goal) => goal)
 
-    const levelOptions = Object.values(LEVELS).map((level) => (
-        <option key={level} value={level}>
-          {level}
-        </option>
-      ))
+        const levelOptions = Object.values(LEVELS).map((level) => (
+            <option key={level} value={level}>
+              {level}
+            </option>
+          ))
 
-    const errClass = (isError || isDelError) ? "errmsg" : "offscreen"
-    const validUserClass = !validUsername ? 'form__input--incomplete' : ''
-    const validEmailClass = !validEmail ? 'form__input--incomplete' : ''
-    const validPwdClass = password && !validPassword ? 'form__input--incomplete' : ''
-    const validRolesClass = !Boolean(roles.length) ? 'form__input--incomplete' : ''
-    // const validGoalsClass = !Boolean(goals.length) ? 'form__input--incomplete' : ''
+    const onSaveUserClicked = async (e) => {
+        e.preventDefault();
 
-    const errContent = (error?.data?.message || delerror?.data?.message) ?? ''
+        const updatedFields = {};
+
+        if (username !== user.username) updatedFields.username = username;
+        if (email !== user.email) updatedFields.email = email;
+        if (firstname !== user.firstname) updatedFields.firstname = firstname;
+        if (lastname !== user.lastname) updatedFields.lastname = lastname;
+        if (password) updatedFields.password = password; // Only send password if changed
+        if (level !== user.level) updatedFields.level = level;
+        if (JSON.stringify(goals) !== JSON.stringify(user.goals)) updatedFields.goals = goals;
+
+        if (isAdmin) {
+            if (JSON.stringify(roles) !== JSON.stringify(user.roles)) updatedFields.roles = roles;
+            if (isActive !== user.isActive) updatedFields.isActive = isActive;
+        }
+
+        if (Object.keys(updatedFields).length === 0) {
+            console.log("No changes detected.");
+            return;
+        }
+
+        updatedFields.id = user.id;
+
+        await updateUser(updatedFields);
+    };
+
+    const onDeleteUserClicked = async () => {
+        await deleteUser({ id: user.id });
+    };
 
     if (isLoading) {
         return <PulseLoader color={"#FFF"} />
     }
 
-    const content = (
-        <>
-            <p className={errClass}>{errContent}</p>
+    return (
+        <form className="form" onSubmit={onSaveUserClicked}>
+            <div className="form__title-row">
+                <h2>Edit Personal Data</h2>
+            </div>
 
-            <form className="form" onSubmit={onSaveUserClicked}>
-                <div className="form__title-row">
-                    <h2>Edit User</h2>
-                    <div className="form__action-buttons">
-                        <button
-                            className="icon-button"
-                            title="Save"
-                        >
-                            <FontAwesomeIcon icon={faSave} />
-                        </button>
-                        <button
-                            className="icon-button"
-                            title="Delete"
-                            onClick={onDeleteUserClicked}
-                            type="button"
-                        >
-                            <FontAwesomeIcon icon={faTrashCan} />
-                        </button>
-                    </div>
-                </div>
-                <label className="form__label" htmlFor="username">
-                    Username: <span className="nowrap">[3-20 letters]</span></label>
-                <input
-                    className={`form__input ${validUserClass}`}
-                    id="username"
-                    name="username"
-                    type="text"
-                    autoComplete="off"
-                    value={username}
-                    onChange={onUsernameChanged}
-                />
+            <label className="form__label">Username:</label>
+            <input className="form__input" 
+            value={username} 
+            onChange={(e) => setUsername(e.target.value)} 
+            />
 
-                <label className="form__label" htmlFor="email">
-                    Email:</label>
-                <input
-                    className={`form__input ${validEmailClass}`}
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="off"
-                    value={email}
-                    onChange={onEmailChanged}
-                />
+            <label className="form__label">Email:</label>
+            <input className="form__input" 
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)} 
+            />
 
-                <label className="form__label" htmlFor="firstname">
-                    First Name:</label>
-                <input
-                    className="form__input"
-                    id="firstname"
-                    name="firstname"
-                    type="text"
-                    autoComplete="off"
-                    value={firstname}
-                    onChange={onFirstnameChanged}
-                />
+            <label className="form__label">First Name:</label>
+            <input className="form__input" 
+            value={firstname} 
+            onChange={(e) => setFirstname(e.target.value)} 
+            />
 
-                <label className="form__label" htmlFor="lastname">
-                    Last Name:</label>
-                <input
-                    className="form__input"
-                    id="lastname"
-                    name="lastname"
-                    type="text"
-                    autoComplete="off"
-                    value={lastname}
-                    onChange={onLastnameChanged}
-                />
+            <label className="form__label">Last Name:</label>
+            <input className="form__input" 
+            value={lastname} 
+            onChange={(e) => setLastname(e.target.value)} 
+            />
 
-                <label className="form__label" htmlFor="password">
-                    Password: <span className="nowrap">[empty = no change]</span> <span className="nowrap">[4-12 chars incl. !@#$%]</span></label>
-                <input
-                    className={`form__input ${validPwdClass}`}
-                    id="password"
-                    name="password"
-                    type="password"
-                    value={password}
-                    onChange={onPasswordChanged}
-                />
+            <label className="form__label">Password:</label>
+            <input className="form__input" 
+            type="password" 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
+            />
 
-<label className="form__label" htmlFor="level">
+            <label className="form__label" htmlFor="level">
             Level:
           </label>
           <select
@@ -229,27 +120,13 @@ const EditUserForm = ({ user }) => {
             name="level"
             className="form__select"
             value={level}
-            onChange={onLevelChanged}
-            required
+            onChange={(e) => setLevel(e.target.value)} 
           >
             {levelOptions}
           </select>
 
-                <label className="form__label" htmlFor="roles">
-                    ASSIGNED ROLES:</label>
-                <select
-                    id="roles"
-                    name="roles"
-                    className={`form__select ${validRolesClass}`}
-                    multiple={true}
-                    size="3"
-                    value={roles}
-                    onChange={onRolesChanged}
-                >
-                    {options}
-                </select>
-                {/* CUSTOM GOAL SELECTOR */}
-                <label className="form__label" htmlFor="goals">
+           {/* CUSTOM GOAL SELECTOR */}
+           <label className="form__label" htmlFor="goals">
                     GOALS:
                 </label>
                 <CustomSelector
@@ -258,23 +135,29 @@ const EditUserForm = ({ user }) => {
                     setOptions={setGoals}
                 />
 
-                <label className="form__label form__checkbox-container" htmlFor="user-isActive">
-                    ACTIVE:
-                    <input
-                        className="form__checkbox"
-                        id="user-isActive"
-                        name="user-isActive"
-                        type="checkbox"
-                        checked={isActive}
-                        onChange={onIsActiveChanged}
-                    />
-                </label>        
-            </form>
-        </>
-    )
+            {isAdmin && (
+                <>
+                    <label className="form__label">Roles:</label>
+                    <select className="form__select" multiple value={roles} onChange={(e) => setRoles([...e.target.selectedOptions].map(o => o.value))}>
+                        {Object.values(ROLES).map(r => <option key={r} value={r}>{r}</option>)}
+                    </select>
 
-    return content
-}
+                    <label className="form__checkbox-container">Active:
+                        <input type="checkbox" checked={isActive} onChange={(e) => setIsActive(e.target.checked)} />
+                    </label>
+                </>
+            )}
+            <div className="form__action-buttons">
+                    <button className="form__submit-button" title="Save">Save changes
+                    </button>
+                    {isAdmin && (
+                        <button className="icon-button" title="Delete" onClick={onDeleteUserClicked} type="button">
+                            <FontAwesomeIcon icon={faTrashCan} />
+                        </button>
+                    )}
+                </div>
+        </form>
+    );
+};
 
-export default EditUserForm
-
+export default EditUserForm;

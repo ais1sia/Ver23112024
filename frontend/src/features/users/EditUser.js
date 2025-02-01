@@ -4,20 +4,17 @@ import { useGetUsersQuery } from './usersApiSlice'
 import PulseLoader from 'react-spinners/PulseLoader'
 
 const EditUser = () => {
-    const { id } = useParams()
+    const { id } = useParams();
 
     const { user } = useGetUsersQuery("usersList", {
         selectFromResult: ({ data }) => ({
             user: data?.entities[id]
         }),
-    })
+    });
 
     if (!user) return <PulseLoader color={"#FFF"} />
 
-    const content = <EditUserForm user={user} />
-
-    return content
+    return <EditUserForm user={user} />
 }
 
-export default EditUser
-
+export default EditUser;
