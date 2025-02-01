@@ -96,20 +96,19 @@ const updateUser = asyncHandler(async (req, res) => {
         return res.status(409).json({ message: 'Email or username already in use' });
     }
 
-    if (username) user.username = username;
-    if (email) user.email = email;
-    if (firstname) user.firstname = firstname;
-    if (lastname) user.lastname = lastname;
-    if (level) user.level = level || user.level;
+    if (username) user.username = username
+    if (email) user.email = email
+    if (firstname) user.firstname = firstname
+    if (lastname) user.lastname = lastname
+    if (level) user.level = level || user.level
+    if (goals) user.goals = goals || user.goals
+    if (isActive != user.isActive) user.isActive = isActive
 
     // Restrict role modification to Admins only
     if (roles && req.roles.includes('Admin')) {
         user.roles = roles;
     }
     
-    if (goals) user.goals = goals || user.goals;
-    if (isActive) user.isActive = isActive || user.isActive;
-
     if (password) {
         user.password = await bcrypt.hash(password, 10);
     }
