@@ -63,6 +63,7 @@ const EditUserForm = ({ user }) => {
             console.log("No changes detected.")
             return
         }
+        console.log(updatedFields)
 
         await updateUser(updatedFields)
     }
