@@ -81,6 +81,15 @@ export const materialsApiSlice = apiSlice.injectEndpoints({
                 body: { userId, rating },
             }),
         }),
+        markAsViewed: builder.mutation({
+            query: (materialId) => ({
+              url: `/materials/view/${materialId}`,
+              method: 'PATCH',
+            }),
+          }),
+          getViewedMaterials: builder.query({
+            query: (userId) => `/users/${userId}/viewed-materials`,
+          }),
     }),
 })
 
@@ -91,6 +100,8 @@ export const {
     useUpdateMaterialMutation,
     useDeleteMaterialMutation,
     useRateMaterialMutation,
+    useMarkAsViewedMutation,
+    useGetViewedMaterialsQuery,
 } = materialsApiSlice
 
 // returns the query result object

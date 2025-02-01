@@ -110,19 +110,15 @@ const deleteMaterial = asyncHandler(async (req, res) => {
   res.json(reply);
 })
 
-//21.01.2025
 const getRecommendedMaterials = asyncHandler(async (req, res) => {
   const { userId } = req.params;
 
-  // Fetch user data
   const user = await User.findById(userId).exec();
   if (!user) return res.status(404).json({ message: "User not found" });
 
-  // If the user has progress, proceed with collaborative filtering
   if (user.progress.length > 0) {
       const allMaterials = await Material.find().exec();
 
-      // Map material ratings by users
       const materialRatings = {};
       allMaterials.forEach(material => {
           materialRatings[material._id] = material.usefulness.map(entry => ({
@@ -131,13 +127,11 @@ const getRecommendedMaterials = asyncHandler(async (req, res) => {
           }));
       });
 
-      // User's rated materials
       const userRatings = user.progress.map(entry => ({
           materialId: entry.materialId.toString(),
           rating: entry.rating || 0,
       }));
 
-      // Calculate similarity
       const similarityScores = {};
       userRatings.forEach(userRating => {
           const { materialId, rating } = userRating;
@@ -155,7 +149,6 @@ const getRecommendedMaterials = asyncHandler(async (req, res) => {
           });
       });
 
-      // Sort materials by score
       const sortedMaterials = Object.entries(similarityScores)
           .sort(([, scoreA], [, scoreB]) => scoreB - scoreA)
           .map(([materialId]) => materialId);
@@ -165,7 +158,6 @@ const getRecommendedMaterials = asyncHandler(async (req, res) => {
       return res.json(recommendedMaterials);
   }
 
-  // If no progress, recommend materials based on user's goals
   if (user.goals.length > 0) {
       const recommendedMaterials = await Material.find({
           tags: { $in: user.goals },
@@ -179,7 +171,6 @@ const getRecommendedMaterials = asyncHandler(async (req, res) => {
   res.status(404).json({ message: "No recommendations available" });
 });
 
-// Helper to calculate cosine similarity
 function calculateCosineSimilarity(materialA, materialB) {
   const ratingsA = materialA.map((entry) => entry.rating);
   const ratingsB = materialB.map((entry) => entry.rating);
@@ -230,6 +221,27 @@ const rateMaterial = asyncHandler(async (req, res) => {
   res.json({ message: "Rating updated", averageRating: material.averageRating });
 });
 
+const markMaterialAsViewed = asyncHandler(async (req, res) => {
+  const { materialId } = req.params;
+  const userId = req.user.id;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const existingView = user.viewedMaterials.find(view => view.materialId.toString() === materialId);
+
+    if (!existingView) {
+      user.viewedMaterials.push({ materialId, viewedAt: new Date() });
+      await user.save();
+    }
+
+    res.status(200).json({ message: "Material marked as viewed" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 
 module.exports = {
   getAllMaterials,
@@ -238,4 +250,5 @@ module.exports = {
   deleteMaterial,
   getRecommendedMaterials,
   rateMaterial,
+  markMaterialAsViewed,
 }

@@ -11,10 +11,10 @@ const DashFooter = () => {
     const { pathname } = useLocation()
 
     const onGoHomeClicked = () => {
-        if (userId) {
+        if (status === "Admin") {
+          navigate("/dash")
+         } else if (userId) {
           navigate("/dash/materials");
-        } else if (status === "Admin") {
-          navigate("/dash");
         } else {
           navigate("/");
         }

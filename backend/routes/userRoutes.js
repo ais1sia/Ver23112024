@@ -13,4 +13,5 @@ router.route('/')
 
     router.route('/profile/:userId').get(usersController.getUserProfile)
 
+
 module.exports = router 

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { selectMaterialById } from "./materialsApiSlice";
@@ -10,29 +11,30 @@ import StarBorderIcon from '@mui/icons-material/StarBorder';
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 const ViewMaterial = () => {
-  const { id } = useParams();
-  const { userId } = useAuth();
-  const [rating, setRating] = useState(0); // State for rating
+  const { id } = useParams()
+  const { userId } = useAuth()
+  const [rating, setRating] = useState(0)
+  const [rateMaterial] = useRateMaterialMutation()
 
-  const [rateMaterial] = useRateMaterialMutation();
+  const navigate = useNavigate()
 
-  const material = useSelector((state) => selectMaterialById(state, id));
+  const material = useSelector((state) => selectMaterialById(state, id))
 
   if (!material) {
-    return <p>Material not found!</p>;
+    return <p>Material not found!</p>
   }
 
-  const { title, imageUrl, content, sourceUrl } = material;
+  const { title, imageUrl, content, sourceUrl } = material
 
-  // Handle rating change
   const handleRate = async (event, newValue) => {
-    setRating(newValue); // Update local state
+    setRating(newValue)
     try {
-      await rateMaterial({ id, rating: newValue, userId }).unwrap();
+      await rateMaterial({ id, rating: newValue, userId }).unwrap()
+      navigate("/dash/materials")
     } catch (err) {
-      console.error("Failed to rate material:", err);
+      console.error("Failed to rate material:", err)
     }
-  };
+  }
 
   return (
     <div style={styles.container}>

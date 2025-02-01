@@ -44,7 +44,13 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    progress: [{
+    viewedMaterials: [
+        {
+          materialId: { type: mongoose.Schema.Types.ObjectId, ref: 'Material', required: true },
+          viewedAt: { type: Date, default: Date.now }
+        }
+      ],
+      progress: [{
         materialId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Material',
