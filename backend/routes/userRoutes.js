@@ -12,6 +12,7 @@ router.route('/')
     .delete(usersController.deleteUser)
 
     router.route('/profile/:userId').get(usersController.getUserProfile)
+    router.route('/:userId/viewedMaterials').get(usersController.getViewedMaterials)
 
 
 module.exports = router 

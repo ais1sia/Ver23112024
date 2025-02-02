@@ -81,14 +81,16 @@ export const materialsApiSlice = apiSlice.injectEndpoints({
                 body: { userId, rating },
             }),
         }),
+        // TU COŚ SI ZJEBALO
         markAsViewed: builder.mutation({
-            query: (materialId) => ({
+            query: ({materialId, userId}) => ({
               url: `/materials/view/${materialId}`,
               method: 'PATCH',
+              body: { userId },
             }),
           }),
           getViewedMaterials: builder.query({
-            query: (userId) => `/users/${userId}/viewed-materials`,
+            query: (userId) => `/users/${userId}/viewedMaterials`,
           }),
     }),
 })

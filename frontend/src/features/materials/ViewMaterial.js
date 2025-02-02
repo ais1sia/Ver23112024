@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { selectMaterialById } from "./materialsApiSlice";
-import { useRateMaterialMutation } from "./materialsApiSlice";
+import { selectMaterialById, useRateMaterialMutation, useMarkAsViewedMutation } from "./materialsApiSlice";
 import useAuth from "../../hooks/useAuth";
 import Rating from "@mui/material/Rating"; // Import Material-UI Rating
 import StarIcon from '@mui/icons-material/Star';
@@ -15,10 +14,19 @@ const ViewMaterial = () => {
   const { userId } = useAuth()
   const [rating, setRating] = useState(0)
   const [rateMaterial] = useRateMaterialMutation()
+  const [markAsViewed] = useMarkAsViewedMutation()
 
   const navigate = useNavigate()
 
   const material = useSelector((state) => selectMaterialById(state, id))
+
+  useEffect(() => {
+    if (id && userId) {
+      markAsViewed({ materialId: id, userId })
+        .unwrap()
+        .catch((err) => console.error("Failed to mark as viewed:", err));
+    }
+  }, [id, userId, markAsViewed]);
 
   if (!material) {
     return <p>Material not found!</p>

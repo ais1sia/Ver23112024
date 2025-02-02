@@ -418,7 +418,8 @@ tr {
 }
 
 .materials-grid,
-.recommendations.grid {
+.recommendations.grid,
+.viewed-grid {
   display: grid;
   grid-template-columns: repeatrepeat(auto-fit, minmax(200px, 1fr));
   gap: 16px;
@@ -426,7 +427,8 @@ tr {
 }
 
 .materials-grid .card, 
-.recommendations-grid .card {
+.recommendations-grid .card,
+.viewed-grid .card {
   background-color: #ffffff;
   padding: 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -544,19 +546,23 @@ button {
 }
 
 .recommendations-section,
-.materials-section {
+.materials-section,
+.viewed-section {
+    margin-top: 20px;
     margin-bottom: 20px;
 }
 
 .recommendations-grid,
-.materials-grid {
+.materials-grid,
+.viewed-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px;
 }
 
 .recommendations-section h2,
-.materials-section h2 {
+.materials-section h2,
+.viewed-section h2 {
     color: #333;
     margin-bottom: 10px;
 }
@@ -595,7 +601,7 @@ button {
   margin-bottom: 20px;
   padding: 15px;
   background: #ffe5b4;
-  text-align: center;
+  text-align: left;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 

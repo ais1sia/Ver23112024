@@ -2,7 +2,7 @@ import { useGetMaterialsQuery, useGetRecommendedMaterialsQuery } from "./materia
 import Material from "./Material";
 import PulseLoader from "react-spinners/PulseLoader";
 import useAuth from "../../hooks/useAuth";
-import { useGetViewedMaterialsQuery } from '../materials/materialsApiSlice';
+// import { useGetViewedMaterialsQuery } from '../materials/materialsApiSlice';
 
 const MaterialsList = () => {
     const { userId } = useAuth();
@@ -21,12 +21,12 @@ const MaterialsList = () => {
         error: recommendationsError,
     } = useGetRecommendedMaterialsQuery(userId);
 
-    const { 
-        data: viewedMaterials = [], 
-        isLoading: isLoadingViewed, 
-        isError: isErrorViewed, 
-        error: viewedError,
-    } = useGetViewedMaterialsQuery(userId);
+    // const {
+    //     data: viewedMaterials = [],
+    //     isLoading: isLoadingViewed,
+    //     isError: isErrorViewed,
+    //     error: viewedError,
+    // } = useGetViewedMaterialsQuery(userId);
 
     return (
         <>
@@ -67,22 +67,23 @@ const MaterialsList = () => {
             </div>
 
             {/* Recently Viewed Materials Section */}
-            <div className="viewed-section">
+            {/* <div className="viewed-section">
                 <h2>Recently Viewed</h2>
                 {isLoadingViewed ? (
                     <PulseLoader color={"#FFF"} />
                 ) : isErrorViewed ? (
-                    <p className="errmsg">{viewedError?.data?.message || "Error loading viewed materials."}</p>
+                    <p className="errmsg">{viewedError?.data?.message || "No viewed materials yet."}</p>
                 ) : viewedMaterials.length > 0 ? (
                     <div className="viewed-grid">
                         {viewedMaterials.map(material => (
-                            <Material key={material._id} materialId={material._id} />
+                            <Material key={material.materialId} materialId={material.materialId} />
                         ))}
+
                     </div>
                 ) : (
-                    <p>No viewed materials yet.</p>
+                    <p>No viewed materials.</p>
                 )}
-            </div>
+            </div> */}
         </>
     );
 };

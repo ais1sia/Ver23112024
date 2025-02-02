@@ -25,6 +25,30 @@ const getUserProfile = asyncHandler(async (req, res) => {
     res.json(user)
 })
 
+// @desc Get viewed materials
+// @route GET /users/userId/viewedMaterials
+// @access Private
+const getViewedMaterials = asyncHandler(async (req, res) => {
+    const { userId } = req.params;
+
+    const user = await User.findById(userId).populate("viewedMaterials.materialId").lean();
+
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
+    }
+
+    if (!user.viewedMaterials.length) {
+        return res.status(404).json({ message: "No viewed materials found" });
+    }
+
+    res.json(user.viewedMaterials.map(view => ({
+        materialId: view.materialId._id,
+        title: view.materialId.title,
+        viewedAt: view.viewedAt
+    })));
+});
+
+
 // @desc Create a new user
 // @route POST /users
 // @access Private
@@ -144,6 +168,7 @@ const deleteUser = asyncHandler(async (req, res) => {
 module.exports = {
     getAllUsers,
     getUserProfile,
+    getViewedMaterials,
     createNewUser,
     updateUser,
     deleteUser,

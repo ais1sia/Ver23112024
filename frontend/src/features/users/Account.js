@@ -5,12 +5,23 @@ import DashHeader from '../../components/DashHeader';
 import DashFooter from '../../components/DashFooter';
 import PulseLoader from 'react-spinners/PulseLoader';
 import EditUserForm from './EditUserForm';
+import { useGetViewedMaterialsQuery } from '../materials/materialsApiSlice';
+import Material from "../materials/Material"
+
+
 
 const Account = () => {
     const { userId } = useAuth();
     const { data: user, isLoading, error } = useGetUserProfileQuery(userId, {
         skip: !userId,
     });
+
+    const { 
+        data: viewedMaterials = [], 
+        isLoading: isLoadingViewed, 
+        isError: isErrorViewed, 
+        error: viewedError,
+    } = useGetViewedMaterialsQuery(userId);
 
     const [isEditing, setIsEditing] = useState(false);
 
@@ -19,9 +30,9 @@ const Account = () => {
     if (error) return <p className="error-message">Error fetching profile</p>;
     if (!user) return <p className="error-message">User not found</p>;
 
-    const maxStreak = 30;
+    // const maxStreak = 30;
     const fireEmojis = "🔥".repeat(Math.min(user.streak, 10));
-    const streakPercentage = Math.min((user.streak / maxStreak) * 100, 100);
+    // const streakPercentage = Math.min((user.streak / maxStreak) * 100, 100);
 
     return (
         <>
@@ -35,9 +46,9 @@ const Account = () => {
                         <p className="streak-text">
                              You have a <strong>{user.streak}-day {fireEmojis} </strong> learning streak! <br /> Keep going! 
                         </p>
-                        <div className="streak-progress">
+                        {/* <div className="streak-progress">
                             <div className="streak-bar" style={{ width: `${streakPercentage}%` }}></div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
 
@@ -49,6 +60,25 @@ const Account = () => {
                 </button>
 
                 {isEditing && <EditUserForm user={user} />}
+
+                {/* Recently Viewed Materials Section */}
+                <div className="viewed-section">
+                <h2>Recently Viewed</h2>
+                {isLoadingViewed ? (
+                    <PulseLoader color={"#FFF"} />
+                ) : isErrorViewed ? (
+                    <p className="errmsg">{viewedError?.data?.message || "No viewed materials yet."}</p>
+                ) : viewedMaterials.length > 0 ? (
+                    <div className="viewed-grid">
+                        {viewedMaterials.map(material => (
+                            <Material key={material.materialId} materialId={material.materialId} />
+                        ))}
+
+                    </div>
+                ) : (
+                    <p>No viewed materials.</p>
+                )}
+            </div>
             </div>
             <DashFooter />
         </>
