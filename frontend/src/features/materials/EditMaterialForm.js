@@ -202,7 +202,7 @@ const EditMaterialForm = ({ material }) => {
           onChange={onImageUrlChanged}
         />
         <label className="form__label" htmlFor="sourceUrl">
-          Linked resource:
+          Source:
         </label>
         <input
           className="form__input"
