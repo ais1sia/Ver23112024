@@ -1,11 +1,13 @@
+import { useState } from "react";
 import { useGetMaterialsQuery, useGetRecommendedMaterialsQuery } from "./materialsApiSlice";
 import Material from "./Material";
 import PulseLoader from "react-spinners/PulseLoader";
 import useAuth from "../../hooks/useAuth";
-// import { useGetViewedMaterialsQuery } from '../materials/materialsApiSlice';
+import SearchBar from "../../config/SearchBar"
 
 const MaterialsList = () => {
     const { userId } = useAuth();
+    const [searchTerm, setSearchTerm] = useState("");
 
     const {
         data: materials,
@@ -21,15 +23,24 @@ const MaterialsList = () => {
         error: recommendationsError,
     } = useGetRecommendedMaterialsQuery(userId);
 
-    // const {
-    //     data: viewedMaterials = [],
-    //     isLoading: isLoadingViewed,
-    //     isError: isErrorViewed,
-    //     error: viewedError,
-    // } = useGetViewedMaterialsQuery(userId);
+    // Filter function
+    const filterMaterials = (items) => {
+        if (!items) return [];
+        return items.filter(material =>
+            material.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            material.short.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+    };
+
+    // Apply filtering
+    const filteredRecommendations = filterMaterials(recommendations);
+    const filteredMaterials = filterMaterials(materials?.entities ? Object.values(materials.entities) : []);
 
     return (
         <>
+            {/* Search Bar */}
+            <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+
             {/* Recommended Materials Section */}
             <div className="recommendations-section">
                 <h2>Recommended for You</h2>
@@ -37,9 +48,9 @@ const MaterialsList = () => {
                     <PulseLoader color={"#FFF"} />
                 ) : isErrorRecommendations ? (
                     <p className="errmsg">{recommendationsError?.data?.message || "Error loading recommendations."}</p>
-                ) : recommendations?.length ? (
+                ) : filteredRecommendations.length ? (
                     <div className="recommendations-grid">
-                        {recommendations.map(material => (
+                        {filteredRecommendations.map(material => (
                             <Material key={material._id} materialId={material._id} />
                         ))}
                     </div>
@@ -55,35 +66,16 @@ const MaterialsList = () => {
                     <PulseLoader color={"#FFF"} />
                 ) : isErrorMaterials ? (
                     <p className="errmsg">{materialsError?.data?.message || "Error loading materials."}</p>
-                ) : materials?.ids?.length ? (
+                ) : filteredMaterials.length ? (
                     <div className="materials-grid">
-                        {materials.ids.map(materialId => (
-                            <Material key={materialId} materialId={materialId} />
+                        {filteredMaterials.map(material => (
+                            <Material key={material._id} materialId={material._id} />
                         ))}
                     </div>
                 ) : (
                     <p>No materials found.</p>
                 )}
             </div>
-
-            {/* Recently Viewed Materials Section */}
-            {/* <div className="viewed-section">
-                <h2>Recently Viewed</h2>
-                {isLoadingViewed ? (
-                    <PulseLoader color={"#FFF"} />
-                ) : isErrorViewed ? (
-                    <p className="errmsg">{viewedError?.data?.message || "No viewed materials yet."}</p>
-                ) : viewedMaterials.length > 0 ? (
-                    <div className="viewed-grid">
-                        {viewedMaterials.map(material => (
-                            <Material key={material.materialId} materialId={material.materialId} />
-                        ))}
-
-                    </div>
-                ) : (
-                    <p>No viewed materials.</p>
-                )}
-            </div> */}
         </>
     );
 };

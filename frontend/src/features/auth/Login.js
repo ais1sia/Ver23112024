@@ -106,8 +106,6 @@ const Login = () => {
         </form>
       </main>
       <footer>
-        {/* <p><Link to="/">Home</Link></p>
-        <p><Link to="/register">Sign in</Link></p> */}
         <DashFooter />
       </footer>
     </section>

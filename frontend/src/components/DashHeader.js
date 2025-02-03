@@ -1,13 +1,10 @@
 import { useSendLogoutMutation } from "../features/auth/authApiSlice";
 import useAuth from "../hooks/useAuth";
 import {
-  // faFileCirclePlus,
-  // faFilePen,
-  // faUserGear,
-  //faUserPlus,
   faRightFromBracket,
   faCrosshairs,
-  faCircleUser
+  faCircleUser,
+  faHouse,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate, Link, useLocation } from "react-router-dom";
@@ -18,10 +15,10 @@ const MATERIALS_REGEX = /^\/dash\/materials(\/)?$/;
 const USERS_REGEX = /^\/dash\/users(\/)?$/;
 
 const DashHeader = () => {
-  const { username, isAdmin } = useAuth();
+  const { username, isAdmin } = useAuth()
 
-  const navigate = useNavigate();
-  const { pathname } = useLocation();
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
 
   const [
     sendLogout,
@@ -41,19 +38,20 @@ const DashHeader = () => {
 
   const handleLogout = async () => {
     try {
-      await sendLogout().unwrap() // Waits for success
-      //console.log("Logout successful, navigating...");
+      await sendLogout().unwrap()
       navigate("/");
     } catch (err) {
       console.error("Error during logout:", err);
     }
   }
 
-  // const onNewMaterialClicked = () => navigate("/dash/materials/new");
-  // //const onNewUserClicked = () => navigate("/dash/users/new");
-  // const onMaterialsClicked = () => navigate("/dash/materials");
-  // const onUsersClicked = () => navigate("/dash/users");
-  const onAccountClicked = () => navigate("/account");
+  const onAccountClicked = () => {
+    if (pathname === "/account") {
+      navigate(isAdmin ? "/dash" : "/dash/materials");
+    } else {
+      navigate("/account");
+    }
+  }
 
   let dashClass = null;
   if (
@@ -64,58 +62,6 @@ const DashHeader = () => {
     dashClass = "dash-header__container";
   }
 
-  // let newMaterialButton = null;
-  // if (isAdmin) {
-  //   if (MATERIALS_REGEX.test(pathname)) {
-  //     newMaterialButton = (
-  //       <button
-  //         className="icon-button"
-  //         title="New Material"
-  //         onClick={onNewMaterialClicked}
-  //       >
-  //         <FontAwesomeIcon icon={faFileCirclePlus} />
-  //       </button>
-  //     );
-  //   }
-  // }
-  
-  // let newUserButton = null;
-  // if (USERS_REGEX.test(pathname)) {
-  //   newUserButton = (
-  //     <button
-  //       className="icon-button"
-  //       title="New User"
-  //       onClick={onNewUserClicked}
-  //     >
-  //       <FontAwesomeIcon icon={faUserPlus} />
-  //     </button>
-  //   );
-  // }
-
-  // let userButton = null;
-  // if (isAdmin) {
-  //   if (!USERS_REGEX.test(pathname) && pathname.includes("/dash")) {
-  //     userButton = (
-  //       <button className="icon-button" title="Users" onClick={onUsersClicked}>
-  //         <FontAwesomeIcon icon={faUserGear} />
-  //       </button>
-  //     );
-  //   }
-  // }
-
-  // let materialsButton = null;
-  // if (!MATERIALS_REGEX.test(pathname) && pathname.includes("/dash")) {
-  //   materialsButton = (
-  //     <button
-  //       className="icon-button"
-  //       title="Materials"
-  //       onClick={onMaterialsClicked}
-  //     >
-  //       <FontAwesomeIcon icon={faFilePen} />
-  //     </button>
-  //   );
-  // }
-
   const logoutButton = (
     <button className="icon-button" title="Logout" onClick={handleLogout}>
       <FontAwesomeIcon icon={faRightFromBracket} />
@@ -123,8 +69,8 @@ const DashHeader = () => {
   )
 
   const accountButton = (
-    <button className="icon-button" title="Account" onClick={onAccountClicked}>
-      <FontAwesomeIcon icon={faCircleUser} />
+    <button className="icon-button" title={pathname === "/account" ? "Home" : "Account"} onClick={onAccountClicked}>
+      <FontAwesomeIcon icon={pathname === "/account" ? faHouse : faCircleUser} />
     </button>
   )
 
@@ -136,10 +82,6 @@ const DashHeader = () => {
   } else {
     buttonContent = (
       <>
-        {/* {newMaterialButton}
-        {newUserButton}
-        {materialsButton}
-        {userButton} */}
         {accountButton}
         {logoutButton}
       </>

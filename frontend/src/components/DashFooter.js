@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faHouse } from "@fortawesome/free-solid-svg-icons"
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import useAuth from "../hooks/useAuth"
 
 const DashFooter = () => {
@@ -8,7 +8,6 @@ const DashFooter = () => {
     const { userId, status } = useAuth()
 
     const navigate = useNavigate()
-    const { pathname } = useLocation()
 
     const onGoHomeClicked = () => {
         if (status === "Admin") {
@@ -21,9 +20,8 @@ const DashFooter = () => {
       };
     
       // Show the button only if not already on the "home" page
-      let goHomeButton = null;
-      if (pathname !== "/dash" && pathname !== "/dash/materials") {
-        goHomeButton = (
+      
+        const goHomeButton = (
           <button
             className="dash-footer__button icon-button"
             title="Home"
@@ -31,8 +29,8 @@ const DashFooter = () => {
           >
             <FontAwesomeIcon icon={faHouse} />
           </button>
-        );
-      }
+        )
+
 
     const content = (
         <footer className="dash-footer">

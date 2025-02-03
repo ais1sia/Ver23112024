@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useLoginMutation } from "../features/auth/authApiSlice"
 import { setCredentials } from "../features/auth/authSlice";
+import usePersist from "../hooks/usePersist";
+
 
 const Public = (props) => {
   const {
@@ -15,6 +17,8 @@ const Public = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
+  const [persist, setPersist] = usePersist();
+
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -53,6 +57,7 @@ const Public = (props) => {
   const handleUserInput = (e) => setUsername(e.target.value);
   const handlePwdInput = (e) => setPassword(e.target.value);
   const handleJoinNow = () => navigate("/register");
+  const handleToggle = () => setPersist((prev) => !prev);
 
 
   return (
@@ -89,6 +94,18 @@ const Public = (props) => {
               onChange={handlePwdInput}
               required
             />
+          </div>
+          <div>
+          <label htmlFor="persist" className="form__persist">
+            <input
+              type="checkbox"
+              className="form__checkbox"
+              id="persist"
+              onChange={handleToggle}
+              checked={persist}
+            />
+            Trust This Device
+          </label>
           </div>
 
           <button className="sign-up-btn" type="submit" disabled={isLoading}>
