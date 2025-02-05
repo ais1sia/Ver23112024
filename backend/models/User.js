@@ -57,8 +57,7 @@ const userSchema = new mongoose.Schema({
       progress: [{
         materialId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Material',
-            required: true
+            ref: 'Material'
         },
         completedAt: {
             type: Date,

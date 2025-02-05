@@ -32,7 +32,8 @@ const ViewMaterial = () => {
     return <p>Material not found!</p>
   }
 
-  const { title, imageUrl, content, sourceUrl } = material
+  const { title, imageUrl, content, sourceUrl} = material
+  const materialTagsString = material.tags.join(", ")
 
   const handleRate = async (event, newValue) => {
     setRating(newValue)
@@ -49,6 +50,10 @@ const ViewMaterial = () => {
       {imageUrl && <img src={imageUrl} alt={title} style={styles.image} />}
 
       <h1 style={styles.title}>{title}</h1>
+      <p className="card__short">{material.short}</p>
+        <p><i>Level: {material.level}</i></p>
+        <p><i>Rating: {material.averageRating}/5</i></p>
+        <p><i>Tags: {materialTagsString}</i></p>
 
       <div
         style={styles.content}

@@ -81,7 +81,6 @@ export const materialsApiSlice = apiSlice.injectEndpoints({
                 body: { userId, rating },
             }),
         }),
-        // TU COŚ SI ZJEBALO
         markAsViewed: builder.mutation({
             query: ({materialId, userId}) => ({
               url: `/materials/view/${materialId}`,
@@ -106,19 +105,15 @@ export const {
     useGetViewedMaterialsQuery,
 } = materialsApiSlice
 
-// returns the query result object
 export const selectMaterialsResult = materialsApiSlice.endpoints.getMaterials.select()
 
-// creates memoized selector
 const selectMaterialsData = createSelector(
     selectMaterialsResult,
-    materialsResult => materialsResult.data // normalized state object with ids & entities
+    materialsResult => materialsResult.data 
 )
 
-//getSelectors creates these selectors and we rename them with aliases using destructuring
 export const {
     selectAll: selectAllMaterials,
     selectById: selectMaterialById,
     selectIds: selectMaterialIds
-    // Pass in a selector that returns the materials slice of state
 } = materialsAdapter.getSelectors(state => selectMaterialsData(state) ?? initialState)

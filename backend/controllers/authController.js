@@ -9,7 +9,7 @@ const asyncHandler = require('express-async-handler')
 const register = asyncHandler(async (req, res) => {
     const { username, email, firstname, lastname, password, language, level, roles, goals, isActive } = req.body
 
-    if (!username || !email || !firstname || !lastname || !password || language) {
+    if (!username || !email || !firstname || !lastname || !password ) {
         return res.status(400).json({ message: 'All fields are required' })
     }
 
@@ -30,10 +30,10 @@ const register = asyncHandler(async (req, res) => {
         firstname,
         lastname,
         password: hashedPwd,
-        language,
+        language: language || 'English',
         roles: roles && roles.length ? roles : ['User'],
         goals: goals && goals.length ? goals : ['general'],
-        level: level || 'beginner',
+        level: level || 'A1',
         isActive: isActive || true
     };
 
@@ -67,14 +67,22 @@ const login = asyncHandler(async (req, res) => {
     if (!match) return res.status(401).json({ message: 'Unauthorized' })
     
         if (foundUser && match) {
-            const today = new Date().setHours(0, 0, 0, 0);
-            const lastLogin = foundUser.lastLogin ? new Date(foundUser.lastLogin).setHours(0, 0, 0, 0) : null;
+            const today = new Date()
+            today.setHours(0, 0, 0, 0)
         
-            if (lastLogin && today - lastLogin <= 86400000) {
-                foundUser.streak += 1;
+            const lastLogin = foundUser.lastLogin ? new Date(foundUser.lastLogin) : null;
+            if (lastLogin) lastLogin.setHours(0, 0, 0, 0)
+        
+            const yesterday = new Date()
+            yesterday.setDate(yesterday.getDate() - 1)
+            yesterday.setHours(0, 0, 0, 0)
+        
+            if (lastLogin && lastLogin.getTime() === yesterday.getTime()) {
+                foundUser.streak += 1
             } else {
-                foundUser.streak = 1;
+                foundUser.streak = 1
             }
+        
             foundUser.lastLogin = new Date()
             await foundUser.save()
         }

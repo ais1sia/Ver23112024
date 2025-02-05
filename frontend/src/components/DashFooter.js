@@ -18,9 +18,7 @@ const DashFooter = () => {
           navigate("/");
         }
       };
-    
-      // Show the button only if not already on the "home" page
-      
+          
         const goHomeButton = (
           <button
             className="dash-footer__button icon-button"

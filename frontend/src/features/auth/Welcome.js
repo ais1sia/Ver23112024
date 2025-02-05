@@ -16,6 +16,8 @@ const Welcome = () => {
     const content = (
         <section className="welcome">
 
+            {(isAdmin) && <h2>Admin Dashboard</h2>}
+            
             <p><Link to="/dash/materials">View Materials Dashboard</Link></p>
 
             {(isAdmin) && <p><Link to="/dash/materials/new">Add New Material</Link></p>}

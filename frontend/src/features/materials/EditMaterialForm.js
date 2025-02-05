@@ -24,7 +24,7 @@ const EditMaterialForm = ({ material }) => {
 
   const navigate = useNavigate()
 
-  const [title, setTitle] = useState('')
+  const [title, setTitle] = useState(material.title)
   const [language, setLanguage] = useState(material.language)
   const [short, setShort] = useState(material.short)
   const [level, setLevel] = useState("A1")

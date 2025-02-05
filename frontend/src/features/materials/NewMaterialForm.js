@@ -125,7 +125,7 @@ const NewMaterial = () => {
         </div>
 
         <label className="form__label" htmlFor="title">
-          Title: <span className="nowrap">[3-20 letters]</span>
+          Title:
         </label>
         <input
           className="form__input"

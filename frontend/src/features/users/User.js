@@ -1,8 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons"
-import { useNavigate } from 'react-router-dom'
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons"
 import { memo } from 'react'
 import { useGetUsersQuery } from './usersApiSlice'
+import { useDeleteUserMutation } from "./usersApiSlice";
 
 const User = ({ userId }) => {
 
@@ -12,10 +12,12 @@ const User = ({ userId }) => {
         }),
     })
 
-    const navigate = useNavigate()
-
+    const [deleteUser] = useDeleteUserMutation()
+    
     if (user) {
-        const handleEdit = () => navigate(`/dash/users/${userId}`)
+        const handleDelete = async () => {
+            await deleteUser({ id: user.id })
+        }
 
         const userRolesString = user.roles.toString().replaceAll(',', ', ')
         const userGoalsString = user.goals.toString().replaceAll(',', ', ')
@@ -37,9 +39,9 @@ const User = ({ userId }) => {
                 <td className={`table__cell ${cellStatus}`}>
                     <button
                         className="icon-button table__button"
-                        onClick={handleEdit}
+                        onClick={handleDelete}
                     >
-                        <FontAwesomeIcon icon={faPenToSquare} />
+                        <FontAwesomeIcon icon={faTrashCan} />
                     </button>
                 </td>
             </tr>

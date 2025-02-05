@@ -3,7 +3,6 @@ import {
   Editor,
   EditorState,
   ContentState,
-  convertToRaw,
 } from "draft-js";
 import { stateToHTML } from "draft-js-export-html";
 import "draft-js/dist/Draft.css";
@@ -20,7 +19,6 @@ const RichTextEditor = ({ initialContent = "", onContentChange }) => {
   const handleEditorChange = (newEditorState) => {
     setEditorState(newEditorState);
 
-    // Convert content to HTML and call the parent-provided handler
     const contentHTML = stateToHTML(newEditorState.getCurrentContent());
     onContentChange(contentHTML);
   };

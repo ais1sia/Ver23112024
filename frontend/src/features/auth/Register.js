@@ -12,7 +12,6 @@ const Register = () => {
   const userRef = useRef();
   const errRef = useRef();
 
-  // Define states for form fields
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [email, setEmail] = useState("")
@@ -34,6 +33,16 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log({
+        username,
+        password,
+        email,
+        firstname,
+        lastname,
+        language,
+        level,
+        goals,
+      })
       const response = await register({
         username,
         password,
@@ -108,6 +117,20 @@ const Register = () => {
             required
           />
 
+          <label className="form__label" htmlFor="email">
+            Email:
+          </label>
+          <input
+            className="form__input"
+            id="email"
+            name="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+
+
           <label className="form__label" htmlFor="password">
             Password: <span className="nowrap">[must incl. !@#$%]</span>
           </label>
@@ -121,18 +144,6 @@ const Register = () => {
             required
           />
 
-          <label className="form__label" htmlFor="email">
-            Email:
-          </label>
-          <input
-            className="form__input"
-            id="email"
-            name="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
 
           <label className="form__label" htmlFor="firstname">
             First Name:

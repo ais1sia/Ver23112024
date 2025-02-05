@@ -1,8 +1,6 @@
 import { useState } from "react";
-import { useUpdateUserMutation, useDeleteUserMutation } from "./usersApiSlice";
+import { useUpdateUserMutation } from "./usersApiSlice";
 import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { ROLES } from "../../config/roles";
 import { GOALS } from "../../config/goals";
 import { LANGUAGES } from "../../config/languages";
@@ -17,7 +15,6 @@ const EditUserForm = ({ user }) => {
     const isAdmin = userRoles.includes("Admin");
 
     const [updateUser, { isLoading }] = useUpdateUserMutation();
-    const [deleteUser] = useDeleteUserMutation();
 
     const navigate = useNavigate()
 
@@ -73,11 +70,7 @@ const EditUserForm = ({ user }) => {
         console.log(updatedFields);
 
         await updateUser(updatedFields);
-    };
-
-    const onDeleteUserClicked = async () => {
-        await deleteUser({ id: user.id });
-    };
+    }
 
     const onDeactivateClicked = async () => {
         const confirmed = window.confirm("Are you sure you want to deactivate your account? Re-activating will require contact with Support");
@@ -208,11 +201,11 @@ const EditUserForm = ({ user }) => {
                 )}
 
                 <button className="form__submit-button" title="Save">Save changes</button>
-                {isAdmin && (
+                {/* {isAdmin && (
                     <button className="icon-button" title="Delete" onClick={onDeleteUserClicked} type="button">
                         <FontAwesomeIcon icon={faTrashCan} />
                     </button>
-                )}
+                )} */}
             </div>
         </form>
     );

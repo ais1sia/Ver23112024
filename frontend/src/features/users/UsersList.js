@@ -46,7 +46,7 @@ const UsersList = () => {
                         <th scope="col" className="table__th user__goals">Goals</th>
                         <th scope="col" className="table__th user__lastLogin">Last login</th>
                         <th scope="col" className="table__th user__streak">Streak</th>
-                        <th scope="col" className="table__th user__edit">Edit</th>
+                        <th scope="col" className="table__th user__delete">Delete</th>
                     </tr>
                 </thead>
                 <tbody>
