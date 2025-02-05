@@ -6,7 +6,7 @@
   box-sizing: border-box;
 }
 
-/* || VARIABLES */
+/* VARIABLES */
 
 :root {
   /* COLORS */
@@ -24,7 +24,7 @@
   --BUTTON: #FF9933;
 }
 
-/* || UTILITY CLASSES */
+/* UTILITY CLASSES */
 .errmsg {
   display: inline-block;
   background-color: var(--TABLE-BGCOLOR);
@@ -62,7 +62,12 @@
   visibility: hidden;
 }
 
-/* || GENERAL STYLES */
+.icon-button 
+.edit-button {
+  margin-top: auto;
+}
+
+/* GENERAL STYLES */
 
 body {
   font-family: 'Nunito', sans-serif;
@@ -82,7 +87,6 @@ select {
 }
 
 #root {
-  /* React root div */
   min-height: 100vh;
   display: flex;
   flex-flow: column nowrap;
@@ -101,7 +105,7 @@ a:focus-visible {
   color: var(--LINK-HOVER);
 }
 
-/* || PAGES */
+/* PAGES */
 
 .public,
 .welcome {
@@ -132,7 +136,7 @@ a:focus-visible {
   content: "➜ "
 }
 
-/* || DASH HEADER, CONTAINER & FOOTER */
+/* DASH HEADER, CONTAINER & FOOTER */
 
 .dash-header {
   position: sticky;
@@ -140,7 +144,6 @@ a:focus-visible {
   z-index: 1;
   background-color: var(--MATERIAL-BGCOLOR);
   padding: 0 0.5em;
-  /* border-bottom: 1px solid var(--BORDER-COLOR); */
 }
 
 .dash-header__container {
@@ -193,6 +196,7 @@ a:focus-visible {
 
 .dash-footer__title {
   text-align: right;
+  margin-right: 10px;
 }
 
 .dash-footer__button {
@@ -203,7 +207,7 @@ a:focus-visible {
 }
 
 
-/* || TABLES - GENERAL */
+/* TABLES - GENERAL */
 
 thead,
 tbody,
@@ -257,7 +261,7 @@ tr {
 }
 
 
-/* || FORM - GENERAL (UPDATED FOR CONSISTENCY WITH "/" PAGE) */
+/* FORM - GENERAL  */
 
 .form {
   display: flex;
@@ -293,7 +297,7 @@ tr {
 
 .form__input--text {
   min-height: 150px;
-  resize: vertical; /* Allow resizing for textareas */
+  resize: vertical;
 }
 
 .form__input--incomplete {
@@ -355,13 +359,13 @@ tr {
 .form__row {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5em; /* Space between rows */
+  gap: 1.5em;
 }
 
 .form__divider {
   text-align: center;
-  margin: 15px 0; /* Spacing around divider */
-  color: #666; /* Subtle color */
+  margin: 15px 0;
+  color: #666;
   font-size: 14px;
 }
 
@@ -369,33 +373,33 @@ tr {
 
 @media screen and (max-width: 400px) {
   .form {
-    padding: 20px; /* Smaller padding on small screens */
+    padding: 20px;
   }
 
   .form__title-row h1 {
     font-family: monospace;
-    font-size: 1.5rem; /* Adjust font size for small screens */
+    font-size: 1.5rem;
   }
 
   .form__input,
   .form__submit-button {
-    font-size: 12px; /* Smaller font size for inputs and buttons */
+    font-size: 12px;
   }
 }
 
 @media screen and (min-width: 768px) {
   .form {
-    padding: 40px; /* Restore padding on larger screens */
+    padding: 40px;
   }
 
   .form__title-row h1 {
     font-family: monospace;
-    font-size: 2rem; /* Larger title for bigger screens */
+    font-size: 2rem; 
   }
 
   .form__input,
   .form__submit-button {
-    font-size: 16px; /* Increase font size for better readability */
+    font-size: 16px;
   }
 }
 /* CUSTOM SELECTOR */
@@ -428,6 +432,7 @@ tr {
   color: var(--COLOR);
 }
 
+
 .materials-grid,
 .recommendations.grid,
 .viewed-grid {
@@ -455,18 +460,18 @@ tr {
   transform: translateY(-3px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   padding-bottom: 40px;
-  transition: all 0.3s ease; /* Smooth transition on hover */
+  transition: all 0.3s ease;
 }
 
 .card__viewed {
   opacity: 0;
-  visibility: hidden; /* Hide these elements by default */
-  transition: opacity 0.3s ease, visibility 0.3s ease; /* Smooth transition */
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .card:hover .card__viewed {
   opacity: 1;
-  visibility: visible; /* Show these elements on hover */
+  visibility: visible; 
 }
 
 .card__image {
@@ -475,8 +480,21 @@ tr {
   margin-bottom: 8px;
 }
 
+.card__short {
+  flex-grow: 1;
+  text-align: center;
+}
 
-/* WELCOME PAGE LOGIN JOIN NOW STYLE */
+.card__actions {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 10px;
+  margin-top: auto;
+}
+
+
+/* WELCOME PAGE LOGIN JOIN NOW  */
 .login-container {
   min-height: 100vh;
   display: flex;
@@ -592,17 +610,17 @@ button {
 }
 
 
-/* ACCOUNT - UPDATED FOR CONSISTENCY */
+/* ACCOUNT  */
 
 .account-container {
   width: 100%;
   max-width: 900px;
-  min-height: 100vh; /* Increased width for better visibility */
-  margin: 40px auto; /* More spacing for centering */
+  min-height: 100vh; 
+  margin: 40px auto; 
   padding: 40px;
   background: white;
   text-align: left;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Only shadow, no border */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
 .account-title {
@@ -619,7 +637,6 @@ button {
   color: var(--COLOR);
 }
 
-/* Streak section adjustments */
 .streak-container {
   margin-top: 20px;
   margin-bottom: 20px;
@@ -649,7 +666,6 @@ button {
   transition: width 0.5s ease-in-out;
 }
 
-/* Align buttons with other forms */
 .account-buttons {
   display: flex;
   justify-content: space-between;
@@ -674,7 +690,6 @@ button {
   background-color: var(--LINK-HOVER);
 }
 
-/* Responsive Adjustments */
 @media screen and (max-width: 600px) {
   .account-container {
     padding: 30px;
@@ -708,7 +723,6 @@ button {
   text-align: center;
 }
 
-/* 03.02.2025 */
 .search-bar {
   display: flex;
   align-items: center;
