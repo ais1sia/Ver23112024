@@ -1,8 +1,7 @@
+import { LANGUAGES } from "../../config/languages"
 import { LEVELS } from "../../config/levels"
 import { TAGS } from "../../config/tags"
 import { useAddNewMaterialMutation } from "./materialsApiSlice"
-// import { faSave } from "@fortawesome/free-solid-svg-icons"
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import RichTextEditor from "../../config/RichTextEditor"
@@ -39,9 +38,8 @@ const NewMaterial = () => {
   const onLanguageChanged = (e) => setLanguage(e.target.value)
   const onShortChanged = (e) => setShort(e.target.value)
   const onLevelChanged = (e) => setLevel(e.target.value)
-  //const onContentChanged = (e) => setContent(e.target.value)
   const onContentChanged = (newContent) => {
-    setContent(newContent);  // Set the new content (HTML)
+    setContent(newContent)
   }
   const onImageUrlChanged = (e) => setImageUrl(e.target.value)
   const onSourceUrlChanged = (e) => setSourceUrl(e.target.value)
@@ -89,6 +87,15 @@ const NewMaterial = () => {
     }
   }
 
+  const languageOptions = Object.values(LANGUAGES).map((language) => {
+    return (
+      <option key={language} value={language}>
+        {" "}
+        {language}
+      </option>
+    )
+  })
+  
   const levelOptions = Object.values(LEVELS).map((level) => {
     return (
       <option key={level} value={level}>
@@ -133,14 +140,17 @@ const NewMaterial = () => {
         <label className="form__label" htmlFor="language">
           Language:
         </label>
-        <input
-          className="form__input"
+        <select
           id="language"
           name="language"
-          type="language"
+          className="form__select"
+          multiple={false}
+          size="1"
           value={language}
           onChange={onLanguageChanged}
-        />
+        >
+          {languageOptions}
+        </select>
 
         <label className="form__label" htmlFor="short">
           Short description:
@@ -169,17 +179,6 @@ const NewMaterial = () => {
           {levelOptions}
         </select>
 
-        {/* <label className="form__label" htmlFor="content">
-          Content:
-        </label>
-        <input
-          className="form__input"
-          id="content"
-          name="content"
-          type="content"
-          value={content}
-          onChange={onContentChanged}
-        /> */}
         <RichTextEditor initialContent={content} onContentChange={onContentChanged} />
         <label className="form__label" htmlFor="setImageUrl">
           Image Url:
@@ -218,7 +217,7 @@ const NewMaterial = () => {
         >
           {tagsOptions}
         </select>
-          <button className="final-submit-btn" title="Save" disabled={!canSave}>
+        <button className="final-submit-btn" title="Save" disabled={!canSave}>
           SAVE
         </button>
       </form>

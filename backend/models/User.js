@@ -21,6 +21,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    language: {
+        type: String,
+        required: true
+    },
     level: {
         type: String,
         default: "A1"

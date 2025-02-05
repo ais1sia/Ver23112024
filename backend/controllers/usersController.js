@@ -53,7 +53,7 @@ const getViewedMaterials = asyncHandler(async (req, res) => {
 // @route POST /users
 // @access Private
 const createNewUser = asyncHandler(async (req, res) => {
-    const { username, email, firstname, lastname, password, level, roles, goals, isActive } = req.body
+    const { username, email, firstname, lastname, password, language, level, roles, goals, isActive } = req.body
 
     if (!username || !email || !firstname || !lastname || !password) {
         return res.status(400).json({ message: 'All fields are required' })
@@ -77,6 +77,7 @@ const createNewUser = asyncHandler(async (req, res) => {
         firstname,
         lastname,
         password: hashedPwd,
+        language: language || 'English',
         roles: roles && roles.length ? roles : ['User'],
         goals: goals && goals.length ? goals : ['general'],
         level: level || 'A1',
@@ -96,7 +97,7 @@ const createNewUser = asyncHandler(async (req, res) => {
 // @route PATCH /users
 // @access Private
 const updateUser = asyncHandler(async (req, res) => {
-    const { id, username, email, firstname, lastname, level, roles, goals, isActive, password } = req.body;
+    const { id, username, email, firstname, lastname, language, level, roles, goals, isActive, password } = req.body;
     
     if (!id) {
         return res.status(400).json({ message: 'ID is required' });
@@ -125,6 +126,7 @@ const updateUser = asyncHandler(async (req, res) => {
     if (firstname) user.firstname = firstname
     if (lastname) user.lastname = lastname
     if (level) user.level = level || user.level
+    if (language) user.language = language || user.language
     if (goals) user.goals = goals || user.goals
     if (isActive != user.isActive) user.isActive = isActive
 

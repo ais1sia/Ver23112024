@@ -7,4 +7,5 @@ export const TAGS = {
     vocubulary: "vocabulary",
     listening: "listening",
     culture: "culture",
+    reading: "reading"
 }

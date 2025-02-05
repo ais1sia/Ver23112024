@@ -297,36 +297,36 @@ const markMaterialAsViewed = asyncHandler(async (req, res) => {
   const { materialId } = req.params;
   const { userId } = req.body;
 
-  const session = await mongoose.startSession()
+  const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
     const user = await User.findById(userId).session(session);
     if (!user) {
       await session.abortTransaction();
-      return res.status(404).json({ message: "User not found" })
+      return res.status(404).json({ message: "User not found" });
     }
 
-    const existingView = user.viewedMaterials.find(view => view.materialId.toString() === materialId)
+    const existingView = user.viewedMaterials.find(view => view.materialId.toString() === materialId);
 
     if (existingView) {
-      existingView.viewedAt = new Date()
+      existingView.viewedAt = new Date();
     } else {
-      user.viewedMaterials.push({ materialId, viewedAt: new Date() })
+      user.viewedMaterials.push({ materialId, viewedAt: new Date() });
     }
 
-    await user.save({ session })
+    await user.save({ session });
 
-    await session.commitTransaction()
-    session.endSession();
-
+    await session.commitTransaction();
     res.status(200).json({ message: "Material marked as viewed" });
   } catch (error) {
-    await session.abortTransaction()
-    session.endSession()
-    res.status(500).json({ message: error.message })
+    await session.abortTransaction();
+    res.status(500).json({ message: error.message });
+  } finally {
+    session.endSession();
   }
 });
+
 
 
 

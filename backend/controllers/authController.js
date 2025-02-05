@@ -7,13 +7,12 @@ const asyncHandler = require('express-async-handler')
 //@route POST /users
 //@access public
 const register = asyncHandler(async (req, res) => {
-    const { username, email, firstname, lastname, password, level, roles, goals, isActive } = req.body
+    const { username, email, firstname, lastname, password, language, level, roles, goals, isActive } = req.body
 
-    if (!username || !email || !firstname || !lastname || !password) {
+    if (!username || !email || !firstname || !lastname || !password || language) {
         return res.status(400).json({ message: 'All fields are required' })
     }
-    // !Array.isArray(roles) || !Array.isArray(level) || !Array.isArray(goals)
-    //409: conflict
+
     const duplicate = await User.findOne({
         $or: [{ email }, { username }]
     }).collation({ locale: 'en', strength: 2 }).lean().exec()
@@ -31,6 +30,7 @@ const register = asyncHandler(async (req, res) => {
         firstname,
         lastname,
         password: hashedPwd,
+        language,
         roles: roles && roles.length ? roles : ['User'],
         goals: goals && goals.length ? goals : ['general'],
         level: level || 'beginner',
@@ -70,7 +70,7 @@ const login = asyncHandler(async (req, res) => {
             const today = new Date().setHours(0, 0, 0, 0);
             const lastLogin = foundUser.lastLogin ? new Date(foundUser.lastLogin).setHours(0, 0, 0, 0) : null;
         
-            if (lastLogin && today - lastLogin === 86400000) {
+            if (lastLogin && today - lastLogin <= 86400000) {
                 foundUser.streak += 1;
             } else {
                 foundUser.streak = 1;
@@ -97,15 +97,13 @@ const login = asyncHandler(async (req, res) => {
         { expiresIn: '7d' }
     )
 
-    // Create secure cookie with refresh token 
     res.cookie('jwt', refreshToken, {
-        httpOnly: true, //accessible only by web server 
-        secure: true, //https
-        sameSite: 'None', //cross-site cookie 
+        httpOnly: true, 
+        secure: true,
+        sameSite: 'None',
         maxAge: 7 * 24 * 60 * 60 * 1000 //cookie expiry: set to match rT
     })
 
-    // Send accessToken containing username and roles 
     res.json({ accessToken })
 })
 

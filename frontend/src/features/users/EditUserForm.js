@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { ROLES } from "../../config/roles";
 import { GOALS } from "../../config/goals";
+import { LANGUAGES } from "../../config/languages";
 import { LEVELS } from "../../config/levels";
 import PulseLoader from 'react-spinners/PulseLoader';
 import CustomSelector from '../../config/CustomSelector';
@@ -25,16 +26,23 @@ const EditUserForm = ({ user }) => {
     const [firstname, setFirstname] = useState(user.firstname);
     const [lastname, setLastname] = useState(user.lastname);
     const [password, setPassword] = useState('');
+    const [language, setLanguage] = useState(user.language);
     const [level, setLevel] = useState(user.level);
     const [roles, setRoles] = useState(user.roles);
     const [goals, setGoals] = useState(user.goals);
     const [isActive] = useState(user.isActive);
 
     const goalOptions = Object.values(GOALS).map((goal) => goal);
+    
 
     const levelOptions = Object.values(LEVELS).map((level) => (
         <option key={level} value={level}>
             {level}
+        </option>
+    ));
+    const languageOptions = Object.values(LANGUAGES).map((language) => (
+        <option key={language} value={language}>
+            {language}
         </option>
     ));
 
@@ -51,6 +59,7 @@ const EditUserForm = ({ user }) => {
         if (lastname !== user.lastname) updatedFields.lastname = lastname;
         if (password) updatedFields.password = password;
         if (level !== user.level) updatedFields.level = level;
+        if (language !== user.language) updatedFields.language = language;
         if (JSON.stringify(goals) !== JSON.stringify(user.goals)) updatedFields.goals = goals;
 
         if (isAdmin) {
@@ -148,6 +157,19 @@ const EditUserForm = ({ user }) => {
                 onChange={(e) => setLevel(e.target.value)}
             >
                 {levelOptions}
+            </select>
+
+            <label className="form__label" htmlFor="language">
+                Choose language:
+            </label>
+            <select
+                id="language"
+                name="language"
+                className="form__select"
+                value={language}
+                onChange={(e) => setLanguage(e.target.value)}
+            >
+                {languageOptions}
             </select>
 
             {/* CUSTOM GOAL SELECTOR */}

@@ -4,6 +4,7 @@ import { useNavigate, /*Link*/ } from "react-router-dom";
 import PulseLoader from "react-spinners/PulseLoader";
 import { GOALS } from "../../config/goals";
 import { LEVELS } from "../../config/levels";
+import { LANGUAGES } from "../../config/languages";
 import CustomSelector from "../../config/CustomSelector";
 import DashFooter from "../../components/DashFooter";
 
@@ -17,6 +18,7 @@ const Register = () => {
   const [email, setEmail] = useState("")
   const [firstname, setFirstname] = useState("")
   const [lastname, setLastname] = useState("")
+  const [language, setLanguage] = useState("English")
   const [level, setLevel] = useState("A1")
   const [goals, setGoals] = useState(["general"])
   const [errMsg, setErrMsg] = useState("")
@@ -38,6 +40,7 @@ const Register = () => {
         email,
         firstname,
         lastname,
+        language,
         level,
         goals,
       }).unwrap();
@@ -64,6 +67,11 @@ const Register = () => {
       {level}
     </option>
   ))
+  const languageOptions = Object.values(LANGUAGES).map((language) => (
+    <option key={language} value={language}>
+      {language}
+    </option>
+  ))
 
   const goalOptions = Object.values(GOALS).map((goal) => goal)
 
@@ -86,7 +94,7 @@ const Register = () => {
           </div>
 
           <label className="form__label" htmlFor="username">
-            Username: <span className="nowrap">[3-20 letters]</span>
+            Username: <span className="nowrap">[min. 3 letters]</span>
           </label>
           <input
             className="form__input"
@@ -101,7 +109,7 @@ const Register = () => {
           />
 
           <label className="form__label" htmlFor="password">
-            Password: <span className="nowrap">[4-12 chars incl. !@#$%]</span>
+            Password: <span className="nowrap">[must incl. !@#$%]</span>
           </label>
           <input
             className="form__input"
@@ -152,6 +160,20 @@ const Register = () => {
             required
           />
 
+          <label className="form__label" htmlFor="language">
+            Choose language to learn:
+          </label>
+          <select
+            id="language"
+            name="language"
+            className="form__select"
+            value={language}
+            onChange={(e) => setLanguage(e.target.value)}
+            required
+          >
+            {languageOptions}
+          </select>
+
           <label className="form__label" htmlFor="level">
             Level:
           </label>
@@ -167,20 +189,20 @@ const Register = () => {
           </select>
 
           <label className="form__label" htmlFor="goals">
-            GOALS:
-            <p><i> Note: This app is for aimed learning. Choose one (you can change it later).</i></p>
+            Goals:
+            <p><i> Note: You can add more goals anytime.</i></p>
           </label>
           <CustomSelector
             options={goalOptions}
             selectedOptions={goals}
-            setOptions={setGoals}  
+            setOptions={setGoals}
             multiChoice={true}
           />
           <button className="final-submit-btn" title="SIGN IN">
-          SIGN IN
-        </button>
+            SIGN IN
+          </button>
         </form>
-            
+
       </main>
       {/* <p><Link to="/">Back to Home</Link></p>
       <p><Link to="/login">Sign up</Link></p> */}

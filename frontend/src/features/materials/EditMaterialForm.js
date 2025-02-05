@@ -6,9 +6,12 @@ import { faSave, faTrashCan } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
+import { LANGUAGES } from "../../config/languages"
 import { LEVELS } from "../../config/levels"
 import { TAGS } from "../../config/tags"
 import PulseLoader from 'react-spinners/PulseLoader'
+// import RichTextEditor from "../../config/RichTextEditor"
+
 
 const EditMaterialForm = ({ material }) => {
   const [updateMaterial, { isLoading, isSuccess, isError, error }] =
@@ -49,6 +52,9 @@ const EditMaterialForm = ({ material }) => {
   const onShortChanged = (e) => setShort(e.target.value)
   const onLevelChanged = (e) => setLevel(e.target.value)
   const onContentChanged = (e) => setContent(e.target.value)
+  // const onContentChanged = (newContent) => {
+  //   setContent(newContent)
+  // }
   const onImageUrlChanged = (e) => setImageUrl(e.target.value)
   const onSourceUrlChanged = (e) => setSourceUrl(e.target.value)
 
@@ -78,6 +84,15 @@ const EditMaterialForm = ({ material }) => {
   const onDeleteMaterialClicked = async () => {
     await deleteMaterial({ id: material.id });
   };
+
+  const languageOptions = Object.values(LANGUAGES).map((language) => {
+    return (
+      <option key={language} value={language}>
+        {" "}
+        {language}
+      </option>
+    )
+  })
 
   const levelOptions = Object.values(LEVELS).map((level) => {
     return (
@@ -143,14 +158,17 @@ const EditMaterialForm = ({ material }) => {
         <label className="form__label" htmlFor="language">
           Language:
         </label>
-        <input
+        <select
           id="language"
           name="language"
-          type="text"
-          autoComplete="off"
+          className="form__select"
+          multiple={false}
+          size="1"
           value={language}
           onChange={onLanguageChanged}
-        />
+        >
+          {languageOptions}
+        </select>
 
         <label className="form__label" htmlFor="short">
           Short description:
@@ -189,6 +207,8 @@ const EditMaterialForm = ({ material }) => {
           value={content}
           onChange={onContentChanged}
         />
+        {/* <RichTextEditor initialContent={content} onContentChange={onContentChanged} /> */}
+
 
         <label className="form__label" htmlFor="setImageUrl">
           Image Url:

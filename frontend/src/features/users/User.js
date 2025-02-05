@@ -28,6 +28,7 @@ const User = ({ userId }) => {
                 <td className={`table__cell ${cellStatus}`}>{user.email}</td>
                 <td className={`table__cell ${cellStatus}`}>{user.firstname}</td>
                 <td className={`table__cell ${cellStatus}`}>{user.lastname}</td>
+                <td className={`table__cell ${cellStatus}`}>{user.language}</td>
                 <td className={`table__cell ${cellStatus}`}>{user.level}</td>
                 <td className={`table__cell ${cellStatus}`}>{userRolesString}</td>
                 <td className={`table__cell ${cellStatus}`}>{userGoalsString}</td>
