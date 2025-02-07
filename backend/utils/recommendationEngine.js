@@ -10,10 +10,18 @@ function cosineSimilarity(vectorA, vectorB) {
 }
 
 
-async function getItemRecommendations(userId, topN = 5) {
-    const { users, materials, matrix } = await buildUserItemMatrix()
+async function getItemRecommendations(userId, topN = 6) {
+    const { users, materials, matrix } = await buildUserItemMatrix();
 
-    // Build item-item similarity matrix
+    const user = users.find(u => u._id === userId);
+    const userRatings = matrix[userId] || {};
+
+    if (Object.keys(userRatings).length === 0 && user && user.goals) {
+        return materials.filter(material =>
+            material.tags.some(tag => user.goals.includes(tag))
+        )
+    }
+
     const itemSimilarities = {}
     materials.forEach(itemA => {
         itemSimilarities[itemA._id] = {}
@@ -27,15 +35,13 @@ async function getItemRecommendations(userId, topN = 5) {
         })
     })
 
-    // Predict ratings for the user
-    const userRatings = matrix[userId] || {};
     const recommendations = materials
         .filter(material => !userRatings[material._id])
         .map(material => {
             const weightedSum = Object.entries(itemSimilarities[material._id] || {})
-                .reduce((sum, [itemId, sim]) => sum + (sim * (userRatings[itemId] || 0)), 0)
-            const sumOfSimilarities = Object.values(itemSimilarities[material._id] || {}).reduce((sum, sim) => sum + sim, 0)
-            const predictedRating = sumOfSimilarities > 0 ? weightedSum / sumOfSimilarities : 0
+                .reduce((sum, [itemId, sim]) => sum + (sim * (userRatings[itemId] || 0)), 0);
+            const sumOfSimilarities = Object.values(itemSimilarities[material._id] || {}).reduce((sum, sim) => sum + sim, 0);
+            const predictedRating = sumOfSimilarities > 0 ? weightedSum / sumOfSimilarities : 0;
 
             return { material, predictedRating }
         })
