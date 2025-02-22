@@ -95,10 +95,10 @@ const DashHeader = () => {
       <header className="dash-header">
         <div className={`dash-header__container ${dashClass}`}>
           {(!isAdmin) && <Link to="/dash/materials">
-            <h1 className="dash-header__title"> <FontAwesomeIcon icon={faCrosshairs} /> ReadyAimFluent </h1>
+            <h1 className="dash-header__title"> <FontAwesomeIcon icon={faCrosshairs} /> Ready Aim Fluent </h1>
           </Link>}
           {(isAdmin) && <Link to="/dash">
-            <h1 className="dash-header__title"> <FontAwesomeIcon icon={faCrosshairs} /> ReadyAimFluent</h1>
+            <h1 className="dash-header__title"> <FontAwesomeIcon icon={faCrosshairs} /> Ready Aim Fluent</h1>
           </Link>}
           <div className="dash-header__welcome">Welcome back, {username}!</div>
           <nav className="dash-header__nav">{buttonContent}</nav>
